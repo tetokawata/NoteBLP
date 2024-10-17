@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>5&nbsp; 応用: 予測 – 母平均の推定</title>
+<title>6&nbsp; 応用: 予測性能の評価 – 母平均の推定</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -20,7 +20,27 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
-</style>
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+  margin-bottom: 0em;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
 
 
 <script src="site_libs/quarto-nav/quarto-nav.js"></script>
@@ -30,8 +50,7 @@ ul.task-list li input[type="checkbox"] {
 <script src="site_libs/quarto-search/fuse.min.js"></script>
 <script src="site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="./">
-<link href="./evaluation.html" rel="next">
-<link href="./LASSO.html" rel="prev">
+<link href="./prediction.html" rel="prev">
 <script src="site_libs/quarto-html/quarto.js"></script>
 <script src="site_libs/quarto-html/popper.min.js"></script>
 <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
@@ -69,35 +88,6 @@ ul.task-list li input[type="checkbox"] {
   }
 }</script>
 
-  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
-  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
-
-<script type="text/javascript">
-const typesetMath = (el) => {
-  if (window.MathJax) {
-    // MathJax Typeset
-    window.MathJax.typeset([el]);
-  } else if (window.katex) {
-    // KaTeX Render
-    var mathElements = el.getElementsByClassName("math");
-    var macros = [];
-    for (var i = 0; i < mathElements.length; i++) {
-      var texText = mathElements[i].firstChild;
-      if (mathElements[i].tagName == "SPAN") {
-        window.katex.render(texText.data, mathElements[i], {
-          displayMode: mathElements[i].classList.contains('display'),
-          throwOnError: false,
-          macros: macros,
-          fleqn: false
-        });
-      }
-    }
-  }
-}
-window.Quarto = {
-  typesetMath
-};
-</script>
 
 </head>
 
@@ -110,7 +100,7 @@ window.Quarto = {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./prediction.html"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">応用: 予測</span></a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./evaluation.html"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">応用: 予測性能の評価</span></a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -167,13 +157,13 @@ window.Quarto = {
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./prediction.html" class="sidebar-item-text sidebar-link active">
+  <a href="./prediction.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">応用: 予測</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./evaluation.html" class="sidebar-item-text sidebar-link">
+  <a href="./evaluation.html" class="sidebar-item-text sidebar-link active">
  <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">応用: 予測性能の評価</span></span></a>
   </div>
 </li>
@@ -187,12 +177,9 @@ window.Quarto = {
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#推定目標" id="toc-推定目標" class="nav-link active" data-scroll-target="#推定目標"><span class="header-section-number">5.1</span> 推定目標</a>
-  <ul class="collapse">
-  <li><a href="#完璧な予測モデル" id="toc-完璧な予測モデル" class="nav-link" data-scroll-target="#完璧な予測モデル"><span class="header-section-number">5.1.1</span> 完璧な予測モデル</a></li>
-  <li><a href="#理想の予測モデル" id="toc-理想の予測モデル" class="nav-link" data-scroll-target="#理想の予測モデル"><span class="header-section-number">5.1.2</span> 理想の予測モデル</a></li>
-  </ul></li>
-  <li><a href="#reference" id="toc-reference" class="nav-link" data-scroll-target="#reference"><span class="header-section-number">5.2</span> Reference</a></li>
+  <li><a href="#予測性能の測定" id="toc-予測性能の測定" class="nav-link active" data-scroll-target="#予測性能の測定"><span class="header-section-number">6.1</span> 予測性能の測定</a></li>
+  <li><a href="#まとめ" id="toc-まとめ" class="nav-link" data-scroll-target="#まとめ"><span class="header-section-number">6.2</span> まとめ</a></li>
+  <li><a href="#reference" id="toc-reference" class="nav-link" data-scroll-target="#reference"><span class="header-section-number">6.3</span> Reference</a></li>
   </ul>
 </nav>
     </div>
@@ -201,7 +188,7 @@ window.Quarto = {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title"><span id="sec-Prediction" class="quarto-section-identifier"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">応用: 予測</span></span></h1>
+<h1 class="title"><span id="sec-Evaluation" class="quarto-section-identifier"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">応用: 予測性能の評価</span></span></h1>
 </div>
 
 
@@ -218,31 +205,528 @@ window.Quarto = {
 </header>
 
 
-<p>予測を目的とするでは、観察できる変数 <span class="math inline">\(X\)</span> から意思決定に必要だが欠損している情報 <span class="math inline">\(Y\)</span> を予測するモデル（予測モデル）の推定を目指します。 以下のような例があげられます。</p>
+<section id="予測性能の測定" class="level2" data-number="6.1">
+<h2 data-number="6.1" class="anchored" data-anchor-id="予測性能の測定"><span class="header-section-number">6.1</span> 予測性能の測定</h2>
+<p>予測を目指す分析では、推定された予測モデルの性能を評価することが重要となります。 現状、幅広いデータや状況において、一貫して高い予測性能を生み出す方法は存在しません。 このため複数の予測モデルを”試作”し、その性能を比較することが分析工程に組み込まれています。</p>
+<p>最もシンプルな評価方法は、サンプル分割です。</p>
+<div class="callout callout-style-default callout-important callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+サンプル分割法の定義
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ol type="1">
+<li>データをランダムに訓練データとテストデータに分割する</li>
+</ol>
 <ul>
-<li><p>視聴履歴やいいね数 <span class="math inline">\((X) \underbrace{\rightarrow}_{予測モデル}\)</span> 好む未視聴動画 <span class="math inline">\((Y)\)</span></p></li>
-<li><p>メールの文名や件名 <span class="math inline">\((X) \underbrace{\rightarrow}_{予測モデル}\)</span> 迷惑メール <span class="math inline">\((Y)\)</span></p></li>
-<li><p>事業の内容や財務状況 <span class="math inline">\((X) \underbrace{\rightarrow}_{予測モデル}\)</span> デフォルトリスク <span class="math inline">\((Y)\)</span></p></li>
+<li>訓練/テスト間での事例数の比率については、8対2や95対5が(経験則として)推奨されることが多い。</li>
 </ul>
-<p>もし<span class="math inline">\(Y,X\)</span> が共に観察できるデータを活用できれば、統計学や機械学習分野によって、推定方法がある程度確立されています。</p>
-<section id="推定目標" class="level2" data-number="5.1">
-<h2 data-number="5.1" class="anchored" data-anchor-id="推定目標"><span class="header-section-number">5.1</span> 推定目標</h2>
-<p>本ノートでは、データと同じ母集団から<strong>新たに</strong>抽出された事例を、予測するモデルの推定を目指します。 予測能力は、平均事情誤差で測定します <span class="math display">\[母集団における平均二乗誤差 = (Y - 予測値)^2 の母集団における平均\]</span> 注意が必要なのは、母集団における平均二乗誤差は、母集団上の値であり、直接観察することは不可能です。 ただし本章で紹介する通り、推定することは可能です。</p>
-<section id="完璧な予測モデル" class="level3" data-number="5.1.1">
-<h3 data-number="5.1.1" class="anchored" data-anchor-id="完璧な予測モデル"><span class="header-section-number">5.1.1</span> 完璧な予測モデル</h3>
-<p>予測研究における究極的な目標の一つは、 <span class="math inline">\(Y\)</span> を完璧に予測するモデルの推定です。 しかしながら多くの応用で、この目標には到達することができません。 予測モデルは、ある<span class="math inline">\(X\)</span>の組み合わせについて、一つの予測値のみを出力します。 このため<strong>母集団</strong>において、同じ<span class="math inline">\(X\)</span> 内で<span class="math inline">\(Y\)</span> の値にばらつきがあれば、予測が外れる事例は必ず存在します。</p>
-<p>完璧な予測には、<span class="math inline">\(Y\)</span>の全ての決定要因を<span class="math inline">\(X\)</span>として観察し、<span class="math inline">\(X\)</span>内での個人差をなくす必要があります。 しかしながら人間行動や社会的な事象などの社会的変数の決定要因は無数に存在し、その多くは観察が難しいと考えられます。 結果、社会的変数について、完璧な予測は不可能と考えられます。</p>
+<ol start="2" type="1">
+<li><p>訓練データのみでモデルを試作する</p></li>
+<li><p>テストデータへの当てはまりを(平均二乗誤差などで)評価する</p></li>
+</ol>
+</div>
+</div>
+<p>実際の取引データに適用した結果は以下です。 6378事例のうち、ランダムに選んだ半分を訓練、残り半分をテストに用いました。 テストした推定方法は以下です。</p>
+<ul>
+<li><p><strong>OLS:</strong> 取引価格 ~ 部屋の広さ + 立地 + 取引年</p></li>
+<li><p><strong>OLS (含む交差項 + 高次項):</strong> 取引価格 ~ 部屋の広さ + 立地 + 取引年 + 交差項 + 高次項(６次まで)</p></li>
+<li><p><strong>LASSO (含む交差項 + 高次項):</strong> 取引価格 ~ 部屋の広さ + 立地 + 取引年 + 交差項 + 高次項(６次まで)</p></li>
+</ul>
+<p>推定された予測モデルの評価結果は以下となりました。</p>
+<div class="cell">
+<div class="cell-output-display">
+<div id="rnpzmapqgk" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#rnpzmapqgk table {
+  font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+#rnpzmapqgk thead, #rnpzmapqgk tbody, #rnpzmapqgk tfoot, #rnpzmapqgk tr, #rnpzmapqgk td, #rnpzmapqgk th {
+  border-style: none;
+}
+
+#rnpzmapqgk p {
+  margin: 0;
+  padding: 0;
+}
+
+#rnpzmapqgk .gt_table {
+  display: table;
+  border-collapse: collapse;
+  line-height: normal;
+  margin-left: auto;
+  margin-right: auto;
+  color: #333333;
+  font-size: 16px;
+  font-weight: normal;
+  font-style: normal;
+  background-color: #FFFFFF;
+  width: auto;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #A8A8A8;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #A8A8A8;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+}
+
+#rnpzmapqgk .gt_caption {
+  padding-top: 4px;
+  padding-bottom: 4px;
+}
+
+#rnpzmapqgk .gt_title {
+  color: #333333;
+  font-size: 125%;
+  font-weight: initial;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-color: #FFFFFF;
+  border-bottom-width: 0;
+}
+
+#rnpzmapqgk .gt_subtitle {
+  color: #333333;
+  font-size: 85%;
+  font-weight: initial;
+  padding-top: 3px;
+  padding-bottom: 5px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-color: #FFFFFF;
+  border-top-width: 0;
+}
+
+#rnpzmapqgk .gt_heading {
+  background-color: #FFFFFF;
+  text-align: center;
+  border-bottom-color: #FFFFFF;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#rnpzmapqgk .gt_bottom_border {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#rnpzmapqgk .gt_col_headings {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#rnpzmapqgk .gt_col_heading {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 6px;
+  padding-left: 5px;
+  padding-right: 5px;
+  overflow-x: hidden;
+}
+
+#rnpzmapqgk .gt_column_spanner_outer {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  padding-top: 0;
+  padding-bottom: 0;
+  padding-left: 4px;
+  padding-right: 4px;
+}
+
+#rnpzmapqgk .gt_column_spanner_outer:first-child {
+  padding-left: 0;
+}
+
+#rnpzmapqgk .gt_column_spanner_outer:last-child {
+  padding-right: 0;
+}
+
+#rnpzmapqgk .gt_column_spanner {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  overflow-x: hidden;
+  display: inline-block;
+  width: 100%;
+}
+
+#rnpzmapqgk .gt_spanner_row {
+  border-bottom-style: hidden;
+}
+
+#rnpzmapqgk .gt_group_heading {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  text-align: left;
+}
+
+#rnpzmapqgk .gt_empty_group_heading {
+  padding: 0.5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+#rnpzmapqgk .gt_from_md > :first-child {
+  margin-top: 0;
+}
+
+#rnpzmapqgk .gt_from_md > :last-child {
+  margin-bottom: 0;
+}
+
+#rnpzmapqgk .gt_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  margin: 10px;
+  border-top-style: solid;
+  border-top-width: 1px;
+  border-top-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  overflow-x: hidden;
+}
+
+#rnpzmapqgk .gt_stub {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#rnpzmapqgk .gt_stub_row_group {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+  vertical-align: top;
+}
+
+#rnpzmapqgk .gt_row_group_first td {
+  border-top-width: 2px;
+}
+
+#rnpzmapqgk .gt_row_group_first th {
+  border-top-width: 2px;
+}
+
+#rnpzmapqgk .gt_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#rnpzmapqgk .gt_first_summary_row {
+  border-top-style: solid;
+  border-top-color: #D3D3D3;
+}
+
+#rnpzmapqgk .gt_first_summary_row.thick {
+  border-top-width: 2px;
+}
+
+#rnpzmapqgk .gt_last_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#rnpzmapqgk .gt_grand_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#rnpzmapqgk .gt_first_grand_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-style: double;
+  border-top-width: 6px;
+  border-top-color: #D3D3D3;
+}
+
+#rnpzmapqgk .gt_last_grand_summary_row_top {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: double;
+  border-bottom-width: 6px;
+  border-bottom-color: #D3D3D3;
+}
+
+#rnpzmapqgk .gt_striped {
+  background-color: rgba(128, 128, 128, 0.05);
+}
+
+#rnpzmapqgk .gt_table_body {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#rnpzmapqgk .gt_footnotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#rnpzmapqgk .gt_footnote {
+  margin: 0px;
+  font-size: 90%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#rnpzmapqgk .gt_sourcenotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#rnpzmapqgk .gt_sourcenote {
+  font-size: 90%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#rnpzmapqgk .gt_left {
+  text-align: left;
+}
+
+#rnpzmapqgk .gt_center {
+  text-align: center;
+}
+
+#rnpzmapqgk .gt_right {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+#rnpzmapqgk .gt_font_normal {
+  font-weight: normal;
+}
+
+#rnpzmapqgk .gt_font_bold {
+  font-weight: bold;
+}
+
+#rnpzmapqgk .gt_font_italic {
+  font-style: italic;
+}
+
+#rnpzmapqgk .gt_super {
+  font-size: 65%;
+}
+
+#rnpzmapqgk .gt_footnote_marks {
+  font-size: 75%;
+  vertical-align: 0.4em;
+  position: initial;
+}
+
+#rnpzmapqgk .gt_asterisk {
+  font-size: 100%;
+  vertical-align: 0;
+}
+
+#rnpzmapqgk .gt_indent_1 {
+  text-indent: 5px;
+}
+
+#rnpzmapqgk .gt_indent_2 {
+  text-indent: 10px;
+}
+
+#rnpzmapqgk .gt_indent_3 {
+  text-indent: 15px;
+}
+
+#rnpzmapqgk .gt_indent_4 {
+  text-indent: 20px;
+}
+
+#rnpzmapqgk .gt_indent_5 {
+  text-indent: 25px;
+}
+
+#rnpzmapqgk .katex-display {
+  display: inline-flex !important;
+  margin-bottom: 0.75em !important;
+}
+
+#rnpzmapqgk div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
+  height: 0px !important;
+}
+</style>
+
+<table class="gt_table caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
+<thead>
+<tr class="header gt_col_headings">
+<th id="OLS" class="gt_col_heading gt_columns_bottom_border gt_right" data-quarto-table-cell-role="th" scope="col">OLS</th>
+<th id="OLS| 交差項 + 高次項" class="gt_col_heading gt_columns_bottom_border gt_right" data-quarto-table-cell-role="th" scope="col">OLS| 交差項 + 高次項</th>
+<th id="LASSO" class="gt_col_heading gt_columns_bottom_border gt_right" data-quarto-table-cell-role="th" scope="col">LASSO</th>
+</tr>
+</thead>
+<tbody class="gt_table_body">
+<tr class="odd">
+<td class="gt_row gt_right" headers="OLS">369</td>
+<td class="gt_row gt_right" headers="OLS| 交差項 + 高次項">316</td>
+<td class="gt_row gt_right" headers="LASSO">303</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+<p>LASSOが最も予測性能が高く、単純なOLSと比較し、0.179 パーセントほど平均二乗誤差を削減しています。 対して、交差項と高次項を追加したOLSとLASSOを比較した場合、0.041 パーセントほどの改善にとどまります。 これはモデルの複雑さに比べて、事例数が多く、LASSOによるモデル単純化の恩恵が限定的であることを示しています。</p>
 </section>
-<section id="理想の予測モデル" class="level3" data-number="5.1.2">
-<h3 data-number="5.1.2" class="anchored" data-anchor-id="理想の予測モデル"><span class="header-section-number">5.1.2</span> 理想の予測モデル</h3>
-<p>最も高い予測性能 (母集団における平均二乗誤差が最小化)を達成する予測モデルは、母平均であることが証明できます <span class="math display">\[理想の予測モデル = X内でのYの母平均\]</span></p>
-<p>予測研究においては、データから推定した予測モデルを理想の予想モデルである母平均に極力近づけることが、実質的な目標となります。 具体的には以下の予測誤差を極力削減することを目指します <span class="math display">\[(\underbrace{X内でのYの母平均}_{理想の予測モデル}-予測モデル)^2の母平均\]</span></p>
+<section id="まとめ" class="level2" data-number="6.2">
+<h2 data-number="6.2" class="anchored" data-anchor-id="まとめ"><span class="header-section-number">6.2</span> まとめ</h2>
+<ul>
+<li>予測誤差の他の測定方法については、<span class="citation" data-cites="angelopoulos2023conformal">Angelopoulos, Bates, et al. (<a href="#ref-angelopoulos2023conformal" role="doc-biblioref">2023</a>)</span> などを参照</li>
+</ul>
 </section>
-</section>
-<section id="reference" class="level2" data-number="5.2">
-<h2 data-number="5.2" class="anchored" data-anchor-id="reference"><span class="header-section-number">5.2</span> Reference</h2>
+<section id="reference" class="level2" data-number="6.3">
+<h2 data-number="6.3" class="anchored" data-anchor-id="reference"><span class="header-section-number">6.3</span> Reference</h2>
 
 
+<div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list">
+<div id="ref-angelopoulos2023conformal" class="csl-entry" role="listitem">
+Angelopoulos, Anastasios N, Stephen Bates, et al. 2023. <span>“Conformal Prediction: A Gentle Introduction.”</span> <em>Foundations and Trends<span></span> in Machine Learning</em> 16 (4): 494–591.
+</div>
+</div>
 </section>
 
 </main> <!-- /main -->
@@ -668,14 +1152,11 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
-      <a href="./LASSO.html" class="pagination-link" aria-label="LASSO">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">LASSO</span></span>
+      <a href="./prediction.html" class="pagination-link" aria-label="応用: 予測">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">応用: 予測</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="./evaluation.html" class="pagination-link" aria-label="応用: 予測性能の評価">
-        <span class="nav-page-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">応用: 予測性能の評価</span></span> <i class="bi bi-arrow-right-short"></i>
-      </a>
   </div>
 </nav>
 </div> <!-- /content -->

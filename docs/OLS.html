@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>5&nbsp; 応用: 予測 – 母平均の推定</title>
+<title>3&nbsp; データ上でのOLS – 母平均の推定</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -20,6 +20,40 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
 </style>
 
 
@@ -30,8 +64,8 @@ ul.task-list li input[type="checkbox"] {
 <script src="site_libs/quarto-search/fuse.min.js"></script>
 <script src="site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="./">
-<link href="./evaluation.html" rel="next">
-<link href="./LASSO.html" rel="prev">
+<link href="./PopulationOLS.html" rel="next">
+<link href="./population.html" rel="prev">
 <script src="site_libs/quarto-html/quarto.js"></script>
 <script src="site_libs/quarto-html/popper.min.js"></script>
 <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
@@ -110,7 +144,7 @@ window.Quarto = {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./prediction.html"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">応用: 予測</span></a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./OLS.html"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">データ上でのOLS</span></a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -155,26 +189,32 @@ window.Quarto = {
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./OLS.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">OLS</span></span></a>
+  <a href="./OLS.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">データ上でのOLS</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./PopulationOLS.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">データ上でのOLS</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./LASSO.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">LASSO</span></span></a>
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">LASSO</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./prediction.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">応用: 予測</span></span></a>
+  <a href="./prediction.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">応用: 予測</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./evaluation.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">応用: 予測性能の評価</span></span></a>
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">応用: 予測性能の評価</span></span></a>
   </div>
 </li>
     </ul>
@@ -187,12 +227,15 @@ window.Quarto = {
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#推定目標" id="toc-推定目標" class="nav-link active" data-scroll-target="#推定目標"><span class="header-section-number">5.1</span> 推定目標</a>
+  <li><a href="#線型モデル" id="toc-線型モデル" class="nav-link active" data-scroll-target="#線型モデル"><span class="header-section-number">3.1</span> 線型モデル</a></li>
+  <li><a href="#ols" id="toc-ols" class="nav-link" data-scroll-target="#ols"><span class="header-section-number">3.2</span> OLS</a></li>
+  <li><a href="#例" id="toc-例" class="nav-link" data-scroll-target="#例"><span class="header-section-number">3.3</span> 例</a></li>
+  <li><a href="#数値例-事例数の拡大" id="toc-数値例-事例数の拡大" class="nav-link" data-scroll-target="#数値例-事例数の拡大"><span class="header-section-number">3.4</span> 数値例: 事例数の拡大</a></li>
+  <li><a href="#rによる実践例" id="toc-rによる実践例" class="nav-link" data-scroll-target="#rによる実践例"><span class="header-section-number">3.5</span> Rによる実践例</a>
   <ul class="collapse">
-  <li><a href="#完璧な予測モデル" id="toc-完璧な予測モデル" class="nav-link" data-scroll-target="#完璧な予測モデル"><span class="header-section-number">5.1.1</span> 完璧な予測モデル</a></li>
-  <li><a href="#理想の予測モデル" id="toc-理想の予測モデル" class="nav-link" data-scroll-target="#理想の予測モデル"><span class="header-section-number">5.1.2</span> 理想の予測モデル</a></li>
+  <li><a href="#準備" id="toc-準備" class="nav-link" data-scroll-target="#準備"><span class="header-section-number">3.5.1</span> 準備</a></li>
   </ul></li>
-  <li><a href="#reference" id="toc-reference" class="nav-link" data-scroll-target="#reference"><span class="header-section-number">5.2</span> Reference</a></li>
+  <li><a href="#reference" id="toc-reference" class="nav-link" data-scroll-target="#reference"><span class="header-section-number">3.6</span> Reference</a></li>
   </ul>
 </nav>
     </div>
@@ -201,7 +244,7 @@ window.Quarto = {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title"><span id="sec-Prediction" class="quarto-section-identifier"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">応用: 予測</span></span></h1>
+<h1 class="title"><span id="sec-OLS" class="quarto-section-identifier"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">データ上でのOLS</span></span></h1>
 </div>
 
 
@@ -218,29 +261,200 @@ window.Quarto = {
 </header>
 
 
-<p>予測を目的とするでは、観察できる変数 <span class="math inline">\(X\)</span> から意思決定に必要だが欠損している情報 <span class="math inline">\(Y\)</span> を予測するモデル（予測モデル）の推定を目指します。 以下のような例があげられます。</p>
+<p>少数事例の要約を避けるためには、より”荒い”要約が必要となります。 手元のデータから<span class="math inline">\(Y\)</span>の平均値が持つ性質を簡便に捉えるモデルとして、線型モデルを紹介します。 また線型モデルを推定する方法として最小二乗法(OLS)を紹介します。</p>
+<p>本アプローチは、研究者が任意にモデルを単純化することが可能です。 適切な単純化がなされるのであれば、限られた事例数のもとでも、母平均の特徴を類推する有効な方法です。</p>
+<section id="線型モデル" class="level2" data-number="3.1">
+<h2 data-number="3.1" class="anchored" data-anchor-id="線型モデル"><span class="header-section-number">3.1</span> 線型モデル</h2>
+<p><span class="math inline">\(Y\)</span> の平均値と <span class="math inline">\(X\)</span> の関係性を記述するモデルを導入します。</p>
+<div class="callout callout-style-default callout-important callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+線型モデル
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><span class="math display">\[Yの平均値\simeq\beta_0 + \beta_1X_1 + \beta_2X_2 +.. + \beta_LX_L\]</span></p>
 <ul>
-<li><p>視聴履歴やいいね数 <span class="math inline">\((X) \underbrace{\rightarrow}_{予測モデル}\)</span> 好む未視聴動画 <span class="math inline">\((Y)\)</span></p></li>
-<li><p>メールの文名や件名 <span class="math inline">\((X) \underbrace{\rightarrow}_{予測モデル}\)</span> 迷惑メール <span class="math inline">\((Y)\)</span></p></li>
-<li><p>事業の内容や財務状況 <span class="math inline">\((X) \underbrace{\rightarrow}_{予測モデル}\)</span> デフォルトリスク <span class="math inline">\((Y)\)</span></p></li>
+<li><span class="math inline">\(\beta_0,..,\beta_L\)</span> は<strong>パラメタ</strong>と呼ぶ</li>
 </ul>
-<p>もし<span class="math inline">\(Y,X\)</span> が共に観察できるデータを活用できれば、統計学や機械学習分野によって、推定方法がある程度確立されています。</p>
-<section id="推定目標" class="level2" data-number="5.1">
-<h2 data-number="5.1" class="anchored" data-anchor-id="推定目標"><span class="header-section-number">5.1</span> 推定目標</h2>
-<p>本ノートでは、データと同じ母集団から<strong>新たに</strong>抽出された事例を、予測するモデルの推定を目指します。 予測能力は、平均事情誤差で測定します <span class="math display">\[母集団における平均二乗誤差 = (Y - 予測値)^2 の母集団における平均\]</span> 注意が必要なのは、母集団における平均二乗誤差は、母集団上の値であり、直接観察することは不可能です。 ただし本章で紹介する通り、推定することは可能です。</p>
-<section id="完璧な予測モデル" class="level3" data-number="5.1.1">
-<h3 data-number="5.1.1" class="anchored" data-anchor-id="完璧な予測モデル"><span class="header-section-number">5.1.1</span> 完璧な予測モデル</h3>
-<p>予測研究における究極的な目標の一つは、 <span class="math inline">\(Y\)</span> を完璧に予測するモデルの推定です。 しかしながら多くの応用で、この目標には到達することができません。 予測モデルは、ある<span class="math inline">\(X\)</span>の組み合わせについて、一つの予測値のみを出力します。 このため<strong>母集団</strong>において、同じ<span class="math inline">\(X\)</span> 内で<span class="math inline">\(Y\)</span> の値にばらつきがあれば、予測が外れる事例は必ず存在します。</p>
-<p>完璧な予測には、<span class="math inline">\(Y\)</span>の全ての決定要因を<span class="math inline">\(X\)</span>として観察し、<span class="math inline">\(X\)</span>内での個人差をなくす必要があります。 しかしながら人間行動や社会的な事象などの社会的変数の決定要因は無数に存在し、その多くは観察が難しいと考えられます。 結果、社会的変数について、完璧な予測は不可能と考えられます。</p>
+</div>
+</div>
+<p>以下では<span class="math inline">\(\beta_0,..,\beta_L\)</span>を決定する具体的な方法として、OLSを紹介します。</p>
+<p>線型モデルをどのように解釈すれば良いでしょうか？ 最も実践的な解釈は、平均値の”補助線”として捉えることです。</p>
+<p>以下の図では、Priceの平均値とSizeの関係性を捉えるための3つの”補助線”を描きこんいます。 すべて <span class="math inline">\(\beta_0 + \beta_1\times Size\)</span> を使用し、パラメタの値のみ変更しています。</p>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="OLS_files/figure-html/unnamed-chunk-2-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>データ上の平均値は紫の点で示しています。 赤線は <span class="math inline">\(0.05 + 0.7\times Size\)</span>、 緑線は <span class="math inline">\(30 + 0.5\times Size\)</span>を示しています。</p>
+<p>水色線は <span class="math inline">\(80\)</span> 、すなわち<span class="math inline">\(\beta_0=80,\beta_1=0\)</span> とした補助線を示しています。</p>
 </section>
-<section id="理想の予測モデル" class="level3" data-number="5.1.2">
-<h3 data-number="5.1.2" class="anchored" data-anchor-id="理想の予測モデル"><span class="header-section-number">5.1.2</span> 理想の予測モデル</h3>
-<p>最も高い予測性能 (母集団における平均二乗誤差が最小化)を達成する予測モデルは、母平均であることが証明できます <span class="math display">\[理想の予測モデル = X内でのYの母平均\]</span></p>
-<p>予測研究においては、データから推定した予測モデルを理想の予想モデルである母平均に極力近づけることが、実質的な目標となります。 具体的には以下の予測誤差を極力削減することを目指します <span class="math display">\[(\underbrace{X内でのYの母平均}_{理想の予測モデル}-予測モデル)^2の母平均\]</span></p>
+<section id="ols" class="level2" data-number="3.2">
+<h2 data-number="3.2" class="anchored" data-anchor-id="ols"><span class="header-section-number">3.2</span> OLS</h2>
+<p>パラメタの値は、データに基づいて決定されることが通常です。 代表的な決定方法としては、最小二乗法 (OLS) が挙げられます。</p>
+<div class="callout callout-style-default callout-important callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+OLSの定義
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ol type="1">
+<li><p>研究者が予測モデルの大枠を以下のように設定する <span class="math display">\[予測モデル=\beta_0 + \beta_1X_1 + \beta_2X_2 +.. + \beta_LX_L\]</span></p></li>
+<li><p>以下を最小化するように <span class="math inline">\(\beta_0,..,\beta_L\)</span> を決定する <span class="math display">\[(Yの平均値-予測モデル)^2のデータ上の平均\]</span></p></li>
+</ol>
+</div>
+</div>
+<p>OLSは、研究者が事前に大枠を設定した予測モデルを、データに最も合うように推定する手法であると解釈できます。</p>
+</section>
+<section id="例" class="level2" data-number="3.3">
+<h2 data-number="3.3" class="anchored" data-anchor-id="例"><span class="header-section-number">3.3</span> 例</h2>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="OLS_files/figure-html/unnamed-chunk-3-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>最もシンプルな線型モデルとして、例えば以下を推定してみます。 <span class="math display">\[予測値 = \beta_0 + \beta_1\times Size\]</span> <span class="math inline">\(\beta_0,\beta_1\)</span> は、以下のデータ上の平均二乗誤差を最小化するように推定します。<span class="math display">\[(Y - 予測値)^2 のデータ上の平均\]</span> このような推定方法は、単回帰として教科書では紹介されてきました。</p>
+<p>推定結果を図示すると、以下となります。</p>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="OLS_files/figure-html/unnamed-chunk-4-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>単純平均とは異なり、広い物件は取引価格が高くなる傾向を捉えることができています。 さらに丸暗記法ほど、母平均から大きく乖離した予測も見られません。 これは丸暗記法と比べて、事例の要約が機能していることを表しています。</p>
+<p>しかしながら母平均に比べると、以前として単純すぎます。 特に立地に応じて、平均価格が異なるという性質を捉えきれていません。</p>
+<section id="重回帰" class="level4" data-number="3.3.0.1">
+<h4 data-number="3.3.0.1" class="anchored" data-anchor-id="重回帰"><span class="header-section-number">3.3.0.1</span> 重回帰</h4>
+<p>Districtと平均取引価格の関係性を捉えるために、以下のモデルの推定を試みます。 <span class="math display">\[予測値 = \beta_0 + \beta_1\times Size + \beta_2\times District\]</span> <span class="math inline">\(District\)</span> は、中心６区に立地していれば1、それ以外では0を取ります。 <span class="math inline">\(\beta_0,..,\beta_2\)</span> は引き続き、データへの適合度を最大化するように推定できます。 このような推定方法は、重回帰として教科書では紹介されてきました。</p>
+<p>推定結果を図示すると、以下となります。</p>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="OLS_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>中心6区の方が平均取引価格が高いという性質を上手く捉えています。 しかしながら、Sizeが70平米を超えると、取引価格が一段上昇するという性質は捉えきれていません。</p>
+</section>
+<section id="交差項と高次項の導入" class="level4" data-number="3.3.0.2">
+<h4 data-number="3.3.0.2" class="anchored" data-anchor-id="交差項と高次項の導入"><span class="header-section-number">3.3.0.2</span> 交差項と高次項の導入</h4>
+<p>母平均が持つ複雑な性質を捉えるために、交差効果と高次項を導入し、さらに複雑なモデルを推定してみます。 <span class="math display">\[予測値 = \beta_0 + \beta_1 Size+\beta_7District + \underbrace{\beta_2Size^2 +..+\beta_6Size^6}_{高次項}\]</span> <span class="math display">\[+\underbrace{\beta_8 Size\times District +..+\beta_{14}Size^6\times District}_{交差効果}\]</span> このような複雑なモデルであったとしても、データへの適合度を最大化するように推定できます。</p>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="OLS_files/figure-html/unnamed-chunk-6-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>複雑なモデルを最小二乗法で推定すると、よりデータへの適合度を改善し、データ上の平均値に近づけることができます。 しかしながらここまで議論してきた通り、このことは必ずしも望ましいとはいえません。 なぜならば、丸暗記法により推定されたモデルに近づくからです。 少数の事例しかない<span class="math inline">\(X\)</span>の組み合わせについては、丸暗記法と同様に母平均から乖離し、予測性能が悪化します。</p>
+<p>線型モデルを複雑にしすぎると丸暗記モデルになり、単純化しすぎると単純平均モデルとなります。 この中間的なモデルが予測性能が高いことが多いですが、分析者がそのようなモデルを適切に設定することは困難です。 機械学習では、この問題に対して、データに基づく解決策を提案しています。</p>
 </section>
 </section>
-<section id="reference" class="level2" data-number="5.2">
-<h2 data-number="5.2" class="anchored" data-anchor-id="reference"><span class="header-section-number">5.2</span> Reference</h2>
+<section id="数値例-事例数の拡大" class="level2" data-number="3.4">
+<h2 data-number="3.4" class="anchored" data-anchor-id="数値例-事例数の拡大"><span class="header-section-number">3.4</span> 数値例: 事例数の拡大</h2>
+<p>推定結果は、一般に事例数に強く影響を受けます。 特にLASSOなどの機械学習の方法においては、データの特徴により強く依存します。</p>
+<p>以下の数値例では、事例数を20,200,2000,20000まで増やしています。</p>
+<p>単純平均値の推定結果は以下です。</p>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="OLS_files/figure-html/unnamed-chunk-7-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>事例数が増加したとしても、推定結果があまり変化していないのを確認できます。 これは少数事例であったとしても、大規模事例と同じ推定結果を獲得しやすいことを意味している一方で、20000事例まで増やしても母平均に十分に近づいていません。</p>
+<p><span class="math inline">\(Y\sim Size\)</span> をOLSで推定した結果は以下です。</p>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="OLS_files/figure-html/unnamed-chunk-8-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>小規模事例 (20事例)では、推定結果が大きく変化し、母平均から大きく乖離していることが確認できます。</p>
+<p><span class="math inline">\(Y\sim Size +..+ Size^6\)</span> をOLSで推定した結果は以下です。</p>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="OLS_files/figure-html/unnamed-chunk-9-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>事例数の影響を強く受けています。 小規模事例 (20事例)では、過剰に複雑なモデルが推定されており、母平均から大きく乖離しています。 事例数が増加するにつれて、推定結果が母平均とほぼ一致しています。</p>
+<p>大規模事例のもとでは、母平均を近似できる一方で、小規模事例では推定結果が不安定になることが確認できます。</p>
+</section>
+<section id="rによる実践例" class="level2" data-number="3.5">
+<h2 data-number="3.5" class="anchored" data-anchor-id="rによる実践例"><span class="header-section-number">3.5</span> Rによる実践例</h2>
+<ul>
+<li><p>以下のパッケージを使用</p>
+<ul>
+<li>readr (tidyverseに同梱): データの読み込み</li>
+</ul></li>
+</ul>
+<section id="準備" class="level3" data-number="3.5.1">
+<h3 data-number="3.5.1" class="anchored" data-anchor-id="準備"><span class="header-section-number">3.5.1</span> 準備</h3>
+<p>データとその事例数を取得し、データをランダムに分割します。</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>Data <span class="ot">=</span> readr<span class="sc">::</span><span class="fu">read_csv</span>(<span class="st">"Public.csv"</span>) <span class="co"># データ読み込み</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>N <span class="ot">=</span> <span class="fu">nrow</span>(Data) <span class="co"># 事例数の取得</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>Group <span class="ot">=</span> <span class="fu">sample</span>(</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>  <span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>,</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>  N, <span class="co"># 事例数</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">replace =</span> <span class="cn">TRUE</span>, <span class="co"># 復元抽出を指定</span></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>  <span class="at">prob =</span> <span class="fu">c</span>(<span class="fl">0.8</span>,<span class="fl">0.2</span>) <span class="co"># "1"が8割、"2"が２割</span></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>) <span class="co"># サンプル分割のために1または2をランダムに発生</span></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>Train <span class="ot">=</span> Data[Group <span class="sc">==</span> <span class="dv">1</span>,] <span class="co"># 訓練データ</span></span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>Test <span class="ot">=</span> Data[Group <span class="sc">==</span> <span class="dv">2</span>,] <span class="co"># テストデータ</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>lm関数を用いてOLS, hdmパッケージ内のrlasso関数を用いてLASSO推定をします。 またLASSO推定は、複雑なモデルを推定に利点を持つため、交差項と二乗項までを導入したモデルも推定しています。</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>OLS <span class="ot">=</span> <span class="fu">lm</span>(Price <span class="sc">~</span> Size <span class="sc">+</span> Tenure <span class="sc">+</span> District <span class="sc">+</span> StationDistance,</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>         Train) <span class="co"># OLS</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>テストデータを用いて推定された平均二乗誤差は以下です。</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>((Test<span class="sc">$</span>Price <span class="sc">-</span> <span class="fu">predict</span>(OLS,Test))<span class="sc">^</span><span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 241.6931</code></pre>
+</div>
+</div>
+<p>二乗項と交差項を含めたモデルをLASSOで推定した予測モデルが、予測性能が最も高くなりました。</p>
+</section>
+</section>
+<section id="reference" class="level2" data-number="3.6">
+<h2 data-number="3.6" class="anchored" data-anchor-id="reference"><span class="header-section-number">3.6</span> Reference</h2>
 
 
 </section>
@@ -668,13 +882,13 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
-      <a href="./LASSO.html" class="pagination-link" aria-label="LASSO">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">LASSO</span></span>
+      <a href="./population.html" class="pagination-link" aria-label="母分布">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">母分布</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="./evaluation.html" class="pagination-link" aria-label="応用: 予測性能の評価">
-        <span class="nav-page-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">応用: 予測性能の評価</span></span> <i class="bi bi-arrow-right-short"></i>
+      <a href="./PopulationOLS.html" class="pagination-link" aria-label="データ上でのOLS">
+        <span class="nav-page-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">データ上でのOLS</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>

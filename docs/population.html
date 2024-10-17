@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>5&nbsp; 応用: 予測 – 母平均の推定</title>
+<title>2&nbsp; 母分布 – 母平均の推定</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -20,7 +20,27 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
-</style>
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+  margin-bottom: 0em;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
 
 
 <script src="site_libs/quarto-nav/quarto-nav.js"></script>
@@ -30,8 +50,8 @@ ul.task-list li input[type="checkbox"] {
 <script src="site_libs/quarto-search/fuse.min.js"></script>
 <script src="site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="./">
-<link href="./evaluation.html" rel="next">
-<link href="./LASSO.html" rel="prev">
+<link href="./OLS.html" rel="next">
+<link href="./model.html" rel="prev">
 <script src="site_libs/quarto-html/quarto.js"></script>
 <script src="site_libs/quarto-html/popper.min.js"></script>
 <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
@@ -110,7 +130,7 @@ window.Quarto = {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./prediction.html"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">応用: 予測</span></a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./population.html"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">母分布</span></a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -149,32 +169,38 @@ window.Quarto = {
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./population.html" class="sidebar-item-text sidebar-link">
+  <a href="./population.html" class="sidebar-item-text sidebar-link active">
  <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">母分布</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./OLS.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">OLS</span></span></a>
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">データ上でのOLS</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./PopulationOLS.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">データ上でのOLS</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./LASSO.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">LASSO</span></span></a>
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">LASSO</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./prediction.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">応用: 予測</span></span></a>
+  <a href="./prediction.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">応用: 予測</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./evaluation.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">応用: 予測性能の評価</span></span></a>
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">応用: 予測性能の評価</span></span></a>
   </div>
 </li>
     </ul>
@@ -187,12 +213,11 @@ window.Quarto = {
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#推定目標" id="toc-推定目標" class="nav-link active" data-scroll-target="#推定目標"><span class="header-section-number">5.1</span> 推定目標</a>
-  <ul class="collapse">
-  <li><a href="#完璧な予測モデル" id="toc-完璧な予測モデル" class="nav-link" data-scroll-target="#完璧な予測モデル"><span class="header-section-number">5.1.1</span> 完璧な予測モデル</a></li>
-  <li><a href="#理想の予測モデル" id="toc-理想の予測モデル" class="nav-link" data-scroll-target="#理想の予測モデル"><span class="header-section-number">5.1.2</span> 理想の予測モデル</a></li>
-  </ul></li>
-  <li><a href="#reference" id="toc-reference" class="nav-link" data-scroll-target="#reference"><span class="header-section-number">5.2</span> Reference</a></li>
+  <li><a href="#頻度論" id="toc-頻度論" class="nav-link active" data-scroll-target="#頻度論"><span class="header-section-number">2.1</span> 頻度論</a></li>
+  <li><a href="#コンセプト-母分布とサンプリング" id="toc-コンセプト-母分布とサンプリング" class="nav-link" data-scroll-target="#コンセプト-母分布とサンプリング"><span class="header-section-number">2.2</span> コンセプト: 母分布とサンプリング</a></li>
+  <li><a href="#sec-Sim" id="toc-sec-Sim" class="nav-link" data-scroll-target="#sec-Sim"><span class="header-section-number">2.3</span> 数値例</a></li>
+  <li><a href="#大数の法則" id="toc-大数の法則" class="nav-link" data-scroll-target="#大数の法則"><span class="header-section-number">2.4</span> 大数の法則</a></li>
+  <li><a href="#reference" id="toc-reference" class="nav-link" data-scroll-target="#reference"><span class="header-section-number">2.5</span> Reference</a></li>
   </ul>
 </nav>
     </div>
@@ -201,7 +226,7 @@ window.Quarto = {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title"><span id="sec-Prediction" class="quarto-section-identifier"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">応用: 予測</span></span></h1>
+<h1 class="title"><span id="sec-Population" class="quarto-section-identifier"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">母分布</span></span></h1>
 </div>
 
 
@@ -218,31 +243,119 @@ window.Quarto = {
 </header>
 
 
-<p>予測を目的とするでは、観察できる変数 <span class="math inline">\(X\)</span> から意思決定に必要だが欠損している情報 <span class="math inline">\(Y\)</span> を予測するモデル（予測モデル）の推定を目指します。 以下のような例があげられます。</p>
+<section id="頻度論" class="level2" data-number="2.1">
+<h2 data-number="2.1" class="anchored" data-anchor-id="頻度論"><span class="header-section-number">2.1</span> 頻度論</h2>
+<p>少数事例の集計が引き起こす問題を正確に理解するために、頻度論と呼ばれる枠組みを導入します<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>。 まず、「自分と同じ課題に取り組む他の研究者達」を想像してください。 この研究者達は、あなたと同じ社会を対象に同じ手法を用いて分析しています。 ただしデータは、独立して収集しているとします。 このような独立した研究者達は、あなたと同じ分析結果に到達するでしょうか？</p>
+<p>簡単な理科の実験であれば、実験の手続きが同じであれば、誰がやっても同い結論に到達します。 例えば水の沸騰温度については、水に不純物を入れないなどを守れば、誰がやっても100度で沸騰します。 このため誰がやっても同じ結果が導かれる”科学的事実”に合意することは容易です。</p>
+<p>対して現実社会における多くの現象については、独立した研究者は、同じ結論に到達することは困難です。 なぜならば、分析に用いる事例が異なるためです。 ほとんどの応用で、独立して収集したデータが、完全に一致する可能性は無視できるほど小さいでしょう。 このためある研究者が観察した事例を、別の研究者は確認できない可能性が高くなります。</p>
+<p>分析結果の不一致の典型例としては、報道機関による世論調査が挙げられます。 複数の調査結果が、毎月公開されていますが、その結果は各社で異なっています。 理由は複数考えられますが、最も単純なものは、調査対象となる回答者が異なるためです。 典型的な世論調査では、各社が独立して電話番号をランダムに発生させるなどの方法で、1000-2000名ほどの回答者を極力ランダムに選んでいます。 しかしながら、異なる調査に同じ人が回答する確率は、非常に低くなります。</p>
+<p>観察できない事例の存在は、データにおける観察できない変数の偏りをもたらします。 ある研究者には、偶然、公園に近い物件の取引事例ばかり集まってくるかもしれません。 このような研究者のデータで計算された取引価格の平均値は、他の研究者と比べて、上振れる可能性が高いです。 すなわち要約した値であったとしても、研究者間で同じ値に合意できなくなります。</p>
+<p>事例研究において、人々が同じ結果を観察できない、という問題は深刻です。 なぜならば、「独立した個人や組織が同じ結果を観察できるので推定結果を事実として認定する」、という強力な枠組みが活用できません。 この問題に対処するためには、何らかの概念的な枠組みが必要となります。</p>
+</section>
+<section id="コンセプト-母分布とサンプリング" class="level2" data-number="2.2">
+<h2 data-number="2.2" class="anchored" data-anchor-id="コンセプト-母分布とサンプリング"><span class="header-section-number">2.2</span> コンセプト: 母分布とサンプリング</h2>
+<p>観察できない事例の問題と、それに伴う分析結果の不一致の問題を適切に論じるために、母分布という分析概念を導入します。 母分布は、すべての研究者に共通した<strong>正答</strong>と各々のデータから得られる<strong>回答</strong>を、分離することを可能にします。</p>
+<p>「私たちが手にしているデータは、母集団という無数の事例の集団から、選ばれた事例から構成されている」と <strong>想定</strong> します。 さらに本ノートでは、事例は完全ランダムに選ばれていると仮定します。 このような仮定をランダムサンプリングと呼ばれます。</p>
+<p>私たちが得られる<strong>回答</strong>は、このランダムに選ばれた一部の事例のみから得たものであり、<strong>正答</strong>とは一致しません。</p>
+<p>例えば日本全体のすべての家計が母集団であり、母集団における夫婦間の平均的な家事分担を知りたいとします。 この場合、正答はすべての家計を調査し尽くせば得ることができます。 対して私たちのデータは、家計全体の一部であり、そこから得られる回答（データ上の平均的な家事分担）は、母集団における正答とは異なります。 日本全体では妻の方が夫よりも家事負担が大きかったとしても、データに含まれる事例が偶然偏り、回答としては夫の家事負担がより大きいという結果を得る可能性があります。</p>
+<p>母集団として、仮想的な集団を想定することもできます。 例えば、あるコンビニのレジデータに、ある日の全ての来客者について、購入金額が全て記録されているとします。 この場合、現実の来客者全てが記録されているため、母集団は存在しないと考えることも可能です。 一方で、その日にコンビニを訪れた顧客は、潜在的な顧客の一部であると想定することもできます。 皆さんも、よく利用するコンビニであったとしても、毎日利用しないのではないでしょうか？ この場合の母集団は、潜在的な顧客となります。</p>
+<p>母集団を想定すると、母集団における変数の分布も定義できます。 例えば、「取引物件の母集団において、中心6区に立地する物件の割合は2割」、といった感じです。 また母分布を定義できれば、そこから母集団における平均値(母平均)も定義できます。</p>
+<div class="callout callout-style-default callout-important callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+母平均
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><span class="math inline">\(Y\)</span> の母集団における平均値</p>
+</div>
+</div>
+<p>平均値の推定を目指す研究であれば、この母平均が<strong>正答</strong>となります。 例えば、「中心6区に立地する50平米の中古マンションの2022年における平均取引価格は5000万円」、といった感じです。</p>
+<p>注意が必要なのは、「我々には母分布や母平均を正確に知ることは不可能である」ことがデータ分析法の前提である点です。 知ることができない母分布や母平均を、手元にある限られたデータから、以下に推測するのかが、データ分析の中心的な挑戦となります。 データが母集団の一部であり、観察できていない事例が存在する以上、データ上の平均値と母平均は一致しません。 またデータはランダムに選ばれているので、独立した研究者間で、平均値について厳密な合意はできません。</p>
+</section>
+<section id="sec-Sim" class="level2" data-number="2.3">
+<h2 data-number="2.3" class="anchored" data-anchor-id="sec-Sim"><span class="header-section-number">2.3</span> 数値例</h2>
+<p>以上の概念を明確にするために、簡単な数値実験を行います。 今、4名の研究者が独立して20事例を集めたとします。 各事例について、取引価格 <span class="math inline">\(Y\)</span> と 部屋の広さ <span class="math inline">\(X\)</span> がデータから観察できるとします</p>
+<p>母分布は以下のように設定しています。</p>
 <ul>
-<li><p>視聴履歴やいいね数 <span class="math inline">\((X) \underbrace{\rightarrow}_{予測モデル}\)</span> 好む未視聴動画 <span class="math inline">\((Y)\)</span></p></li>
-<li><p>メールの文名や件名 <span class="math inline">\((X) \underbrace{\rightarrow}_{予測モデル}\)</span> 迷惑メール <span class="math inline">\((Y)\)</span></p></li>
-<li><p>事業の内容や財務状況 <span class="math inline">\((X) \underbrace{\rightarrow}_{予測モデル}\)</span> デフォルトリスク <span class="math inline">\((Y)\)</span></p></li>
+<li><p>部屋の広さは、<span class="math inline">\(X\in\{30,35,40,..,80\}\)</span> が同じ割合で存在</p></li>
+<li><p>取引価格は、</p>
+<ul>
+<li><p>立地が中心6区ではなく部屋の広さが75以下であれば <span class="math display">\[50 + 0.1 \times X + 0.001 \times Size^2\]</span></p></li>
+<li><p>立地が中心6区、または、部屋の広さが75以上であれば <span class="math display">\[55 + 0.1 \times X + 0.001 \times Size^2\]</span></p></li>
+<li><p>立地が中心6区、かつ、部屋の広さが75以上であれば <span class="math display">\[60 + 0.1 \times X + 0.001 \times Size^2\]</span></p></li>
+</ul></li>
 </ul>
-<p>もし<span class="math inline">\(Y,X\)</span> が共に観察できるデータを活用できれば、統計学や機械学習分野によって、推定方法がある程度確立されています。</p>
-<section id="推定目標" class="level2" data-number="5.1">
-<h2 data-number="5.1" class="anchored" data-anchor-id="推定目標"><span class="header-section-number">5.1</span> 推定目標</h2>
-<p>本ノートでは、データと同じ母集団から<strong>新たに</strong>抽出された事例を、予測するモデルの推定を目指します。 予測能力は、平均事情誤差で測定します <span class="math display">\[母集団における平均二乗誤差 = (Y - 予測値)^2 の母集団における平均\]</span> 注意が必要なのは、母集団における平均二乗誤差は、母集団上の値であり、直接観察することは不可能です。 ただし本章で紹介する通り、推定することは可能です。</p>
-<section id="完璧な予測モデル" class="level3" data-number="5.1.1">
-<h3 data-number="5.1.1" class="anchored" data-anchor-id="完璧な予測モデル"><span class="header-section-number">5.1.1</span> 完璧な予測モデル</h3>
-<p>予測研究における究極的な目標の一つは、 <span class="math inline">\(Y\)</span> を完璧に予測するモデルの推定です。 しかしながら多くの応用で、この目標には到達することができません。 予測モデルは、ある<span class="math inline">\(X\)</span>の組み合わせについて、一つの予測値のみを出力します。 このため<strong>母集団</strong>において、同じ<span class="math inline">\(X\)</span> 内で<span class="math inline">\(Y\)</span> の値にばらつきがあれば、予測が外れる事例は必ず存在します。</p>
-<p>完璧な予測には、<span class="math inline">\(Y\)</span>の全ての決定要因を<span class="math inline">\(X\)</span>として観察し、<span class="math inline">\(X\)</span>内での個人差をなくす必要があります。 しかしながら人間行動や社会的な事象などの社会的変数の決定要因は無数に存在し、その多くは観察が難しいと考えられます。 結果、社会的変数について、完璧な予測は不可能と考えられます。</p>
+<p>以下の図は、4名の研究者が手にするデータと平均値を図示しています。</p>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="population_files/figure-html/unnamed-chunk-2-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>平均値について、研究者間で大きな違いが見られます。</p>
+<p>この図に母平均を上書きすると以下のようになります。 ただし図を簡略化するために、各事例の値は排除します。</p>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="population_files/figure-html/unnamed-chunk-3-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>重要な点として、母平均とデータ上の平均は乖離していることを確認してください。 また乖離の仕方は、研究者によって異なります。 言い換えるならば、母平均は全員共通である一方で、データ上の平均値は異なっています。</p>
 </section>
-<section id="理想の予測モデル" class="level3" data-number="5.1.2">
-<h3 data-number="5.1.2" class="anchored" data-anchor-id="理想の予測モデル"><span class="header-section-number">5.1.2</span> 理想の予測モデル</h3>
-<p>最も高い予測性能 (母集団における平均二乗誤差が最小化)を達成する予測モデルは、母平均であることが証明できます <span class="math display">\[理想の予測モデル = X内でのYの母平均\]</span></p>
-<p>予測研究においては、データから推定した予測モデルを理想の予想モデルである母平均に極力近づけることが、実質的な目標となります。 具体的には以下の予測誤差を極力削減することを目指します <span class="math display">\[(\underbrace{X内でのYの母平均}_{理想の予測モデル}-予測モデル)^2の母平均\]</span></p>
+<section id="大数の法則" class="level2" data-number="2.4">
+<h2 data-number="2.4" class="anchored" data-anchor-id="大数の法則"><span class="header-section-number">2.4</span> 大数の法則</h2>
+<p>母平均を知る”唯一”の方法は、各<span class="math inline">\(X\)</span>の組み合わせについて、無限大の事例数で平均値を計算することです。 これは大数の法則が成立するためです。</p>
+<div class="callout callout-style-default callout-important callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+大数の法則
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>無限大の事例数をもつランダムサンプリングデータにおいて、計算された<span class="math inline">\(Y\)</span>の平均値は、母平均と一致する。</p>
+</div>
+</div>
+<p>以下では、事例数を20,200,2000,20000に随時変更した数値例を示しています。</p>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="population_files/figure-html/unnamed-chunk-4-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>20事例では、母平均とデータ上の平均値が大きく乖離してますが、20000事例ではほぼ一致していることが確認できます。</p>
+<p>大数の法則は重要な理論的性質ですが、実践上の含意は限られています。 多くの応用において、大量の<span class="math inline">\(X\)</span>の組み合わせが発生します。 このため十分な事例数を確保することは、事実上不可能なためです。</p>
 </section>
-</section>
-<section id="reference" class="level2" data-number="5.2">
-<h2 data-number="5.2" class="anchored" data-anchor-id="reference"><span class="header-section-number">5.2</span> Reference</h2>
+<section id="reference" class="level2" data-number="2.5">
+<h2 data-number="2.5" class="anchored" data-anchor-id="reference"><span class="header-section-number">2.5</span> Reference</h2>
 
 
+<div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list">
+<div id="ref-Lin2024To" class="csl-entry" role="listitem">
+Lin, Hanti. 2024. <span>“To <span>Be</span> a <span>Frequentist</span> or <span>Bayesian</span>? <span>Five</span> <span>Positions</span> in a <span>Spectrum</span>.”</span> <em>Harvard Data Science Review</em> 6 (3).
+</div>
+</div>
+</section>
+<section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes">
+<hr>
+<ol>
+<li id="fn1"><p>頻度論以外にはベイズ法と呼ばれる枠組みもあります。<a href="https://hdsr.mitpress.mit.edu/pub/axvcupj4/release/1?readingCollection=7df11831"><span class="citation" data-cites="Lin2024To">Lin (<span>2024</span>)</span></a>などを参照ください。<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+</ol>
 </section>
 
 </main> <!-- /main -->
@@ -668,13 +781,13 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
-      <a href="./LASSO.html" class="pagination-link" aria-label="LASSO">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">LASSO</span></span>
+      <a href="./model.html" class="pagination-link" aria-label="要約の基本コンセプト">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">要約の基本コンセプト</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="./evaluation.html" class="pagination-link" aria-label="応用: 予測性能の評価">
-        <span class="nav-page-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">応用: 予測性能の評価</span></span> <i class="bi bi-arrow-right-short"></i>
+      <a href="./OLS.html" class="pagination-link" aria-label="データ上でのOLS">
+        <span class="nav-page-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">データ上でのOLS</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>

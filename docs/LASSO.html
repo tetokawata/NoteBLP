@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>4&nbsp; LASSO – 母平均の推定</title>
+<title>5&nbsp; LASSO – 母平均の推定</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -85,7 +85,7 @@ div.csl-indent {
 <script src="site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="./">
 <link href="./prediction.html" rel="next">
-<link href="./OLS.html" rel="prev">
+<link href="./PopulationOLS.html" rel="prev">
 <script src="site_libs/quarto-html/quarto.js"></script>
 <script src="site_libs/quarto-html/popper.min.js"></script>
 <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
@@ -164,7 +164,7 @@ window.Quarto = {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./LASSO.html"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">LASSO</span></a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./LASSO.html"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">LASSO</span></a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -210,25 +210,31 @@ window.Quarto = {
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./OLS.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">OLS</span></span></a>
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">データ上でのOLS</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./PopulationOLS.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">母集団上でのOLS</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./LASSO.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">LASSO</span></span></a>
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">LASSO</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./prediction.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">応用: 予測</span></span></a>
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">応用: 予測</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./evaluation.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">応用: 予測性能の評価</span></span></a>
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">応用: 予測性能の評価</span></span></a>
   </div>
 </li>
     </ul>
@@ -241,11 +247,11 @@ window.Quarto = {
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#rによる実践例" id="toc-rによる実践例" class="nav-link active" data-scroll-target="#rによる実践例"><span class="header-section-number">4.1</span> Rによる実践例</a>
+  <li><a href="#rによる実践例" id="toc-rによる実践例" class="nav-link active" data-scroll-target="#rによる実践例"><span class="header-section-number">5.1</span> Rによる実践例</a>
   <ul class="collapse">
-  <li><a href="#準備" id="toc-準備" class="nav-link" data-scroll-target="#準備"><span class="header-section-number">4.1.1</span> 準備</a></li>
+  <li><a href="#準備" id="toc-準備" class="nav-link" data-scroll-target="#準備"><span class="header-section-number">5.1.1</span> 準備</a></li>
   </ul></li>
-  <li><a href="#reference" id="toc-reference" class="nav-link" data-scroll-target="#reference"><span class="header-section-number">4.2</span> Reference</a></li>
+  <li><a href="#reference" id="toc-reference" class="nav-link" data-scroll-target="#reference"><span class="header-section-number">5.2</span> Reference</a></li>
   </ul>
 </nav>
     </div>
@@ -254,7 +260,7 @@ window.Quarto = {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title"><span id="sec-LASSO" class="quarto-section-identifier"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">LASSO</span></span></h1>
+<h1 class="title"><span id="sec-LASSO" class="quarto-section-identifier"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">LASSO</span></span></h1>
 </div>
 
 
@@ -297,8 +303,8 @@ Note
 </div>
 </div>
 <p>DistrictとSizeについて、直線のモデルが推定されており、モデルが単純化されていることが確認できます。</p>
-<section id="事例数の拡大" class="level4" data-number="4.0.0.1">
-<h4 data-number="4.0.0.1" class="anchored" data-anchor-id="事例数の拡大"><span class="header-section-number">4.0.0.1</span> 事例数の拡大</h4>
+<section id="事例数の拡大" class="level4" data-number="5.0.0.1">
+<h4 data-number="5.0.0.1" class="anchored" data-anchor-id="事例数の拡大"><span class="header-section-number">5.0.0.1</span> 事例数の拡大</h4>
 <p>推定結果は、一般に事例数に強く影響を受けます。 特にLASSOなどの機械学習の方法においては、データの特徴により強く依存します。</p>
 <p>以下の数値例では、事例数を200事例から50000事例まで増やし、 <span class="math inline">\(Y\sim Size + District\)</span> をOLSで、<span class="math inline">\(Y\sim (Size + Size^2 + .. + Size^6) * District\)</span> をLASSOで推定しています。</p>
 <div class="cell">
@@ -312,8 +318,8 @@ Note
 </div>
 <p>上記結果は、事例数が拡大すると、サンプル平均と母平均の乖離が減少していることが確認できます。 さらにLASSOとサンプル平均との乖離も減少しており、結果、LASSOが母平均を上手く近似できていることが確認できます。 対して単純なモデルのOLS推定は、分析者が設定したモデルに推定結果が大きく制約されており、事例数増加の恩恵が十分に得られません。</p>
 </section>
-<section id="rによる実践例" class="level2" data-number="4.1">
-<h2 data-number="4.1" class="anchored" data-anchor-id="rによる実践例"><span class="header-section-number">4.1</span> Rによる実践例</h2>
+<section id="rによる実践例" class="level2" data-number="5.1">
+<h2 data-number="5.1" class="anchored" data-anchor-id="rによる実践例"><span class="header-section-number">5.1</span> Rによる実践例</h2>
 <ul>
 <li><p>以下のパッケージを使用</p>
 <ul>
@@ -321,8 +327,8 @@ Note
 <li><p>hdm: LASSO</p></li>
 </ul></li>
 </ul>
-<section id="準備" class="level3" data-number="4.1.1">
-<h3 data-number="4.1.1" class="anchored" data-anchor-id="準備"><span class="header-section-number">4.1.1</span> 準備</h3>
+<section id="準備" class="level3" data-number="5.1.1">
+<h3 data-number="5.1.1" class="anchored" data-anchor-id="準備"><span class="header-section-number">5.1.1</span> 準備</h3>
 <p>データとその事例数を取得し、データをランダムに分割します。</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>Data <span class="ot">=</span> readr<span class="sc">::</span><span class="fu">read_csv</span>(<span class="st">"Public.csv"</span>) <span class="co"># データ読み込み</span></span>
@@ -371,8 +377,8 @@ Note
 </div>
 </section>
 </section>
-<section id="reference" class="level2" data-number="4.2">
-<h2 data-number="4.2" class="anchored" data-anchor-id="reference"><span class="header-section-number">4.2</span> Reference</h2>
+<section id="reference" class="level2" data-number="5.2">
+<h2 data-number="5.2" class="anchored" data-anchor-id="reference"><span class="header-section-number">5.2</span> Reference</h2>
 
 
 <div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list">
@@ -805,13 +811,13 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
-      <a href="./OLS.html" class="pagination-link" aria-label="OLS">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">OLS</span></span>
+      <a href="./PopulationOLS.html" class="pagination-link" aria-label="母集団上でのOLS">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">母集団上でのOLS</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
       <a href="./prediction.html" class="pagination-link" aria-label="応用: 予測">
-        <span class="nav-page-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">応用: 予測</span></span> <i class="bi bi-arrow-right-short"></i>
+        <span class="nav-page-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">応用: 予測</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>

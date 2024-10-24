@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="川田恵介">
-<meta name="dcterms.date" content="2024-10-16">
+<meta name="dcterms.date" content="2024-10-24">
 
 <title>母平均の推定</title>
 <style>
@@ -177,25 +177,31 @@ window.Quarto = {
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./OLS.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">OLS</span></span></a>
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">データ上でのOLS</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./PopulationOLS.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">母集団上でのOLS</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./LASSO.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">LASSO</span></span></a>
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">LASSO</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./prediction.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">応用: 予測</span></span></a>
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">応用: 予測</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./evaluation.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">応用: 予測性能の評価</span></span></a>
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">応用: 予測性能の評価</span></span></a>
   </div>
 </li>
     </ul>
@@ -237,7 +243,7 @@ window.Quarto = {
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">October 16, 2024</p>
+      <p class="date">October 24, 2024</p>
     </div>
   </div>
   
@@ -252,12 +258,20 @@ window.Quarto = {
 <section id="preface" class="level1 unnumbered">
 <h1 class="unnumbered">Preface</h1>
 <p><span class="math inline">\(X\)</span> 内での <span class="math inline">\(Y\)</span> の平均値 (“条件つき”母平均)を推定する方法を紹介します。 母平均の推定値は、さまざまな実務で活用されており、特に予測問題において、最も代表的な予測値となります。</p>
-<p>伝統的にはOLSが、母平均の推定方法として用いられてきました。 近年では、機械学習の手法も積極的に活用されています。 本ノートでは、OLSが”研究者が設定した母平均のシンプルなモデル”を推定する方法として優れていることを強調します。 その後、“複雑なモデル”を推定する方法として、LASSOを紹介します<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>。</p>
+<p>伝統的にはOLSが、母平均の推定方法として用いられてきました。 近年、OLSは母平均の仮想的な線型モデル(“補助線”)を推定する手法として、理解できることが強調されております <span class="citation" data-cites="angrist2009mostly aronow2019foundations">(<a href="#ref-angrist2009mostly" role="doc-biblioref">Angrist and Pischke 2009</a>; <a href="#ref-aronow2019foundations" role="doc-biblioref">Aronow and Miller 2019</a>)</span> 。 仮にモデルの定式に誤りがあり、OLSの推定結果と母平均が一致することがあり得なかったとしても、推定結果は母平均の補助線として常に解釈できることがその理由です。</p>
+<p>また近年では、機械学習の手法も積極的に活用されています。 本ノートでは、OLSが”研究者が設定した母平均のシンプルなモデル”を推定する方法として優れていることを強調します。 もしより複雑なモデルを推定したい場合は、OLSはその有効性を失います。 このような”複雑なモデル”を推定する優れた方法として、LASSOを紹介します<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>。</p>
+<p>最後に母平均の特徴を捉えることに成功した予測モデルは、予測においても有効であることを論じます。</p>
 <section id="reference" class="level2">
 <h2 class="anchored" data-anchor-id="reference">Reference</h2>
 
 
 <div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list">
+<div id="ref-angrist2009mostly" class="csl-entry" role="listitem">
+Angrist, Joshua D, and Jörn-Steffen Pischke. 2009. <em>Mostly Harmless Econometrics: An Empiricist’s Companion</em>. Princeton university press.
+</div>
+<div id="ref-aronow2019foundations" class="csl-entry" role="listitem">
+Aronow, Peter M, and Benjamin T Miller. 2019. <em>Foundations of Agnostic Statistics</em>. Cambridge University Press.
+</div>
 <div id="ref-james2013introduction" class="csl-entry" role="listitem">
 James, Gareth, Daniela Witten, Trevor Hastie, Robert Tibshirani, et al. 2021. <em>An Introduction to Statistical Learning</em>. Vol. 112. Springer.
 </div>

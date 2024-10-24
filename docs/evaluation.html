@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>6&nbsp; 応用: 予測性能の評価 – 母平均の推定</title>
+<title>7&nbsp; 応用: 予測性能の評価 – 母平均の推定</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -100,7 +100,7 @@ div.csl-indent {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./evaluation.html"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">応用: 予測性能の評価</span></a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./evaluation.html"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">応用: 予測性能の評価</span></a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -146,25 +146,31 @@ div.csl-indent {
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./OLS.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">OLS</span></span></a>
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">データ上でのOLS</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./PopulationOLS.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">母集団上でのOLS</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./LASSO.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">LASSO</span></span></a>
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">LASSO</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./prediction.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">応用: 予測</span></span></a>
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">応用: 予測</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./evaluation.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">応用: 予測性能の評価</span></span></a>
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">応用: 予測性能の評価</span></span></a>
   </div>
 </li>
     </ul>
@@ -177,9 +183,9 @@ div.csl-indent {
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#予測性能の測定" id="toc-予測性能の測定" class="nav-link active" data-scroll-target="#予測性能の測定"><span class="header-section-number">6.1</span> 予測性能の測定</a></li>
-  <li><a href="#まとめ" id="toc-まとめ" class="nav-link" data-scroll-target="#まとめ"><span class="header-section-number">6.2</span> まとめ</a></li>
-  <li><a href="#reference" id="toc-reference" class="nav-link" data-scroll-target="#reference"><span class="header-section-number">6.3</span> Reference</a></li>
+  <li><a href="#予測性能の測定" id="toc-予測性能の測定" class="nav-link active" data-scroll-target="#予測性能の測定"><span class="header-section-number">7.1</span> 予測性能の測定</a></li>
+  <li><a href="#まとめ" id="toc-まとめ" class="nav-link" data-scroll-target="#まとめ"><span class="header-section-number">7.2</span> まとめ</a></li>
+  <li><a href="#reference" id="toc-reference" class="nav-link" data-scroll-target="#reference"><span class="header-section-number">7.3</span> Reference</a></li>
   </ul>
 </nav>
     </div>
@@ -188,7 +194,7 @@ div.csl-indent {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title"><span id="sec-Evaluation" class="quarto-section-identifier"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">応用: 予測性能の評価</span></span></h1>
+<h1 class="title"><span id="sec-Evaluation" class="quarto-section-identifier"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">応用: 予測性能の評価</span></span></h1>
 </div>
 
 
@@ -205,8 +211,8 @@ div.csl-indent {
 </header>
 
 
-<section id="予測性能の測定" class="level2" data-number="6.1">
-<h2 data-number="6.1" class="anchored" data-anchor-id="予測性能の測定"><span class="header-section-number">6.1</span> 予測性能の測定</h2>
+<section id="予測性能の測定" class="level2" data-number="7.1">
+<h2 data-number="7.1" class="anchored" data-anchor-id="予測性能の測定"><span class="header-section-number">7.1</span> 予測性能の測定</h2>
 <p>予測を目指す分析では、推定された予測モデルの性能を評価することが重要となります。 現状、幅広いデータや状況において、一貫して高い予測性能を生み出す方法は存在しません。 このため複数の予測モデルを”試作”し、その性能を比較することが分析工程に組み込まれています。</p>
 <p>最もシンプルな評価方法は、サンプル分割です。</p>
 <div class="callout callout-style-default callout-important callout-titled">
@@ -712,14 +718,14 @@ div.csl-indent {
 </div>
 <p>LASSOが最も予測性能が高く、単純なOLSと比較し、0.179 パーセントほど平均二乗誤差を削減しています。 対して、交差項と高次項を追加したOLSとLASSOを比較した場合、0.041 パーセントほどの改善にとどまります。 これはモデルの複雑さに比べて、事例数が多く、LASSOによるモデル単純化の恩恵が限定的であることを示しています。</p>
 </section>
-<section id="まとめ" class="level2" data-number="6.2">
-<h2 data-number="6.2" class="anchored" data-anchor-id="まとめ"><span class="header-section-number">6.2</span> まとめ</h2>
+<section id="まとめ" class="level2" data-number="7.2">
+<h2 data-number="7.2" class="anchored" data-anchor-id="まとめ"><span class="header-section-number">7.2</span> まとめ</h2>
 <ul>
 <li>予測誤差の他の測定方法については、<span class="citation" data-cites="angelopoulos2023conformal">Angelopoulos, Bates, et al. (<a href="#ref-angelopoulos2023conformal" role="doc-biblioref">2023</a>)</span> などを参照</li>
 </ul>
 </section>
-<section id="reference" class="level2" data-number="6.3">
-<h2 data-number="6.3" class="anchored" data-anchor-id="reference"><span class="header-section-number">6.3</span> Reference</h2>
+<section id="reference" class="level2" data-number="7.3">
+<h2 data-number="7.3" class="anchored" data-anchor-id="reference"><span class="header-section-number">7.3</span> Reference</h2>
 
 
 <div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list">
@@ -1153,7 +1159,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
       <a href="./prediction.html" class="pagination-link" aria-label="応用: 予測">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">応用: 予測</span></span>
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">応用: 予測</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">

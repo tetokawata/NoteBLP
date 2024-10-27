@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>4&nbsp; 母集団上でのOLS – 母平均の推定</title>
+<title>4&nbsp; 母集団上でのOLS – 母平均の「補助線」の推定</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -19,6 +19,40 @@ ul.task-list li input[type="checkbox"] {
   width: 0.8em;
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
 /* CSS for citations */
 div.csl-bib-body { }
@@ -145,7 +179,7 @@ window.Quarto = {
   <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
     <div class="pt-lg-2 mt-2 text-left sidebar-header">
     <div class="sidebar-title mb-0 py-0">
-      <a href="./">母平均の推定</a> 
+      <a href="./">母平均の「補助線」の推定</a> 
     </div>
       </div>
         <div class="mt-2 flex-shrink-0 align-items-center">
@@ -197,12 +231,6 @@ window.Quarto = {
  <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">応用: 予測</span></span></a>
   </div>
 </li>
-        <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="./evaluation.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">応用: 予測性能の評価</span></span></a>
-  </div>
-</li>
     </ul>
     </div>
 </nav>
@@ -214,9 +242,16 @@ window.Quarto = {
    
   <ul>
   <li><a href="#population-ols" id="toc-population-ols" class="nav-link active" data-scroll-target="#population-ols"><span class="header-section-number">4.1</span> Population OLS</a></li>
-  <li><a href="#ols-population-olsの推定" id="toc-ols-population-olsの推定" class="nav-link" data-scroll-target="#ols-population-olsの推定"><span class="header-section-number">4.2</span> OLS <span class="math inline">\(=\)</span> Population OLSの推定</a></li>
-  <li><a href="#信頼区間" id="toc-信頼区間" class="nav-link" data-scroll-target="#信頼区間"><span class="header-section-number">4.3</span> 信頼区間</a></li>
-  <li><a href="#reference" id="toc-reference" class="nav-link" data-scroll-target="#reference"><span class="header-section-number">4.4</span> Reference</a></li>
+  <li><a href="#ols-population-olsの推定" id="toc-ols-population-olsの推定" class="nav-link" data-scroll-target="#ols-population-olsの推定"><span class="header-section-number">4.2</span> OLS <span class="math inline">\(=\)</span> Population OLSの推定</a>
+  <ul class="collapse">
+  <li><a href="#信頼区間" id="toc-信頼区間" class="nav-link" data-scroll-target="#信頼区間"><span class="header-section-number">4.2.1</span> 信頼区間</a></li>
+  </ul></li>
+  <li><a href="#モデルの複雑" id="toc-モデルの複雑" class="nav-link" data-scroll-target="#モデルの複雑"><span class="header-section-number">4.3</span> モデルの複雑</a></li>
+  <li><a href="#rによる実践例" id="toc-rによる実践例" class="nav-link" data-scroll-target="#rによる実践例"><span class="header-section-number">4.4</span> Rによる実践例</a>
+  <ul class="collapse">
+  <li><a href="#準備" id="toc-準備" class="nav-link" data-scroll-target="#準備"><span class="header-section-number">4.4.1</span> 準備</a></li>
+  </ul></li>
+  <li><a href="#reference" id="toc-reference" class="nav-link" data-scroll-target="#reference"><span class="header-section-number">4.5</span> Reference</a></li>
   </ul>
 </nav>
     </div>
@@ -242,8 +277,8 @@ window.Quarto = {
 </header>
 
 
-<p>データ上で実施したOLSは、母集団の特徴ついて、何らかの含意を持つでしょうか？ 伝統的な教科書では、研究者が設定した線型モデルが、妥当な母平均のモデルであれば、OLSにより推定された線型モデルは、母平均の優れた推定値であることが強調されます。 では妥当なモデルではない(誤定式化(misspecification)を犯していると呼ばれます)場合、どのような解釈が可能でしょうか？</p>
-<p>本章では、モデルが誤っているケースにおいても、OLSは母集団の特徴について明確な示唆を持つこと <span class="citation" data-cites="angrist2009mostly aronow2019foundations">(<a href="#ref-angrist2009mostly" role="doc-biblioref">Angrist and Pischke 2009</a>; <a href="#ref-aronow2019foundations" role="doc-biblioref">Aronow and Miller 2019</a>)</span> を紹介します。 またモデルの複雑性とパラメタの推定精度との間に、トレードオフが生じることも強調します。</p>
+<p>データ上で実施したOLSは、母集団の特徴ついて、何らかの含意を持つでしょうか？ 伝統的な教科書では、研究者が設定した線型モデルが、妥当な母平均のモデルであれば、OLSにより推定された線型モデルは、母平均の優れた推定値であることが強調されます。 しかしながら社会科学のほぼ全ての応用において、研究者が設定するモデルは、誤定式化((misspecification)を犯しており、どのように推定しても母平均から乖離してしまいます。</p>
+<p>本章では、誤定式化を犯しているケースにおいても、OLSは母集団の特徴について明確な示唆を持つこと <span class="citation" data-cites="angrist2009mostly aronow2019foundations">(<a href="#ref-angrist2009mostly" role="doc-biblioref">Angrist and Pischke 2009</a>; <a href="#ref-aronow2019foundations" role="doc-biblioref">Aronow and Miller 2019</a>)</span> を紹介します。 また誤定式化を減らすためには、モデルを複雑化する必要がありますが、パラメタの推定精度との間にトレードオフが生じることも強調します。</p>
 <section id="population-ols" class="level2" data-number="4.1">
 <h2 data-number="4.1" class="anchored" data-anchor-id="population-ols"><span class="header-section-number">4.1</span> Population OLS</h2>
 <p>OLSの推定結果は、母集団上での<strong>仮想的な</strong>OLSの結果を推定していると解釈することができます。 少しわかりにくい考え方なので、<a href="population.html" class="quarto-xref"><span>Chapter 2</span></a> における数値例とともに確認します。</p>
@@ -331,9 +366,8 @@ window.Quarto = {
 </div>
 </div>
 <p>一致性より、データ上でのOLSをPopulation OLSの推定値とみなすことは<strong>“常に”</strong>正当化できます。 他方で、母平均の推定値とみなすためには、誤定式化がないことが前提となります。 誤定式化の確認は、社会データでは非常に困難です。 特に<span class="math inline">\(X\)</span> の数が多い場合、確立された確認方法は、筆者の知る限り存在しません。</p>
-</section>
-<section id="信頼区間" class="level2" data-number="4.3">
-<h2 data-number="4.3" class="anchored" data-anchor-id="信頼区間"><span class="header-section-number">4.3</span> 信頼区間</h2>
+<section id="信頼区間" class="level3" data-number="4.2.1">
+<h3 data-number="4.2.1" class="anchored" data-anchor-id="信頼区間"><span class="header-section-number">4.2.1</span> 信頼区間</h3>
 <p>一致性は無限大の事例数において、データ上のOLSとPopulation OLSが一致することを保証しているだけです。 現実の事例数では、データ上のOLSとPopulation OLSは一致せず、研究者間でのばらつきも残ってしまいます。</p>
 <p>実際のデータ分析では、OLSによる推定結果は<strong>信頼区間</strong>と共に示すことが一般的です。 信頼区間とは、一定の確率 (初期値では<span class="math inline">\(95\%\)</span>) で、母平均を含む区間です。 例えば200事例を用いたOLS推定における<span class="math inline">\(\beta_0,\beta_1\)</span> の信頼区間は以下です。</p>
 <div class="cell">
@@ -359,8 +393,98 @@ window.Quarto = {
 </div>
 </div>
 </section>
-<section id="reference" class="level2" data-number="4.4">
-<h2 data-number="4.4" class="anchored" data-anchor-id="reference"><span class="header-section-number">4.4</span> Reference</h2>
+</section>
+<section id="モデルの複雑" class="level2" data-number="4.3">
+<h2 data-number="4.3" class="anchored" data-anchor-id="モデルの複雑"><span class="header-section-number">4.3</span> モデルの複雑</h2>
+<p>実際の応用では、あらゆるモデルは誤定式化を犯していル、少なくともその可能性を排除できない、と想定すべきです。 ただし誤定式化による母平均とPopulation OLSの乖離を削減することは容易です。</p>
+<p>モデル <span class="math inline">\(f(X)=\beta_0 + \beta_1X\)</span> に変わって、 <span class="math inline">\(f(X)=\beta_0 + \beta_1X + \beta_2X^2\)</span> を推定してみます。 仮想的なPopulation OLSの結果は以下です。</p>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="PopulationOLS_files/figure-html/unnamed-chunk-7-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p><span class="math inline">\(f(X)=\beta_0 + \beta_1X\)</span> のPopulation OLSの結果よりも、母平均に近づいていることが確認できます。 さらに<span class="math inline">\(X\)</span>の8乗まで加えると (<span class="math inline">\(f(X)=\beta_0 + \beta_1X +.. + \beta_8X^8\)</span>)、Population OLSは母平均をほぼ近似できることが確認できます。</p>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="PopulationOLS_files/figure-html/unnamed-chunk-8-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>一般にモデルを複雑化する (<span class="math inline">\(\beta\)</span> の数を増やす)と、Population OLSと母平均は<strong>必ず</strong>近づきます<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>。</p>
+<p>もし母平均の推定が目的なのであれば、極力複雑なモデルを推定すべきでしょうか？ ここで注意が必要なのは、Population OLSは実際には実行できず、事例数が限られたデータ上でのOLSのみが可能なことです。</p>
+<p>以下では200事例のデータについて、<span class="math inline">\(f(X)=\beta_0 + \beta_1X\ (Y\sim X)\)</span> および <span class="math inline">\(f(X)=\beta_0 + \beta_1X_1 +.. + \beta_8X^8\)</span> をOLS推定しました。</p>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="PopulationOLS_files/figure-html/unnamed-chunk-9-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>複雑なモデルを推定した結果、単純なモデルよりも、母平均から大きく乖離した箇所が散見されました。 さらに複雑なモデルについての推定結果は、研究者間で大きなばらつきが見られます。</p>
+<p>これはモデルを複雑化した結果、データ上での平均値に近づくことに原因があります。 限られた事例数のもとでは、小規模な事例のみから計算された平均値が発生します。 このような小規模集計の弊害を減らす方法として、線型モデルを活用した集計を行なっていますが、モデルを複雑化するとこの集計が再び上手くいかなくなります。 このため小規模な事例の偶然の偏りを強く反映したモデルとなってしまい、結果母平均から大きく乖離してしまうリスクが高くなります。</p>
+<p>この問題は、大規模事例が活用できる場合は、発生しにくくなります。 例えば20000事例について、OLS推定を行った結果は以下です。</p>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="PopulationOLS_files/figure-html/unnamed-chunk-10-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>複雑なモデルの推定結果は、母平均をよりよく近似していることが確認できます。</p>
+<p>このようなモデルの複雑さをめぐる問題は、Bias-Variance トレードオフと呼ばれてきました。 大規模事例を用いることができるのであれば、複雑なモデルが、母平均を上手く近似できます。 事例数が少ない場合、複雑なモデルは、母平均から大きく乖離してしまう可能性が高く、「妥協的に」単純なモデルを推定することが現実的です。</p>
+<p>応用上の問題は、適切なモデルの複雑さについて、理論的な示唆が限られていることです<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a>。 次の章では、複雑なモデルであったとしても適切に推定できる手法である、LASSOを紹介します。</p>
+</section>
+<section id="rによる実践例" class="level2" data-number="4.4">
+<h2 data-number="4.4" class="anchored" data-anchor-id="rによる実践例"><span class="header-section-number">4.4</span> Rによる実践例</h2>
+<ul>
+<li><p>以下のパッケージを使用</p>
+<ul>
+<li><p>readr (tidyverseに同梱): データの読み込み</p></li>
+<li><p>estimatr: OLS推定 <span class="math inline">\(+\)</span> 頑健な信頼区間の計算</p></li>
+</ul></li>
+</ul>
+<section id="準備" class="level3" data-number="4.4.1">
+<h3 data-number="4.4.1" class="anchored" data-anchor-id="準備"><span class="header-section-number">4.4.1</span> 準備</h3>
+<p>データを取得します。</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>Data <span class="ot">=</span> readr<span class="sc">::</span><span class="fu">read_csv</span>(<span class="st">"Public.csv"</span>) <span class="co"># データ読み込み</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>lm関数を用いてOLSを推定します。</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>OLS <span class="ot">=</span> estimatr<span class="sc">::</span><span class="fu">lm_robust</span>(</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>  Price <span class="sc">~</span> Size <span class="sc">+</span> Tenure <span class="sc">+</span> StationDistance,</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>  Data) <span class="co"># OLS</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>OLS</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>                  Estimate Std. Error   t value      Pr(&gt;|t|)   CI Lower
+(Intercept)     19.7205516 0.62170089  31.72032 3.664958e-205 18.5018088
+Size             1.0199061 0.02020485  50.47828  0.000000e+00  0.9802978
+Tenure          -0.6391756 0.01919741 -33.29488 3.014245e-224 -0.6768090
+StationDistance -1.3850527 0.06684087 -20.72165  2.316510e-92 -1.5160833
+                  CI Upper   DF
+(Intercept)     20.9392944 6374
+Size             1.0595144 6374
+Tenure          -0.6015422 6374
+StationDistance -1.2540221 6374</code></pre>
+</div>
+</div>
+<p>Estimateが<span class="math inline">\(\beta\)</span>の推定値を、CI Lower/CI Upperが信頼区間の下限/上限を示します。 例えば、推定された線型モデルにおいて、Size(部屋の広さ)と平均取引価格は正の関係性があります。 さらに信頼区間は <span class="math inline">\([18.5,20.9]\)</span> なので、Population OLSにおいても正の関係性があることを強く示唆しています。</p>
+</section>
+</section>
+<section id="reference" class="level2" data-number="4.5">
+<h2 data-number="4.5" class="anchored" data-anchor-id="reference"><span class="header-section-number">4.5</span> Reference</h2>
 
 
 <div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list">
@@ -371,6 +495,13 @@ Angrist, Joshua D, and Jörn-Steffen Pischke. 2009. <em>Mostly Harmless Economet
 Aronow, Peter M, and Benjamin T Miller. 2019. <em>Foundations of Agnostic Statistics</em>. Cambridge University Press.
 </div>
 </div>
+</section>
+<section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes">
+<hr>
+<ol>
+<li id="fn1"><p>多重共線性の発生など、例外的なケースは存在します。<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn2"><p>赤池/ベイズ情報量を用いるなどが有力です。<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+</ol>
 </section>
 
 </main> <!-- /main -->

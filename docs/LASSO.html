@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>5&nbsp; LASSO – 母平均の推定</title>
+<title>5&nbsp; LASSO – 母平均の「補助線」の推定</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -179,7 +179,7 @@ window.Quarto = {
   <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
     <div class="pt-lg-2 mt-2 text-left sidebar-header">
     <div class="sidebar-title mb-0 py-0">
-      <a href="./">母平均の推定</a> 
+      <a href="./">母平均の「補助線」の推定</a> 
     </div>
       </div>
         <div class="mt-2 flex-shrink-0 align-items-center">
@@ -231,12 +231,6 @@ window.Quarto = {
  <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">応用: 予測</span></span></a>
   </div>
 </li>
-        <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="./evaluation.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">応用: 予測性能の評価</span></span></a>
-  </div>
-</li>
     </ul>
     </div>
 </nav>
@@ -247,11 +241,16 @@ window.Quarto = {
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#rによる実践例" id="toc-rによる実践例" class="nav-link active" data-scroll-target="#rによる実践例"><span class="header-section-number">5.1</span> Rによる実践例</a>
+  <li><a href="#推定方法" id="toc-推定方法" class="nav-link active" data-scroll-target="#推定方法"><span class="header-section-number">5.1</span> 推定方法</a>
   <ul class="collapse">
-  <li><a href="#準備" id="toc-準備" class="nav-link" data-scroll-target="#準備"><span class="header-section-number">5.1.1</span> 準備</a></li>
+  <li><a href="#事例数の拡大" id="toc-事例数の拡大" class="nav-link" data-scroll-target="#事例数の拡大"><span class="header-section-number">5.1.1</span> 事例数の拡大</a></li>
   </ul></li>
-  <li><a href="#reference" id="toc-reference" class="nav-link" data-scroll-target="#reference"><span class="header-section-number">5.2</span> Reference</a></li>
+  <li><a href="#信頼区間" id="toc-信頼区間" class="nav-link" data-scroll-target="#信頼区間"><span class="header-section-number">5.2</span> 信頼区間</a></li>
+  <li><a href="#rによる実践例" id="toc-rによる実践例" class="nav-link" data-scroll-target="#rによる実践例"><span class="header-section-number">5.3</span> Rによる実践例</a>
+  <ul class="collapse">
+  <li><a href="#準備" id="toc-準備" class="nav-link" data-scroll-target="#準備"><span class="header-section-number">5.3.1</span> 準備</a></li>
+  </ul></li>
+  <li><a href="#reference" id="toc-reference" class="nav-link" data-scroll-target="#reference"><span class="header-section-number">5.4</span> Reference</a></li>
   </ul>
 </nav>
     </div>
@@ -277,22 +276,28 @@ window.Quarto = {
 </header>
 
 
-<p>適切な単純さをもつモデルを推定する方法として、LASSO <span class="citation" data-cites="tibshirani1996regression">(<a href="#ref-tibshirani1996regression" role="doc-biblioref">Tibshirani 1996</a>)</span> を紹介します。 LASSOは、罰則付き回帰と呼ばれる枠組みの一つの手法です。 OLSと同様に線型予測モデルを推定しますが、データへの当てはまりだけでなく、モデルの複雑性も抑制することも目指します。</p>
-<p>例えば、以下のモデルを推定します。<span class="math display">\[予測値 = \beta_0 + \beta_1 Size+\beta_7District + \underbrace{\beta_2Size^2 +..+\beta_6Size^6}_{高次項}\]</span> <span class="math display">\[+\underbrace{\beta_8 Size\times District +..+\beta_{14}Size^6\times District}_{交差効果}\]</span> <span class="math inline">\(\beta\)</span> の値は、以下を最小化するように決定します。 <span class="math display">\[(Y - 予測値)^2 のデータ上の平均\]</span> <span class="math display">\[+ \underbrace{\lambda}_{Tunning\ Parameter} (\beta_1の絶対値 +..)\]</span> <span class="math inline">\(\lambda\)</span> は、データへの当てはまりではなく、モデルの予測性能を高めるように決定します。 具体的には、交差検証を用いる方法、情報基準などの理論的な評価指標を用いる方法があります。</p>
+<p>複雑なモデルを適切に推定する方法として、LASSO <span class="citation" data-cites="tibshirani1996regression">(<a href="#ref-tibshirani1996regression" role="doc-biblioref">Tibshirani 1996</a>)</span> を紹介します。 LASSOは、罰則付き回帰と呼ばれる枠組みの一つの手法です。 OLSと同様に線型予測モデルを推定しますが、データへの当てはまりだけでなく、モデルの複雑性も抑制することも目指します。</p>
+<section id="推定方法" class="level2" data-number="5.1">
+<h2 data-number="5.1" class="anchored" data-anchor-id="推定方法"><span class="header-section-number">5.1</span> 推定方法</h2>
+<p>例えば、以下のモデルの推定を目指します。<span class="math display">\[\beta_1 Size\times 板橋区ダミー+.. + \beta_6 Size^6\times 板橋区ダミー\]</span> <span class="math display">\[+..+\beta_{132} Size\times 中央区ダミー+.. +\beta_{138} Size\times 中央区ダミー\]</span></p>
+<p>合計138個のパラメタがあり、事例数次第では、OLS推定は深刻な過剰適合に直面します。 これはOLS推定が、以下を最小化するように<span class="math inline">\(\beta\)</span>を推定しているためです。 <span class="math display">\[(Y - 予測値)^2 のデータ上の平均\]</span> <span class="math inline">\(\beta\)</span>の数が多いと、データへの不適合度 <span class="math inline">\((Y - 予測値)^2\)</span> をいくらでも低下させられるため、複雑なモデルを推定すると<strong>データへの</strong>過剰適合 (母平均からの乖離)を引き起こします。</p>
+<p>LASSO推定では、<span class="math inline">\(\beta\)</span> の値を以下を最小化するように決定します。</p>
 <div class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Note
+定義 LASSO
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p><span class="math inline">\(\lambda\)</span> は、<span class="math inline">\(\beta\)</span> と異なり、データへの当てはまりを最大化するように決定できません。 なぜでしょうか？</p>
+<p><span class="math display">\[(Y - 予測値)^2 のデータ上の平均\]</span> <span class="math display">\[+ \underbrace{\lambda}_{Tunning\ Parameter} (\beta_1の絶対値 +..)\]</span> <span class="math inline">\(\lambda\)</span>は、データへの当てはまりではなく、モデルの予測性能を高めるように決定する。 具体的には、交差検証を用いる方法、情報基準などの理論的な評価指標を用いる方法などがある <span class="citation" data-cites="belloni2014inference taddy2017one">(<a href="#ref-belloni2014inference" role="doc-biblioref">Belloni, Chernozhukov, and Hansen 2014</a>; <a href="#ref-taddy2017one" role="doc-biblioref">Taddy 2017</a>)</span> 。</p>
 </div>
 </div>
-<p><span class="math inline">\(\lambda\)</span> に応じて、予測モデルがどのように変化するのか考えてみます。 <span class="math inline">\(\lambda\)</span> を変化させることで、予測モデルは、単純平均と丸暗記の間で変化することになります。 <span class="math inline">\(\lambda=0\)</span> であれば、OLSと全く同じモデルを推定します。 よって、複雑な線型モデルを推定した場合は丸暗記モデルに近いモデルとなります。 <span class="math inline">\(\lambda\)</span> を非常に大きい値を設定した場合、<span class="math inline">\(\beta_1=\beta_2=..= 0\)</span> となります。 この場合は<span class="math inline">\(\beta_0\)</span>をデータに当てはまるように推定することになり、単純平均と一致します。</p>
+<p><span class="math inline">\(\lambda\)</span> に応じて、予測モデルがどのように変化するのか考えてみます。 <span class="math inline">\(\lambda\)</span> を変化させることで、予測モデルは、単純平均と複雑なモデルのOLSの間で変化することになります。 <span class="math inline">\(\lambda=0\)</span> であれば、OLSと全く同じモデルを推定します。 よって、複雑な線型モデルを推定した場合は丸暗記モデルに近いモデルとなります。 <span class="math inline">\(\lambda\)</span> を非常に大きい値を設定した場合、<span class="math inline">\(\beta_1=\beta_2=..= 0\)</span> となります。 この場合は<span class="math inline">\(\beta_0\)</span>をデータに当てはまるように推定することになり、単純平均と一致します。</p>
+<p>以下の数値例は、200事例からなるデータについて、LASSOにより以下のモデルを推定しました <span class="math display">\[\beta_0 + \beta_1Size+..+\beta_6Size^6\]</span></p>
+<p><span class="math inline">\(\lambda\)</span>については、0,0.005,0.05、および赤池情報基準により選ばれた値 <span class="citation" data-cites="taddy2017one">(<a href="#ref-taddy2017one" role="doc-biblioref">Taddy 2017</a>)</span> を使用した結果を図示しています。</p>
 <div class="cell">
 <div class="cell-output-display">
 <div>
@@ -302,11 +307,24 @@ Note
 </div>
 </div>
 </div>
-<p>DistrictとSizeについて、直線のモデルが推定されており、モデルが単純化されていることが確認できます。</p>
-<section id="事例数の拡大" class="level4" data-number="5.0.0.1">
-<h4 data-number="5.0.0.1" class="anchored" data-anchor-id="事例数の拡大"><span class="header-section-number">5.0.0.1</span> 事例数の拡大</h4>
+<p><span class="math inline">\(\lambda=0\)</span> に比べると、<span class="math inline">\(\lambda\)</span> の値が大きくなるにつれ、モデルが単純な曲線に近づいていることが確認できます。 また <span class="citation" data-cites="taddy2017one">Taddy (<a href="#ref-taddy2017one" role="doc-biblioref">2017</a>)</span> に基づいて設定された<span class="math inline">\(\lambda\)</span> のもとでは、かなり単純化されたモデルが推定されたことも確認できます。</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+練習問題
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><span class="math inline">\(\lambda\)</span> は、<span class="math inline">\(\beta\)</span> と異なり、データへの当てはまりを最大化するように決定できません。 なぜでしょうか？</p>
+</div>
+</div>
+<section id="事例数の拡大" class="level3" data-number="5.1.1">
+<h3 data-number="5.1.1" class="anchored" data-anchor-id="事例数の拡大"><span class="header-section-number">5.1.1</span> 事例数の拡大</h3>
 <p>推定結果は、一般に事例数に強く影響を受けます。 特にLASSOなどの機械学習の方法においては、データの特徴により強く依存します。</p>
-<p>以下の数値例では、事例数を200事例から50000事例まで増やし、 <span class="math inline">\(Y\sim Size + District\)</span> をOLSで、<span class="math inline">\(Y\sim (Size + Size^2 + .. + Size^6) * District\)</span> をLASSOで推定しています。</p>
+<p>以下の数値例では、事例数を100事例から1000事例まで増やし、 <span class="math inline">\(Y\sim Size + .. + Size^10\)</span> をLASSOで推定しています (<span class="math inline">\(\lambda\)</span> は <span class="citation" data-cites="taddy2017one">Taddy (<a href="#ref-taddy2017one" role="doc-biblioref">2017</a>)</span> の方法で設定しています)。</p>
 <div class="cell">
 <div class="cell-output-display">
 <div>
@@ -316,72 +334,226 @@ Note
 </div>
 </div>
 </div>
-<p>上記結果は、事例数が拡大すると、サンプル平均と母平均の乖離が減少していることが確認できます。 さらにLASSOとサンプル平均との乖離も減少しており、結果、LASSOが母平均を上手く近似できていることが確認できます。 対して単純なモデルのOLS推定は、分析者が設定したモデルに推定結果が大きく制約されており、事例数増加の恩恵が十分に得られません。</p>
+<p>事例数の増加とともに、モデルの複雑性が、「自動調整」されていることが確認できます。 100事例では、単純平均値が推定されており、極めて単純なモデルが採用されています。 事例が増えると、モデルの傾きのみならず、「曲がり方」も変化し、モデルが複雑化しています。</p>
 </section>
-<section id="rによる実践例" class="level2" data-number="5.1">
-<h2 data-number="5.1" class="anchored" data-anchor-id="rによる実践例"><span class="header-section-number">5.1</span> Rによる実践例</h2>
+</section>
+<section id="信頼区間" class="level2" data-number="5.2">
+<h2 data-number="5.2" class="anchored" data-anchor-id="信頼区間"><span class="header-section-number">5.2</span> 信頼区間</h2>
+<p><span class="citation" data-cites="chernozhukov2015valid">Chernozhukov, Hansen, and Spindler (<a href="#ref-chernozhukov2015valid" role="doc-biblioref">2015</a>)</span>; <span class="citation" data-cites="kuchibhotla2022post">Kuchibhotla, Kolassa, and Kuffner (<a href="#ref-kuchibhotla2022post" role="doc-biblioref">2022</a>)</span></p>
+</section>
+<section id="rによる実践例" class="level2" data-number="5.3">
+<h2 data-number="5.3" class="anchored" data-anchor-id="rによる実践例"><span class="header-section-number">5.3</span> Rによる実践例</h2>
 <ul>
 <li><p>以下のパッケージを使用</p>
 <ul>
 <li><p>readr (tidyverseに同梱): データの読み込み</p></li>
-<li><p>hdm: LASSO</p></li>
+<li><p>gamlr: LASSO</p></li>
 </ul></li>
 </ul>
-<section id="準備" class="level3" data-number="5.1.1">
-<h3 data-number="5.1.1" class="anchored" data-anchor-id="準備"><span class="header-section-number">5.1.1</span> 準備</h3>
+<section id="準備" class="level3" data-number="5.3.1">
+<h3 data-number="5.3.1" class="anchored" data-anchor-id="準備"><span class="header-section-number">5.3.1</span> 準備</h3>
 <p>データとその事例数を取得し、データをランダムに分割します。</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>Data <span class="ot">=</span> readr<span class="sc">::</span><span class="fu">read_csv</span>(<span class="st">"Public.csv"</span>) <span class="co"># データ読み込み</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>N <span class="ot">=</span> <span class="fu">nrow</span>(Data) <span class="co"># 事例数の取得</span></span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>Group <span class="ot">=</span> <span class="fu">sample</span>(</span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>  <span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>,</span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>  N, <span class="co"># 事例数</span></span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">replace =</span> <span class="cn">TRUE</span>, <span class="co"># 復元抽出を指定</span></span>
-<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>  <span class="at">prob =</span> <span class="fu">c</span>(<span class="fl">0.8</span>,<span class="fl">0.2</span>) <span class="co"># "1"が8割、"2"が２割</span></span>
-<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>) <span class="co"># サンプル分割のために1または2をランダムに発生</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>X <span class="ot">=</span> <span class="fu">model.matrix</span>(</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>  <span class="sc">~</span> <span class="dv">0</span>  <span class="sc">+</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>    (Size <span class="sc">+</span> Tenure <span class="sc">+</span> StationDistance <span class="sc">+</span> District)<span class="sc">**</span><span class="dv">2</span> <span class="sc">+</span> <span class="co"># 交差項</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>    <span class="fu">I</span>(Size<span class="sc">^</span><span class="dv">2</span>) <span class="sc">+</span> <span class="fu">I</span>(Tenure<span class="sc">^</span><span class="dv">2</span>) <span class="sc">+</span> <span class="fu">I</span>(StationDistance<span class="sc">^</span><span class="dv">2</span>), <span class="co"># 二乗項</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>  Data</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>) <span class="co"># X の作成</span></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>X <span class="ot">=</span> <span class="fu">scale</span>(X) <span class="co"># 標準化</span></span>
 <span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>Train <span class="ot">=</span> Data[Group <span class="sc">==</span> <span class="dv">1</span>,] <span class="co"># 訓練データ</span></span>
-<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>Test <span class="ot">=</span> Data[Group <span class="sc">==</span> <span class="dv">2</span>,] <span class="co"># テストデータ</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(X) <span class="co"># Xに格納されている変数の確認</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code> [1] "Size"                             "Tenure"                          
+ [3] "StationDistance"                  "District世田谷区"                
+ [5] "District中央区"                   "District中野区"                  
+ [7] "District北区"                     "District千代田区"                
+ [9] "District台東区"                   "District品川区"                  
+[11] "District大田区"                   "District文京区"                  
+[13] "District新宿区"                   "District杉並区"                  
+[15] "District板橋区"                   "District江戸川区"                
+[17] "District江東区"                   "District渋谷区"                  
+[19] "District港区"                     "District目黒区"                  
+[21] "District練馬区"                   "District荒川区"                  
+[23] "District葛飾区"                   "District豊島区"                  
+[25] "District足立区"                   "District墨田区"                  
+[27] "I(Size^2)"                        "I(Tenure^2)"                     
+[29] "I(StationDistance^2)"             "Size:Tenure"                     
+[31] "Size:StationDistance"             "Size:District中央区"             
+[33] "Size:District中野区"              "Size:District北区"               
+[35] "Size:District千代田区"            "Size:District台東区"             
+[37] "Size:District品川区"              "Size:District大田区"             
+[39] "Size:District文京区"              "Size:District新宿区"             
+[41] "Size:District杉並区"              "Size:District板橋区"             
+[43] "Size:District江戸川区"            "Size:District江東区"             
+[45] "Size:District渋谷区"              "Size:District港区"               
+[47] "Size:District目黒区"              "Size:District練馬区"             
+[49] "Size:District荒川区"              "Size:District葛飾区"             
+[51] "Size:District豊島区"              "Size:District足立区"             
+[53] "Size:District墨田区"              "Tenure:StationDistance"          
+[55] "Tenure:District中央区"            "Tenure:District中野区"           
+[57] "Tenure:District北区"              "Tenure:District千代田区"         
+[59] "Tenure:District台東区"            "Tenure:District品川区"           
+[61] "Tenure:District大田区"            "Tenure:District文京区"           
+[63] "Tenure:District新宿区"            "Tenure:District杉並区"           
+[65] "Tenure:District板橋区"            "Tenure:District江戸川区"         
+[67] "Tenure:District江東区"            "Tenure:District渋谷区"           
+[69] "Tenure:District港区"              "Tenure:District目黒区"           
+[71] "Tenure:District練馬区"            "Tenure:District荒川区"           
+[73] "Tenure:District葛飾区"            "Tenure:District豊島区"           
+[75] "Tenure:District足立区"            "Tenure:District墨田区"           
+[77] "StationDistance:District中央区"   "StationDistance:District中野区"  
+[79] "StationDistance:District北区"     "StationDistance:District千代田区"
+[81] "StationDistance:District台東区"   "StationDistance:District品川区"  
+[83] "StationDistance:District大田区"   "StationDistance:District文京区"  
+[85] "StationDistance:District新宿区"   "StationDistance:District杉並区"  
+[87] "StationDistance:District板橋区"   "StationDistance:District江戸川区"
+[89] "StationDistance:District江東区"   "StationDistance:District渋谷区"  
+[91] "StationDistance:District港区"     "StationDistance:District目黒区"  
+[93] "StationDistance:District練馬区"   "StationDistance:District荒川区"  
+[95] "StationDistance:District葛飾区"   "StationDistance:District豊島区"  
+[97] "StationDistance:District足立区"   "StationDistance:District墨田区"  </code></pre>
 </div>
-<p>lm関数を用いてOLS, hdmパッケージ内のrlasso関数を用いてLASSO推定をします。 またLASSO推定は、複雑なモデルを推定に利点を持つため、交差項と二乗項までを導入したモデルも推定しています。</p>
+</div>
+<p>合計101個のパラメタ推定を目指します。</p>
+<p>hdmパッケージ内のrlasso関数を用いてLASSO推定をします。 またLASSO推定は、複雑なモデルを推定に利点を持つため、交差項と二乗項までを導入したモデルも推定しています。</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>LASSO <span class="ot">=</span> hdm<span class="sc">::</span><span class="fu">rlasso</span>(Price <span class="sc">~</span> Size <span class="sc">+</span> Tenure <span class="sc">+</span> District <span class="sc">+</span> StationDistance,</span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>                    Train) <span class="co"># LASSO</span></span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>LASSO_Long <span class="ot">=</span> hdm<span class="sc">::</span><span class="fu">rlasso</span>(</span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>  Price <span class="sc">~</span> (Size <span class="sc">+</span> Tenure <span class="sc">+</span> District <span class="sc">+</span> StationDistance)<span class="sc">**</span><span class="dv">2</span> <span class="sc">+</span></span>
-<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>    <span class="fu">poly</span>(Size,<span class="dv">2</span>) <span class="sc">+</span> <span class="fu">poly</span>(Tenure,<span class="dv">2</span>) <span class="sc">+</span> <span class="fu">poly</span>(StationDistance,<span class="dv">2</span>),</span>
-<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>  Train) <span class="co"># LASSO (含む二乗項と交差項)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>LASSO <span class="ot">=</span> gamlr<span class="sc">::</span><span class="fu">gamlr</span>(</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">y =</span> Data<span class="sc">$</span>Price,</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">x =</span> X</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>) <span class="co"># LASSO推定</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>LASSOで推定されたモデルで使用される変数リストは、以下で表示できます。 Trueが選択された変数です。</p>
+<p>推定された値は、以下で示します。</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>LASSO<span class="sc">$</span>index</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">coef</span>(LASSO) <span class="co"># 推定値</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>            Size           Tenure   District中央区   District中野区 
-            TRUE             TRUE             TRUE             TRUE 
-    District北区 District千代田区   District台東区   District品川区 
-            TRUE             TRUE            FALSE            FALSE 
-  District大田区   District文京区   District新宿区   District杉並区 
-            TRUE            FALSE             TRUE            FALSE 
-  District板橋区 District江戸川区   District江東区   District渋谷区 
-            TRUE             TRUE             TRUE             TRUE 
-    District港区   District目黒区   District練馬区   District荒川区 
-            TRUE             TRUE             TRUE             TRUE 
-  District葛飾区   District豊島区   District足立区   District墨田区 
-            TRUE            FALSE             TRUE             TRUE 
- StationDistance 
-            TRUE </code></pre>
+<pre><code>99 x 1 sparse Matrix of class "dgCMatrix"
+                                       seg100
+intercept                        42.705221072
+Size                             22.085283332
+Tenure                           -0.949260232
+StationDistance                   .          
+District世田谷区                  0.885399681
+District中央区                    .          
+District中野区                    .          
+District北区                      .          
+District千代田区                  .          
+District台東区                    .          
+District品川区                    .          
+District大田区                    .          
+District文京区                    .          
+District新宿区                    .          
+District杉並区                    .          
+District板橋区                    .          
+District江戸川区                  .          
+District江東区                    .          
+District渋谷区                    .          
+District港区                      .          
+District目黒区                    0.145531303
+District練馬区                    .          
+District荒川区                    .          
+District葛飾区                    .          
+District豊島区                    .          
+District足立区                    .          
+District墨田区                    .          
+I(Size^2)                         5.098523148
+I(Tenure^2)                       0.764221115
+I(StationDistance^2)              .          
+Size:Tenure                      -9.504525202
+Size:StationDistance             -3.840468008
+Size:District中央区               2.207591886
+Size:District中野区               .          
+Size:District北区                -0.947403269
+Size:District千代田区             4.536157097
+Size:District台東区               .          
+Size:District品川区               1.556391250
+Size:District大田区              -0.999011985
+Size:District文京区               1.658065622
+Size:District新宿区               2.554318454
+Size:District杉並区               0.092031271
+Size:District板橋区              -2.322997154
+Size:District江戸川区            -2.265860521
+Size:District江東区              -0.573435169
+Size:District渋谷区               5.671810968
+Size:District港区                12.715565955
+Size:District目黒区               2.106822926
+Size:District練馬区              -1.492913960
+Size:District荒川区              -1.064818067
+Size:District葛飾区              -2.532339361
+Size:District豊島区               0.818647790
+Size:District足立区              -3.474390892
+Size:District墨田区              -0.677389749
+Tenure:StationDistance            0.285838918
+Tenure:District中央区             .          
+Tenure:District中野区             .          
+Tenure:District北区               .          
+Tenure:District千代田区          -1.110147900
+Tenure:District台東区             0.400329988
+Tenure:District品川区            -0.002439637
+Tenure:District大田区             .          
+Tenure:District文京区             .          
+Tenure:District新宿区            -0.219994692
+Tenure:District杉並区             .          
+Tenure:District板橋区             .          
+Tenure:District江戸川区           .          
+Tenure:District江東区             .          
+Tenure:District渋谷区            -1.158716799
+Tenure:District港区              -2.258199491
+Tenure:District目黒区             .          
+Tenure:District練馬区             .          
+Tenure:District荒川区             .          
+Tenure:District葛飾区             .          
+Tenure:District豊島区             .          
+Tenure:District足立区             .          
+Tenure:District墨田区             .          
+StationDistance:District中央区    .          
+StationDistance:District中野区    0.006454483
+StationDistance:District北区      .          
+StationDistance:District千代田区 -0.259898503
+StationDistance:District台東区    .          
+StationDistance:District品川区    .          
+StationDistance:District大田区    .          
+StationDistance:District文京区    .          
+StationDistance:District新宿区    0.099488399
+StationDistance:District杉並区    .          
+StationDistance:District板橋区    .          
+StationDistance:District江戸川区  .          
+StationDistance:District江東区    .          
+StationDistance:District渋谷区    .          
+StationDistance:District港区     -2.157523041
+StationDistance:District目黒区    0.217234860
+StationDistance:District練馬区    .          
+StationDistance:District荒川区    .          
+StationDistance:District葛飾区    .          
+StationDistance:District豊島区    .          
+StationDistance:District足立区    .          
+StationDistance:District墨田区    .          </code></pre>
 </div>
 </div>
+<p>“.”は、厳密に0であることを意味しています。</p>
 </section>
 </section>
-<section id="reference" class="level2" data-number="5.2">
-<h2 data-number="5.2" class="anchored" data-anchor-id="reference"><span class="header-section-number">5.2</span> Reference</h2>
+<section id="reference" class="level2" data-number="5.4">
+<h2 data-number="5.4" class="anchored" data-anchor-id="reference"><span class="header-section-number">5.4</span> Reference</h2>
 
 
 <div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list">
+<div id="ref-belloni2014inference" class="csl-entry" role="listitem">
+Belloni, Alexandre, Victor Chernozhukov, and Christian Hansen. 2014. <span>“Inference on Treatment Effects After Selection Among High-Dimensional Controls.”</span> <em>Review of Economic Studies</em> 81 (2): 608–50.
+</div>
+<div id="ref-chernozhukov2015valid" class="csl-entry" role="listitem">
+Chernozhukov, Victor, Christian Hansen, and Martin Spindler. 2015. <span>“Valid Post-Selection and Post-Regularization Inference: An Elementary, General Approach.”</span> <em>Annu. Rev. Econ.</em> 7 (1): 649–88.
+</div>
+<div id="ref-kuchibhotla2022post" class="csl-entry" role="listitem">
+Kuchibhotla, Arun K, John E Kolassa, and Todd A Kuffner. 2022. <span>“Post-Selection Inference.”</span> <em>Annual Review of Statistics and Its Application</em> 9 (1): 505–27.
+</div>
+<div id="ref-taddy2017one" class="csl-entry" role="listitem">
+Taddy, Matt. 2017. <span>“One-Step Estimator Paths for Concave Regularization.”</span> <em>Journal of Computational and Graphical Statistics</em> 26 (3): 525–36.
+</div>
 <div id="ref-tibshirani1996regression" class="csl-entry" role="listitem">
 Tibshirani, Robert. 1996. <span>“Regression Shrinkage and Selection via the Lasso.”</span> <em>Journal of the Royal Statistical Society Series B: Statistical Methodology</em> 58 (1): 267–88.
 </div>

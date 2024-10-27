@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>6&nbsp; 応用: 予測 – 母平均の推定</title>
+<title>6&nbsp; 応用: 予測 – 母平均の「補助線」の推定</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -20,7 +20,61 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
-</style>
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+  margin-bottom: 0em;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
 
 
 <script src="site_libs/quarto-nav/quarto-nav.js"></script>
@@ -30,7 +84,6 @@ ul.task-list li input[type="checkbox"] {
 <script src="site_libs/quarto-search/fuse.min.js"></script>
 <script src="site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="./">
-<link href="./evaluation.html" rel="next">
 <link href="./LASSO.html" rel="prev">
 <script src="site_libs/quarto-html/quarto.js"></script>
 <script src="site_libs/quarto-html/popper.min.js"></script>
@@ -125,7 +178,7 @@ window.Quarto = {
   <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
     <div class="pt-lg-2 mt-2 text-left sidebar-header">
     <div class="sidebar-title mb-0 py-0">
-      <a href="./">母平均の推定</a> 
+      <a href="./">母平均の「補助線」の推定</a> 
     </div>
       </div>
         <div class="mt-2 flex-shrink-0 align-items-center">
@@ -177,12 +230,6 @@ window.Quarto = {
  <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">応用: 予測</span></span></a>
   </div>
 </li>
-        <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="./evaluation.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">応用: 予測性能の評価</span></span></a>
-  </div>
-</li>
     </ul>
     </div>
 </nav>
@@ -195,10 +242,16 @@ window.Quarto = {
   <ul>
   <li><a href="#推定目標" id="toc-推定目標" class="nav-link active" data-scroll-target="#推定目標"><span class="header-section-number">6.1</span> 推定目標</a>
   <ul class="collapse">
-  <li><a href="#完璧な予測モデル" id="toc-完璧な予測モデル" class="nav-link" data-scroll-target="#完璧な予測モデル"><span class="header-section-number">6.1.1</span> 完璧な予測モデル</a></li>
+  <li><a href="#完璧な予測は不可能" id="toc-完璧な予測は不可能" class="nav-link" data-scroll-target="#完璧な予測は不可能"><span class="header-section-number">6.1.1</span> 完璧な予測は不可能</a></li>
   <li><a href="#理想の予測モデル" id="toc-理想の予測モデル" class="nav-link" data-scroll-target="#理想の予測モデル"><span class="header-section-number">6.1.2</span> 理想の予測モデル</a></li>
   </ul></li>
-  <li><a href="#reference" id="toc-reference" class="nav-link" data-scroll-target="#reference"><span class="header-section-number">6.2</span> Reference</a></li>
+  <li><a href="#予測性能の測定" id="toc-予測性能の測定" class="nav-link" data-scroll-target="#予測性能の測定"><span class="header-section-number">6.2</span> 予測性能の測定</a></li>
+  <li><a href="#rによる実践例" id="toc-rによる実践例" class="nav-link" data-scroll-target="#rによる実践例"><span class="header-section-number">6.3</span> Rによる実践例</a>
+  <ul class="collapse">
+  <li><a href="#準備" id="toc-準備" class="nav-link" data-scroll-target="#準備"><span class="header-section-number">6.3.1</span> 準備</a></li>
+  </ul></li>
+  <li><a href="#まとめ" id="toc-まとめ" class="nav-link" data-scroll-target="#まとめ"><span class="header-section-number">6.4</span> まとめ</a></li>
+  <li><a href="#reference" id="toc-reference" class="nav-link" data-scroll-target="#reference"><span class="header-section-number">6.5</span> Reference</a></li>
   </ul>
 </nav>
     </div>
@@ -224,7 +277,7 @@ window.Quarto = {
 </header>
 
 
-<p>予測を目的とするでは、観察できる変数 <span class="math inline">\(X\)</span> から意思決定に必要だが欠損している情報 <span class="math inline">\(Y\)</span> を予測するモデル（予測モデル）の推定を目指します。 以下のような例があげられます。</p>
+<p>母平均のモデルの有力な応用例として、<span class="math inline">\(Y\)</span>の予測問題への活用があります。 予測を目的とする研究では、観察できる変数 <span class="math inline">\(X\)</span> から意思決定に必要だが欠損している情報 <span class="math inline">\(Y\)</span> を予測するモデル（予測モデル）の推定を目指します。 以下のような実例があげられます。</p>
 <ul>
 <li><p>視聴履歴やいいね数 <span class="math inline">\((X) \underbrace{\rightarrow}_{予測モデル}\)</span> 好む未視聴動画 <span class="math inline">\((Y)\)</span></p></li>
 <li><p>メールの文名や件名 <span class="math inline">\((X) \underbrace{\rightarrow}_{予測モデル}\)</span> 迷惑メール <span class="math inline">\((Y)\)</span></p></li>
@@ -233,22 +286,613 @@ window.Quarto = {
 <p>もし<span class="math inline">\(Y,X\)</span> が共に観察できるデータを活用できれば、統計学や機械学習分野によって、推定方法がある程度確立されています。</p>
 <section id="推定目標" class="level2" data-number="6.1">
 <h2 data-number="6.1" class="anchored" data-anchor-id="推定目標"><span class="header-section-number">6.1</span> 推定目標</h2>
-<p>本ノートでは、データと同じ母集団から<strong>新たに</strong>抽出された事例を、予測するモデルの推定を目指します。 予測能力は、平均事情誤差で測定します <span class="math display">\[母集団における平均二乗誤差 = (Y - 予測値)^2 の母集団における平均\]</span> 注意が必要なのは、母集団における平均二乗誤差は、母集団上の値であり、直接観察することは不可能です。 ただし本章で紹介する通り、推定することは可能です。</p>
-<section id="完璧な予測モデル" class="level3" data-number="6.1.1">
-<h3 data-number="6.1.1" class="anchored" data-anchor-id="完璧な予測モデル"><span class="header-section-number">6.1.1</span> 完璧な予測モデル</h3>
+<p>本章では、データと同じ母集団から<strong>新たに</strong>抽出された事例を、予測するモデルの推定を目指します。 予測能力は、母集団における平均二乗誤差で測定します <span class="math display">\[母集団における平均二乗誤差 = (Y - 予測値)^2 の母集団における平均\]</span> 母集団における平均二乗誤差は、直接観察することは不可能です。 ただし本章で紹介する通り、推定することは可能です。</p>
+<section id="完璧な予測は不可能" class="level3" data-number="6.1.1">
+<h3 data-number="6.1.1" class="anchored" data-anchor-id="完璧な予測は不可能"><span class="header-section-number">6.1.1</span> 完璧な予測は不可能</h3>
 <p>予測研究における究極的な目標の一つは、 <span class="math inline">\(Y\)</span> を完璧に予測するモデルの推定です。 しかしながら多くの応用で、この目標には到達することができません。 予測モデルは、ある<span class="math inline">\(X\)</span>の組み合わせについて、一つの予測値のみを出力します。 このため<strong>母集団</strong>において、同じ<span class="math inline">\(X\)</span> 内で<span class="math inline">\(Y\)</span> の値にばらつきがあれば、予測が外れる事例は必ず存在します。</p>
 <p>完璧な予測には、<span class="math inline">\(Y\)</span>の全ての決定要因を<span class="math inline">\(X\)</span>として観察し、<span class="math inline">\(X\)</span>内での個人差をなくす必要があります。 しかしながら人間行動や社会的な事象などの社会的変数の決定要因は無数に存在し、その多くは観察が難しいと考えられます。 結果、社会的変数について、完璧な予測は不可能と考えられます。</p>
 </section>
 <section id="理想の予測モデル" class="level3" data-number="6.1.2">
 <h3 data-number="6.1.2" class="anchored" data-anchor-id="理想の予測モデル"><span class="header-section-number">6.1.2</span> 理想の予測モデル</h3>
-<p>最も高い予測性能 (母集団における平均二乗誤差が最小化)を達成する予測モデルは、母平均であることが証明できます <span class="math display">\[理想の予測モデル = X内でのYの母平均\]</span></p>
-<p>予測研究においては、データから推定した予測モデルを理想の予想モデルである母平均に極力近づけることが、実質的な目標となります。 具体的には以下の予測誤差を極力削減することを目指します <span class="math display">\[(\underbrace{X内でのYの母平均}_{理想の予測モデル}-予測モデル)^2の母平均\]</span></p>
+<p>最も高い予測性能 (母集団における平均二乗誤差が最小化)を達成する予測モデルは、母平均であることが証明できます。 このため予測研究においては、データから推定した予測モデルを理想の予想モデルである母平均に極力近づけることが、実質的な目標となります。 具体的には以下の予測誤差を極力削減することを目指します <span class="math display">\[(\underbrace{X内でのYの母平均}_{理想の予測モデル}-予測モデル)^2の母平均\]</span></p>
+<p>OLSやLASSOは、母平均のモデルを指定しており、理想の予測モデル推定を目指すための有力な方法です。</p>
 </section>
 </section>
-<section id="reference" class="level2" data-number="6.2">
-<h2 data-number="6.2" class="anchored" data-anchor-id="reference"><span class="header-section-number">6.2</span> Reference</h2>
+<section id="予測性能の測定" class="level2" data-number="6.2">
+<h2 data-number="6.2" class="anchored" data-anchor-id="予測性能の測定"><span class="header-section-number">6.2</span> 予測性能の測定</h2>
+<p>予測を目指す分析では、推定された予測モデルの性能を評価することが重要となります。 OLSやLASSOにより推定されたモデルの性質について、多くの理論研究が蓄積されています。 しかしながら現状、幅広いデータや状況において、一貫して高い予測性能を生み出す方法は存在しません。 また実際の予測力を理論のみに基づいて、算出することは困難です。 このため複数の予測モデルを”試作”し、データを用いてその性能を比較することが求められます。</p>
+<p>最もシンプルな評価方法は、サンプル分割です。</p>
+<div class="callout callout-style-default callout-important callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+サンプル分割法の定義
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ol type="1">
+<li>データをランダムに訓練データとテストデータに分割する</li>
+</ol>
+<ul>
+<li>訓練/テスト間での事例数の比率については、8対2や95対5が(経験則として)推奨されることが多い。</li>
+</ul>
+<ol start="2" type="1">
+<li><p>訓練データのみでモデルを試作する</p></li>
+<li><p>テストデータへの当てはまりを(平均二乗誤差などで)評価する</p></li>
+</ol>
+</div>
+</div>
+<p>実際の取引データに適用した結果は以下です。 6378事例のうち、ランダムに選んだ半分を訓練、残り半分をテストに用いました。 テストした推定方法は以下です。</p>
+<ul>
+<li><p><strong>OLS:</strong> 取引価格 ~ 部屋の広さ + 立地 + 取引年</p></li>
+<li><p><strong>OLS (含む交差項 + 高次項):</strong> 取引価格 ~ 部屋の広さ + 立地 + 取引年 + 交差項 + 高次項(６次まで)</p></li>
+<li><p><strong>LASSO (含む交差項 + 高次項):</strong> 取引価格 ~ 部屋の広さ + 立地 + 取引年 + 交差項 + 高次項(６次まで)</p></li>
+</ul>
+<p>推定された予測モデルの評価結果は以下となりました。</p>
+<div class="cell">
+<div class="cell-output-display">
+<div id="rnpzmapqgk" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#rnpzmapqgk table {
+  font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+#rnpzmapqgk thead, #rnpzmapqgk tbody, #rnpzmapqgk tfoot, #rnpzmapqgk tr, #rnpzmapqgk td, #rnpzmapqgk th {
+  border-style: none;
+}
+
+#rnpzmapqgk p {
+  margin: 0;
+  padding: 0;
+}
+
+#rnpzmapqgk .gt_table {
+  display: table;
+  border-collapse: collapse;
+  line-height: normal;
+  margin-left: auto;
+  margin-right: auto;
+  color: #333333;
+  font-size: 16px;
+  font-weight: normal;
+  font-style: normal;
+  background-color: #FFFFFF;
+  width: auto;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #A8A8A8;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #A8A8A8;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+}
+
+#rnpzmapqgk .gt_caption {
+  padding-top: 4px;
+  padding-bottom: 4px;
+}
+
+#rnpzmapqgk .gt_title {
+  color: #333333;
+  font-size: 125%;
+  font-weight: initial;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-color: #FFFFFF;
+  border-bottom-width: 0;
+}
+
+#rnpzmapqgk .gt_subtitle {
+  color: #333333;
+  font-size: 85%;
+  font-weight: initial;
+  padding-top: 3px;
+  padding-bottom: 5px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-color: #FFFFFF;
+  border-top-width: 0;
+}
+
+#rnpzmapqgk .gt_heading {
+  background-color: #FFFFFF;
+  text-align: center;
+  border-bottom-color: #FFFFFF;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#rnpzmapqgk .gt_bottom_border {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#rnpzmapqgk .gt_col_headings {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#rnpzmapqgk .gt_col_heading {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 6px;
+  padding-left: 5px;
+  padding-right: 5px;
+  overflow-x: hidden;
+}
+
+#rnpzmapqgk .gt_column_spanner_outer {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  padding-top: 0;
+  padding-bottom: 0;
+  padding-left: 4px;
+  padding-right: 4px;
+}
+
+#rnpzmapqgk .gt_column_spanner_outer:first-child {
+  padding-left: 0;
+}
+
+#rnpzmapqgk .gt_column_spanner_outer:last-child {
+  padding-right: 0;
+}
+
+#rnpzmapqgk .gt_column_spanner {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  overflow-x: hidden;
+  display: inline-block;
+  width: 100%;
+}
+
+#rnpzmapqgk .gt_spanner_row {
+  border-bottom-style: hidden;
+}
+
+#rnpzmapqgk .gt_group_heading {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  text-align: left;
+}
+
+#rnpzmapqgk .gt_empty_group_heading {
+  padding: 0.5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+#rnpzmapqgk .gt_from_md > :first-child {
+  margin-top: 0;
+}
+
+#rnpzmapqgk .gt_from_md > :last-child {
+  margin-bottom: 0;
+}
+
+#rnpzmapqgk .gt_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  margin: 10px;
+  border-top-style: solid;
+  border-top-width: 1px;
+  border-top-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  overflow-x: hidden;
+}
+
+#rnpzmapqgk .gt_stub {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#rnpzmapqgk .gt_stub_row_group {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+  vertical-align: top;
+}
+
+#rnpzmapqgk .gt_row_group_first td {
+  border-top-width: 2px;
+}
+
+#rnpzmapqgk .gt_row_group_first th {
+  border-top-width: 2px;
+}
+
+#rnpzmapqgk .gt_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#rnpzmapqgk .gt_first_summary_row {
+  border-top-style: solid;
+  border-top-color: #D3D3D3;
+}
+
+#rnpzmapqgk .gt_first_summary_row.thick {
+  border-top-width: 2px;
+}
+
+#rnpzmapqgk .gt_last_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#rnpzmapqgk .gt_grand_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#rnpzmapqgk .gt_first_grand_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-style: double;
+  border-top-width: 6px;
+  border-top-color: #D3D3D3;
+}
+
+#rnpzmapqgk .gt_last_grand_summary_row_top {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: double;
+  border-bottom-width: 6px;
+  border-bottom-color: #D3D3D3;
+}
+
+#rnpzmapqgk .gt_striped {
+  background-color: rgba(128, 128, 128, 0.05);
+}
+
+#rnpzmapqgk .gt_table_body {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#rnpzmapqgk .gt_footnotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#rnpzmapqgk .gt_footnote {
+  margin: 0px;
+  font-size: 90%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#rnpzmapqgk .gt_sourcenotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#rnpzmapqgk .gt_sourcenote {
+  font-size: 90%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#rnpzmapqgk .gt_left {
+  text-align: left;
+}
+
+#rnpzmapqgk .gt_center {
+  text-align: center;
+}
+
+#rnpzmapqgk .gt_right {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+#rnpzmapqgk .gt_font_normal {
+  font-weight: normal;
+}
+
+#rnpzmapqgk .gt_font_bold {
+  font-weight: bold;
+}
+
+#rnpzmapqgk .gt_font_italic {
+  font-style: italic;
+}
+
+#rnpzmapqgk .gt_super {
+  font-size: 65%;
+}
+
+#rnpzmapqgk .gt_footnote_marks {
+  font-size: 75%;
+  vertical-align: 0.4em;
+  position: initial;
+}
+
+#rnpzmapqgk .gt_asterisk {
+  font-size: 100%;
+  vertical-align: 0;
+}
+
+#rnpzmapqgk .gt_indent_1 {
+  text-indent: 5px;
+}
+
+#rnpzmapqgk .gt_indent_2 {
+  text-indent: 10px;
+}
+
+#rnpzmapqgk .gt_indent_3 {
+  text-indent: 15px;
+}
+
+#rnpzmapqgk .gt_indent_4 {
+  text-indent: 20px;
+}
+
+#rnpzmapqgk .gt_indent_5 {
+  text-indent: 25px;
+}
+
+#rnpzmapqgk .katex-display {
+  display: inline-flex !important;
+  margin-bottom: 0.75em !important;
+}
+
+#rnpzmapqgk div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
+  height: 0px !important;
+}
+</style>
+
+<table class="gt_table caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
+<thead>
+<tr class="header gt_col_headings">
+<th id="OLS" class="gt_col_heading gt_columns_bottom_border gt_right" data-quarto-table-cell-role="th" scope="col">OLS</th>
+<th id="OLS| 交差項 + 高次項" class="gt_col_heading gt_columns_bottom_border gt_right" data-quarto-table-cell-role="th" scope="col">OLS| 交差項 + 高次項</th>
+<th id="LASSO" class="gt_col_heading gt_columns_bottom_border gt_right" data-quarto-table-cell-role="th" scope="col">LASSO</th>
+</tr>
+</thead>
+<tbody class="gt_table_body">
+<tr class="odd">
+<td class="gt_row gt_right" headers="OLS">369</td>
+<td class="gt_row gt_right" headers="OLS| 交差項 + 高次項">316</td>
+<td class="gt_row gt_right" headers="LASSO">303</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+<p>LASSOが最も予測性能が高く、単純なOLSと比較し、0.179 パーセントほど平均二乗誤差を削減しています。 対して、交差項と高次項を追加したOLSとLASSOを比較した場合、0.041 パーセントほどの改善にとどまります。 これはモデルの複雑さに比べて、事例数が多く、LASSOによるモデル単純化の恩恵が限定的であることを示しています。</p>
+</section>
+<section id="rによる実践例" class="level2" data-number="6.3">
+<h2 data-number="6.3" class="anchored" data-anchor-id="rによる実践例"><span class="header-section-number">6.3</span> Rによる実践例</h2>
+<ul>
+<li><p>以下のパッケージを使用</p>
+<ul>
+<li><p>readr (tidyverseに同梱): データの読み込み</p></li>
+<li><p>gamlr: LASSO</p></li>
+</ul></li>
+</ul>
+<section id="準備" class="level3" data-number="6.3.1">
+<h3 data-number="6.3.1" class="anchored" data-anchor-id="準備"><span class="header-section-number">6.3.1</span> 準備</h3>
+<p>データとその事例数を取得し、データをランダムに分割します。</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">111</span>)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>Data <span class="ot">=</span> readr<span class="sc">::</span><span class="fu">read_csv</span>(<span class="st">"Public.csv"</span>) <span class="co"># データ読み込み</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>X <span class="ot">=</span> <span class="fu">model.matrix</span>(</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>  <span class="sc">~</span> <span class="dv">0</span>  <span class="sc">+</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>    (Size <span class="sc">+</span> Tenure <span class="sc">+</span> StationDistance <span class="sc">+</span> District)<span class="sc">**</span><span class="dv">2</span> <span class="sc">+</span> <span class="co"># 交差項</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>    <span class="fu">I</span>(Size<span class="sc">^</span><span class="dv">2</span>) <span class="sc">+</span> <span class="fu">I</span>(Tenure<span class="sc">^</span><span class="dv">2</span>) <span class="sc">+</span> <span class="fu">I</span>(StationDistance<span class="sc">^</span><span class="dv">2</span>), <span class="co"># 二乗項</span></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>  Data</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>) <span class="co"># X の作成</span></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>X <span class="ot">=</span> <span class="fu">scale</span>(X) <span class="co"># 標準化</span></span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>N <span class="ot">=</span> <span class="fu">nrow</span>(Data) <span class="co"># 事例数の取得</span></span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>Group <span class="ot">=</span> <span class="fu">sample</span>(</span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>  <span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>,</span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>  N, <span class="co"># 事例数</span></span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a>  <span class="at">replace =</span> <span class="cn">TRUE</span>, <span class="co"># 復元抽出を指定</span></span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a>  <span class="at">prob =</span> <span class="fu">c</span>(<span class="fl">0.8</span>,<span class="fl">0.2</span>) <span class="co"># "1"が8割、"2"が２割</span></span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a>) <span class="co"># サンプル分割のために1または2をランダムに発生</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>lm関数を用いてOLS, hdmパッケージ内のrlasso関数を用いてLASSO推定をします。 またLASSO推定は、複雑なモデルを推定に利点を持つため、交差項と二乗項までを導入したモデルも推定しています。</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>LASSO <span class="ot">=</span> gamlr<span class="sc">::</span><span class="fu">gamlr</span>(</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">y =</span> Data<span class="sc">$</span>Price[Group <span class="sc">==</span> <span class="dv">1</span>],</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">x =</span> X[Group <span class="sc">==</span> <span class="dv">1</span>,]) <span class="co"># LASSO</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>OLS <span class="ot">=</span> <span class="fu">lm</span>(</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>  Price <span class="sc">~</span> Size <span class="sc">+</span> Tenure <span class="sc">+</span> StationDistance <span class="sc">+</span> District,</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>  Data,</span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">subset =</span> Group <span class="sc">==</span> <span class="dv">1</span></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>OLS_Long <span class="ot">=</span> <span class="fu">lm</span>(</span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>  Price <span class="sc">~</span> <span class="sc">+</span></span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>    (Size <span class="sc">+</span> Tenure <span class="sc">+</span> StationDistance <span class="sc">+</span> District)<span class="sc">**</span><span class="dv">2</span> <span class="sc">+</span></span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>    <span class="fu">I</span>(Size<span class="sc">^</span><span class="dv">2</span>) <span class="sc">+</span> <span class="fu">I</span>(Tenure<span class="sc">^</span><span class="dv">2</span>) <span class="sc">+</span> <span class="fu">I</span>(StationDistance<span class="sc">^</span><span class="dv">2</span>),</span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a>  Data,</span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a>  <span class="at">subset =</span> Group <span class="sc">==</span> <span class="dv">1</span></span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a>HatLASSO <span class="ot">=</span> <span class="fu">predict</span>(LASSO,X)</span>
+<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a>HatOLS <span class="ot">=</span> <span class="fu">predict</span>(OLS,Data)</span>
+<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a>HatOLS_Long <span class="ot">=</span> <span class="fu">predict</span>(OLS_Long,Data)</span>
+<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>((Data<span class="sc">$</span>Price <span class="sc">-</span> HatLASSO)[Group <span class="sc">==</span> <span class="dv">2</span>]<span class="sc">^</span><span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 154.7488</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>((Data<span class="sc">$</span>Price <span class="sc">-</span> HatOLS)[Group <span class="sc">==</span> <span class="dv">2</span>]<span class="sc">^</span><span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 265.1663</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>((Data<span class="sc">$</span>Price <span class="sc">-</span> HatOLS_Long)[Group <span class="sc">==</span> <span class="dv">2</span>]<span class="sc">^</span><span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 149.513</code></pre>
+</div>
+</div>
+</section>
+</section>
+<section id="まとめ" class="level2" data-number="6.4">
+<h2 data-number="6.4" class="anchored" data-anchor-id="まとめ"><span class="header-section-number">6.4</span> まとめ</h2>
+<p>典型的な予測問題においては、データを用いた予測モデルの推定と評価、という二つの作業が求められます。 一般にこの作業を同じデータで行うと多くの問題が発生します。 本章では、データをランダムに２分割し、片方のデータで予測を、残りのデータで評価を行う方法を紹介しました。</p>
+<p>評価値としては平均二乗誤差を用いました。 現在、他の評価方法も盛んに研究されています (<span class="citation" data-cites="angelopoulos2023conformal">Angelopoulos, Bates, et al. (<a href="#ref-angelopoulos2023conformal" role="doc-biblioref">2023</a>)</span> などを参照してください)。</p>
+</section>
+<section id="reference" class="level2" data-number="6.5">
+<h2 data-number="6.5" class="anchored" data-anchor-id="reference"><span class="header-section-number">6.5</span> Reference</h2>
 
 
+<div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list">
+<div id="ref-angelopoulos2023conformal" class="csl-entry" role="listitem">
+Angelopoulos, Anastasios N, Stephen Bates, et al. 2023. <span>“Conformal Prediction: A Gentle Introduction.”</span> <em>Foundations and Trends<span></span> in Machine Learning</em> 16 (4): 494–591.
+</div>
+</div>
 </section>
 
 </main> <!-- /main -->
@@ -679,9 +1323,6 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="./evaluation.html" class="pagination-link" aria-label="応用: 予測性能の評価">
-        <span class="nav-page-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">応用: 予測性能の評価</span></span> <i class="bi bi-arrow-right-short"></i>
-      </a>
   </div>
 </nav>
 </div> <!-- /content -->

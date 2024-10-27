@@ -242,10 +242,7 @@ window.Quarto = {
    
   <ul>
   <li><a href="#population-ols" id="toc-population-ols" class="nav-link active" data-scroll-target="#population-ols"><span class="header-section-number">4.1</span> Population OLS</a></li>
-  <li><a href="#ols-population-olsの推定" id="toc-ols-population-olsの推定" class="nav-link" data-scroll-target="#ols-population-olsの推定"><span class="header-section-number">4.2</span> OLS <span class="math inline">\(=\)</span> Population OLSの推定</a>
-  <ul class="collapse">
-  <li><a href="#信頼区間" id="toc-信頼区間" class="nav-link" data-scroll-target="#信頼区間"><span class="header-section-number">4.2.1</span> 信頼区間</a></li>
-  </ul></li>
+  <li><a href="#ols-population-olsの推定" id="toc-ols-population-olsの推定" class="nav-link" data-scroll-target="#ols-population-olsの推定"><span class="header-section-number">4.2</span> OLS <span class="math inline">\(=\)</span> Population OLSの推定</a></li>
   <li><a href="#モデルの複雑化" id="toc-モデルの複雑化" class="nav-link" data-scroll-target="#モデルの複雑化"><span class="header-section-number">4.3</span> モデルの複雑化</a></li>
   <li><a href="#rによる実践例" id="toc-rによる実践例" class="nav-link" data-scroll-target="#rによる実践例"><span class="header-section-number">4.4</span> Rによる実践例</a>
   <ul class="collapse">
@@ -347,79 +344,27 @@ window.Quarto = {
 </div>
 <p>全ての研究者について、Population OLSとデータ上でのOLSの乖離(赤と青の実践の乖離)は、“目視”できないほど小さくなっています。</p>
 <p>注意が必要なのは、母平均とデータ上でのOLSは引き続き乖離していることです。 Population OLSと母平均が乖離している (誤定式化)、データ上でのOLSは、どれだけ事例数が増えても母平均と一致しません。 あくまでもPopulation OLSの結果に近づくだけです。</p>
+<p>Population OLSとデータ上でのOLSは、母平均とデータ上での平均値と類似した理論的関係性を持ちます。</p>
 <div class="callout callout-style-default callout-important callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-性質: 一致性
+性質: 大表本性質
 </div>
 </div>
 <div class="callout-body-container callout-body">
 <ul>
-<li><p>事例数が無限大に大きくなると、データ上でのOLSはPopulation OLSの結果と一致する</p></li>
-<li><p><strong>誤定式化がなければ</strong>、 Population OLSと母平均は一致する</p>
+<li><p>一致性: 事例数が無限大に大きくなると、データ上でのOLSはPopulation OLSの結果と一致する。</p>
 <ul>
-<li>事例数が無限大に大きくなると、データ上でのOLSも母平均と一致する</li>
+<li><strong>誤定式化がなければ</strong>、 Population OLSと母平均は一致するので、データ上でのOLSも母平均と一致する。</li>
 </ul></li>
+<li><p>信頼区間: 事例数が、パラメタの数に比べて十分多いと、Population OLSの結果についての信頼区間を近似計算できる。</p></li>
 </ul>
 </div>
 </div>
-<p>一致性より、データ上でのOLSをPopulation OLSの推定値とみなすことは<strong>“常に”</strong>正当化できます。 他方で、母平均の推定値とみなすためには、誤定式化がないことが前提となります。 誤定式化の確認は、社会データでは非常に困難です。 特に<span class="math inline">\(X\)</span> の数が多い場合、確立された確認方法は、筆者の知る限り存在しません。</p>
-<section id="信頼区間" class="level3" data-number="4.2.1">
-<h3 data-number="4.2.1" class="anchored" data-anchor-id="信頼区間"><span class="header-section-number">4.2.1</span> 信頼区間</h3>
-<p>一致性は無限大の事例数において、データ上のOLSとPopulation OLSが一致することを保証しているだけです。 現実の事例数では、データ上のOLSとPopulation OLSは一致せず、研究者間でのばらつきも残ってしまいます。</p>
-<p>実際のデータ分析では、OLSによる推定結果は<strong>信頼区間</strong>と共に示すことが一般的です。 信頼区間とは、一定の確率 (初期値では<span class="math inline">\(95\%\)</span>) で、母平均を含む区間です。 例えば200事例を用いたOLS推定における<span class="math inline">\(\beta_1\)</span> の信頼区間は以下です。</p>
-<div class="cell">
-<div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="PopulationOLS_files/figure-html/unnamed-chunk-6-1.png" class="img-fluid figure-img" width="672"></p>
-</figure>
-</div>
-</div>
-</div>
-<p>点で推定値、横線で95 <span class="math inline">\(\%\)</span> 信頼区間、縦線がPopulation OLSの結果を示しています。</p>
-<p>本数値例では、4名の研究者全員が、Population OLSの結果を含む信頼区間を獲得できています。</p>
-<p>同じ数値例を、“100名の研究者”分実施した結果は以下です。</p>
-<div class="cell">
-<div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="PopulationOLS_files/figure-html/unnamed-chunk-7-1.png" class="img-fluid figure-img" width="672"></p>
-</figure>
-</div>
-</div>
-</div>
-<p>縦軸は研究者の名前 (ID) を示しています。 「不幸にも」Population OLSを含まない信頼区間が推定されてしまった研究者は、赤字で示しています。 100名中6名 (概ね<span class="math inline">\(95\%\)</span>)は、このような不幸に見舞われており、信頼区間の想定と整合的です。</p>
-<p>実際の応用では、研究者自身は、自分が運の悪い <span class="math inline">\(5\%\)</span> となるか、それとも幸運な <span class="math inline">\(95\%\)</span> になるのかは、判断できません。 通常は、「<span class="math inline">\(5\%\)</span> のリスクは低い」、として自身が計算した信頼区間の中に真の値が含まれているとして、結論を論じます。</p>
-<p>このリスクを変更することは容易です。たとえばリスクを<span class="math inline">\(0.5\%\)</span>に変更した場合の<span class="math inline">\(99.5\%\)</span> 信頼区間は以下です。</p>
-<div class="cell">
-<div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="PopulationOLS_files/figure-html/unnamed-chunk-8-1.png" class="img-fluid figure-img" width="672"></p>
-</figure>
-</div>
-</div>
-</div>
-<p>「不幸な」研究者は100名中1名のみとなりましたが、その代償として信頼区間が拡大しています。 すなわち結論を不明確にする代わりに、ミスリードな主張をするリスクを減らしています。</p>
-<p>注意が必要なのは、「不幸な」研究者が発生する確率を<span class="math inline">\(0\%\)</span> にすることは一般に不可能だという点です。 「<span class="math inline">\(100\%\)</span> 信頼区間」を計算しようとすると、区間の幅は無限大になります。</p>
-<div class="callout callout-style-default callout-important callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-定義: 信頼区間
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p>一定の確率 (初期値では<span class="math inline">\(95\%\)</span>) で、母平均を含む区間</p>
-</div>
-</div>
-</section>
+<p>大標本理論は、データ上でのOLSをPopulation OLSの推定値とみなすことを正当化します。 しかしながら、母平均の推定値とみなすためには、誤定式化がないことが前提となります。 誤定式化の確認は、社会データでは非常に困難です。 特に<span class="math inline">\(X\)</span> の数が多い場合、確立された確認方法は、筆者の知る限り存在しません。</p>
 </section>
 <section id="モデルの複雑化" class="level2" data-number="4.3">
 <h2 data-number="4.3" class="anchored" data-anchor-id="モデルの複雑化"><span class="header-section-number">4.3</span> モデルの複雑化</h2>
@@ -429,7 +374,7 @@ window.Quarto = {
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="PopulationOLS_files/figure-html/unnamed-chunk-9-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="PopulationOLS_files/figure-html/unnamed-chunk-6-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -439,7 +384,7 @@ window.Quarto = {
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="PopulationOLS_files/figure-html/unnamed-chunk-10-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="PopulationOLS_files/figure-html/unnamed-chunk-7-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -451,7 +396,7 @@ window.Quarto = {
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="PopulationOLS_files/figure-html/unnamed-chunk-11-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="PopulationOLS_files/figure-html/unnamed-chunk-8-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -464,7 +409,7 @@ window.Quarto = {
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="PopulationOLS_files/figure-html/unnamed-chunk-12-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="PopulationOLS_files/figure-html/unnamed-chunk-9-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -517,7 +462,7 @@ StationDistance -1.2540221 6374</code></pre>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="PopulationOLS_files/figure-html/unnamed-chunk-15-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="PopulationOLS_files/figure-html/unnamed-chunk-12-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>

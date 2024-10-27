@@ -6,8 +6,10 @@
 
 - 特徴は以下です。
 
-    - OLSを「母平均の不正確なモデル」を推定する方法、と解釈する。
+    - OLSを、「母平均の不正確なモデル」を推定する方法、と解釈する。
     
         - [Foundations of Agnostic Statistics](https://www.cambridge.org/core/books/foundations-of-agnostic-statistics/684756357E7E9B3DFF0A8157FB2DCECA)
 
     - 教師付き学習の手法も紹介する。
+    
+    - Rのコードも紹介する

@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>1&nbsp; 要約の基本コンセプト – 母平均の「補助線」の推定</title>
+<title>1&nbsp; 要約の基本コンセプト – 母平均の「補助線」の推定 (ver 0.1)</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -125,7 +125,7 @@ window.Quarto = {
   <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
     <div class="pt-lg-2 mt-2 text-left sidebar-header">
     <div class="sidebar-title mb-0 py-0">
-      <a href="./">母平均の「補助線」の推定</a> 
+      <a href="./">母平均の「補助線」の推定 (ver 0.1)</a> 
     </div>
       </div>
         <div class="mt-2 flex-shrink-0 align-items-center">
@@ -173,10 +173,27 @@ window.Quarto = {
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./prediction.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">応用: 予測</span></span></a>
+  <a href="./Reference.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Reference</span></a>
   </div>
 </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true">
+ <span class="menu-text">Appendices</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./prediction.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">A</span>&nbsp; <span class="chapter-title">応用: 予測</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
     </ul>
     </div>
 </nav>
@@ -190,7 +207,6 @@ window.Quarto = {
   <li><a href="#観察できない変数が引き起こす問題" id="toc-観察できない変数が引き起こす問題" class="nav-link active" data-scroll-target="#観察できない変数が引き起こす問題"><span class="header-section-number">1.1</span> 観察できない変数が引き起こす問題</a></li>
   <li><a href="#コンセプト-集計" id="toc-コンセプト-集計" class="nav-link" data-scroll-target="#コンセプト-集計"><span class="header-section-number">1.2</span> コンセプト: 集計</a></li>
   <li><a href="#少数事例の集計" id="toc-少数事例の集計" class="nav-link" data-scroll-target="#少数事例の集計"><span class="header-section-number">1.3</span> 少数事例の集計</a></li>
-  <li><a href="#reference" id="toc-reference" class="nav-link" data-scroll-target="#reference"><span class="header-section-number">1.4</span> Reference</a></li>
   </ul>
 </nav>
     </div>
@@ -220,26 +236,26 @@ window.Quarto = {
 <section id="観察できない変数が引き起こす問題" class="level2" data-number="1.1">
 <h2 data-number="1.1" class="anchored" data-anchor-id="観察できない変数が引き起こす問題"><span class="header-section-number">1.1</span> 観察できない変数が引き起こす問題</h2>
 <p>データから観察できない変数の存在は、あらゆる事例分析の最も深刻な問題の一つです。 このような変数への対処について、膨大な議論が蓄積されています。</p>
-<p>観察できない変数がもたらす問題は、個別事例分析において特に顕著です。 以下では、取引価格(Price; 単位 <span class="math inline">\(=\)</span> 100万円) <span class="math inline">\(=Y\)</span> と物件の特徴 <span class="math inline">\(=X\)</span> の関係性を把握するために、個別事例を丹念に見ていきます。 例えば、以下の2億円で取引されている物件が、データの中に含まれていました。</p>
+<p>観察できない変数がもたらす問題は、個別事例分析において特に顕著です。 以下では、取引価格(Price; 単位 <span class="math inline">\(=\)</span> 100万円) <span class="math inline">\(=Y\)</span> と物件の特徴 <span class="math inline">\(=X\)</span> の関係性を把握するために、個別事例を丹念に見ていきます。 例えば、2億円で取引されている物件が、データの中に含まれていました。</p>
 <div class="cell">
 <div class="cell-output-display">
-<div id="pxfwtvrhil" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
-<style>#pxfwtvrhil table {
+<div id="piyruxyjed" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#piyruxyjed table {
   font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-#pxfwtvrhil thead, #pxfwtvrhil tbody, #pxfwtvrhil tfoot, #pxfwtvrhil tr, #pxfwtvrhil td, #pxfwtvrhil th {
+#piyruxyjed thead, #piyruxyjed tbody, #piyruxyjed tfoot, #piyruxyjed tr, #piyruxyjed td, #piyruxyjed th {
   border-style: none;
 }
 
-#pxfwtvrhil p {
+#piyruxyjed p {
   margin: 0;
   padding: 0;
 }
 
-#pxfwtvrhil .gt_table {
+#piyruxyjed .gt_table {
   display: table;
   border-collapse: collapse;
   line-height: normal;
@@ -265,12 +281,12 @@ window.Quarto = {
   border-left-color: #D3D3D3;
 }
 
-#pxfwtvrhil .gt_caption {
+#piyruxyjed .gt_caption {
   padding-top: 4px;
   padding-bottom: 4px;
 }
 
-#pxfwtvrhil .gt_title {
+#piyruxyjed .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -282,7 +298,7 @@ window.Quarto = {
   border-bottom-width: 0;
 }
 
-#pxfwtvrhil .gt_subtitle {
+#piyruxyjed .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -294,7 +310,7 @@ window.Quarto = {
   border-top-width: 0;
 }
 
-#pxfwtvrhil .gt_heading {
+#piyruxyjed .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -306,13 +322,13 @@ window.Quarto = {
   border-right-color: #D3D3D3;
 }
 
-#pxfwtvrhil .gt_bottom_border {
+#piyruxyjed .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#pxfwtvrhil .gt_col_headings {
+#piyruxyjed .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -327,7 +343,7 @@ window.Quarto = {
   border-right-color: #D3D3D3;
 }
 
-#pxfwtvrhil .gt_col_heading {
+#piyruxyjed .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -347,7 +363,7 @@ window.Quarto = {
   overflow-x: hidden;
 }
 
-#pxfwtvrhil .gt_column_spanner_outer {
+#piyruxyjed .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -359,15 +375,15 @@ window.Quarto = {
   padding-right: 4px;
 }
 
-#pxfwtvrhil .gt_column_spanner_outer:first-child {
+#piyruxyjed .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#pxfwtvrhil .gt_column_spanner_outer:last-child {
+#piyruxyjed .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#pxfwtvrhil .gt_column_spanner {
+#piyruxyjed .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -379,11 +395,11 @@ window.Quarto = {
   width: 100%;
 }
 
-#pxfwtvrhil .gt_spanner_row {
+#piyruxyjed .gt_spanner_row {
   border-bottom-style: hidden;
 }
 
-#pxfwtvrhil .gt_group_heading {
+#piyruxyjed .gt_group_heading {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -409,7 +425,7 @@ window.Quarto = {
   text-align: left;
 }
 
-#pxfwtvrhil .gt_empty_group_heading {
+#piyruxyjed .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -424,15 +440,15 @@ window.Quarto = {
   vertical-align: middle;
 }
 
-#pxfwtvrhil .gt_from_md > :first-child {
+#piyruxyjed .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#pxfwtvrhil .gt_from_md > :last-child {
+#piyruxyjed .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#pxfwtvrhil .gt_row {
+#piyruxyjed .gt_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -451,7 +467,7 @@ window.Quarto = {
   overflow-x: hidden;
 }
 
-#pxfwtvrhil .gt_stub {
+#piyruxyjed .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -464,7 +480,7 @@ window.Quarto = {
   padding-right: 5px;
 }
 
-#pxfwtvrhil .gt_stub_row_group {
+#piyruxyjed .gt_stub_row_group {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -478,15 +494,15 @@ window.Quarto = {
   vertical-align: top;
 }
 
-#pxfwtvrhil .gt_row_group_first td {
+#piyruxyjed .gt_row_group_first td {
   border-top-width: 2px;
 }
 
-#pxfwtvrhil .gt_row_group_first th {
+#piyruxyjed .gt_row_group_first th {
   border-top-width: 2px;
 }
 
-#pxfwtvrhil .gt_summary_row {
+#piyruxyjed .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -496,16 +512,16 @@ window.Quarto = {
   padding-right: 5px;
 }
 
-#pxfwtvrhil .gt_first_summary_row {
+#piyruxyjed .gt_first_summary_row {
   border-top-style: solid;
   border-top-color: #D3D3D3;
 }
 
-#pxfwtvrhil .gt_first_summary_row.thick {
+#piyruxyjed .gt_first_summary_row.thick {
   border-top-width: 2px;
 }
 
-#pxfwtvrhil .gt_last_summary_row {
+#piyruxyjed .gt_last_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -515,7 +531,7 @@ window.Quarto = {
   border-bottom-color: #D3D3D3;
 }
 
-#pxfwtvrhil .gt_grand_summary_row {
+#piyruxyjed .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -525,7 +541,7 @@ window.Quarto = {
   padding-right: 5px;
 }
 
-#pxfwtvrhil .gt_first_grand_summary_row {
+#piyruxyjed .gt_first_grand_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -535,7 +551,7 @@ window.Quarto = {
   border-top-color: #D3D3D3;
 }
 
-#pxfwtvrhil .gt_last_grand_summary_row_top {
+#piyruxyjed .gt_last_grand_summary_row_top {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -545,11 +561,11 @@ window.Quarto = {
   border-bottom-color: #D3D3D3;
 }
 
-#pxfwtvrhil .gt_striped {
+#piyruxyjed .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#pxfwtvrhil .gt_table_body {
+#piyruxyjed .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -558,7 +574,7 @@ window.Quarto = {
   border-bottom-color: #D3D3D3;
 }
 
-#pxfwtvrhil .gt_footnotes {
+#piyruxyjed .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -572,7 +588,7 @@ window.Quarto = {
   border-right-color: #D3D3D3;
 }
 
-#pxfwtvrhil .gt_footnote {
+#piyruxyjed .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding-top: 4px;
@@ -581,7 +597,7 @@ window.Quarto = {
   padding-right: 5px;
 }
 
-#pxfwtvrhil .gt_sourcenotes {
+#piyruxyjed .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -595,7 +611,7 @@ window.Quarto = {
   border-right-color: #D3D3D3;
 }
 
-#pxfwtvrhil .gt_sourcenote {
+#piyruxyjed .gt_sourcenote {
   font-size: 90%;
   padding-top: 4px;
   padding-bottom: 4px;
@@ -603,72 +619,72 @@ window.Quarto = {
   padding-right: 5px;
 }
 
-#pxfwtvrhil .gt_left {
+#piyruxyjed .gt_left {
   text-align: left;
 }
 
-#pxfwtvrhil .gt_center {
+#piyruxyjed .gt_center {
   text-align: center;
 }
 
-#pxfwtvrhil .gt_right {
+#piyruxyjed .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#pxfwtvrhil .gt_font_normal {
+#piyruxyjed .gt_font_normal {
   font-weight: normal;
 }
 
-#pxfwtvrhil .gt_font_bold {
+#piyruxyjed .gt_font_bold {
   font-weight: bold;
 }
 
-#pxfwtvrhil .gt_font_italic {
+#piyruxyjed .gt_font_italic {
   font-style: italic;
 }
 
-#pxfwtvrhil .gt_super {
+#piyruxyjed .gt_super {
   font-size: 65%;
 }
 
-#pxfwtvrhil .gt_footnote_marks {
+#piyruxyjed .gt_footnote_marks {
   font-size: 75%;
   vertical-align: 0.4em;
   position: initial;
 }
 
-#pxfwtvrhil .gt_asterisk {
+#piyruxyjed .gt_asterisk {
   font-size: 100%;
   vertical-align: 0;
 }
 
-#pxfwtvrhil .gt_indent_1 {
+#piyruxyjed .gt_indent_1 {
   text-indent: 5px;
 }
 
-#pxfwtvrhil .gt_indent_2 {
+#piyruxyjed .gt_indent_2 {
   text-indent: 10px;
 }
 
-#pxfwtvrhil .gt_indent_3 {
+#piyruxyjed .gt_indent_3 {
   text-indent: 15px;
 }
 
-#pxfwtvrhil .gt_indent_4 {
+#piyruxyjed .gt_indent_4 {
   text-indent: 20px;
 }
 
-#pxfwtvrhil .gt_indent_5 {
+#piyruxyjed .gt_indent_5 {
   text-indent: 25px;
 }
 
-#pxfwtvrhil .katex-display {
+#piyruxyjed .katex-display {
   display: inline-flex !important;
   margin-bottom: 0.75em !important;
 }
 
-#pxfwtvrhil div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
+#piyruxyjed div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
   height: 0px !important;
 }
 </style>
@@ -701,23 +717,23 @@ window.Quarto = {
 <p>同じデータの中に、取引価格以外全く同じ特徴を持つ物件の取引事例が、以下の3件ありました。 これらの事例と比較すると、2億円はかなり高い価格での取引だったことがわかります。</p>
 <div class="cell">
 <div class="cell-output-display">
-<div id="hsdpovxmfn" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
-<style>#hsdpovxmfn table {
+<div id="mjgcyzfvni" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#mjgcyzfvni table {
   font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-#hsdpovxmfn thead, #hsdpovxmfn tbody, #hsdpovxmfn tfoot, #hsdpovxmfn tr, #hsdpovxmfn td, #hsdpovxmfn th {
+#mjgcyzfvni thead, #mjgcyzfvni tbody, #mjgcyzfvni tfoot, #mjgcyzfvni tr, #mjgcyzfvni td, #mjgcyzfvni th {
   border-style: none;
 }
 
-#hsdpovxmfn p {
+#mjgcyzfvni p {
   margin: 0;
   padding: 0;
 }
 
-#hsdpovxmfn .gt_table {
+#mjgcyzfvni .gt_table {
   display: table;
   border-collapse: collapse;
   line-height: normal;
@@ -743,12 +759,12 @@ window.Quarto = {
   border-left-color: #D3D3D3;
 }
 
-#hsdpovxmfn .gt_caption {
+#mjgcyzfvni .gt_caption {
   padding-top: 4px;
   padding-bottom: 4px;
 }
 
-#hsdpovxmfn .gt_title {
+#mjgcyzfvni .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -760,7 +776,7 @@ window.Quarto = {
   border-bottom-width: 0;
 }
 
-#hsdpovxmfn .gt_subtitle {
+#mjgcyzfvni .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -772,7 +788,7 @@ window.Quarto = {
   border-top-width: 0;
 }
 
-#hsdpovxmfn .gt_heading {
+#mjgcyzfvni .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -784,13 +800,13 @@ window.Quarto = {
   border-right-color: #D3D3D3;
 }
 
-#hsdpovxmfn .gt_bottom_border {
+#mjgcyzfvni .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#hsdpovxmfn .gt_col_headings {
+#mjgcyzfvni .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -805,7 +821,7 @@ window.Quarto = {
   border-right-color: #D3D3D3;
 }
 
-#hsdpovxmfn .gt_col_heading {
+#mjgcyzfvni .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -825,7 +841,7 @@ window.Quarto = {
   overflow-x: hidden;
 }
 
-#hsdpovxmfn .gt_column_spanner_outer {
+#mjgcyzfvni .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -837,15 +853,15 @@ window.Quarto = {
   padding-right: 4px;
 }
 
-#hsdpovxmfn .gt_column_spanner_outer:first-child {
+#mjgcyzfvni .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#hsdpovxmfn .gt_column_spanner_outer:last-child {
+#mjgcyzfvni .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#hsdpovxmfn .gt_column_spanner {
+#mjgcyzfvni .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -857,11 +873,11 @@ window.Quarto = {
   width: 100%;
 }
 
-#hsdpovxmfn .gt_spanner_row {
+#mjgcyzfvni .gt_spanner_row {
   border-bottom-style: hidden;
 }
 
-#hsdpovxmfn .gt_group_heading {
+#mjgcyzfvni .gt_group_heading {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -887,7 +903,7 @@ window.Quarto = {
   text-align: left;
 }
 
-#hsdpovxmfn .gt_empty_group_heading {
+#mjgcyzfvni .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -902,15 +918,15 @@ window.Quarto = {
   vertical-align: middle;
 }
 
-#hsdpovxmfn .gt_from_md > :first-child {
+#mjgcyzfvni .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#hsdpovxmfn .gt_from_md > :last-child {
+#mjgcyzfvni .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#hsdpovxmfn .gt_row {
+#mjgcyzfvni .gt_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -929,7 +945,7 @@ window.Quarto = {
   overflow-x: hidden;
 }
 
-#hsdpovxmfn .gt_stub {
+#mjgcyzfvni .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -942,7 +958,7 @@ window.Quarto = {
   padding-right: 5px;
 }
 
-#hsdpovxmfn .gt_stub_row_group {
+#mjgcyzfvni .gt_stub_row_group {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -956,15 +972,15 @@ window.Quarto = {
   vertical-align: top;
 }
 
-#hsdpovxmfn .gt_row_group_first td {
+#mjgcyzfvni .gt_row_group_first td {
   border-top-width: 2px;
 }
 
-#hsdpovxmfn .gt_row_group_first th {
+#mjgcyzfvni .gt_row_group_first th {
   border-top-width: 2px;
 }
 
-#hsdpovxmfn .gt_summary_row {
+#mjgcyzfvni .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -974,16 +990,16 @@ window.Quarto = {
   padding-right: 5px;
 }
 
-#hsdpovxmfn .gt_first_summary_row {
+#mjgcyzfvni .gt_first_summary_row {
   border-top-style: solid;
   border-top-color: #D3D3D3;
 }
 
-#hsdpovxmfn .gt_first_summary_row.thick {
+#mjgcyzfvni .gt_first_summary_row.thick {
   border-top-width: 2px;
 }
 
-#hsdpovxmfn .gt_last_summary_row {
+#mjgcyzfvni .gt_last_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -993,7 +1009,7 @@ window.Quarto = {
   border-bottom-color: #D3D3D3;
 }
 
-#hsdpovxmfn .gt_grand_summary_row {
+#mjgcyzfvni .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -1003,7 +1019,7 @@ window.Quarto = {
   padding-right: 5px;
 }
 
-#hsdpovxmfn .gt_first_grand_summary_row {
+#mjgcyzfvni .gt_first_grand_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1013,7 +1029,7 @@ window.Quarto = {
   border-top-color: #D3D3D3;
 }
 
-#hsdpovxmfn .gt_last_grand_summary_row_top {
+#mjgcyzfvni .gt_last_grand_summary_row_top {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1023,11 +1039,11 @@ window.Quarto = {
   border-bottom-color: #D3D3D3;
 }
 
-#hsdpovxmfn .gt_striped {
+#mjgcyzfvni .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#hsdpovxmfn .gt_table_body {
+#mjgcyzfvni .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -1036,7 +1052,7 @@ window.Quarto = {
   border-bottom-color: #D3D3D3;
 }
 
-#hsdpovxmfn .gt_footnotes {
+#mjgcyzfvni .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -1050,7 +1066,7 @@ window.Quarto = {
   border-right-color: #D3D3D3;
 }
 
-#hsdpovxmfn .gt_footnote {
+#mjgcyzfvni .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding-top: 4px;
@@ -1059,7 +1075,7 @@ window.Quarto = {
   padding-right: 5px;
 }
 
-#hsdpovxmfn .gt_sourcenotes {
+#mjgcyzfvni .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -1073,7 +1089,7 @@ window.Quarto = {
   border-right-color: #D3D3D3;
 }
 
-#hsdpovxmfn .gt_sourcenote {
+#mjgcyzfvni .gt_sourcenote {
   font-size: 90%;
   padding-top: 4px;
   padding-bottom: 4px;
@@ -1081,72 +1097,72 @@ window.Quarto = {
   padding-right: 5px;
 }
 
-#hsdpovxmfn .gt_left {
+#mjgcyzfvni .gt_left {
   text-align: left;
 }
 
-#hsdpovxmfn .gt_center {
+#mjgcyzfvni .gt_center {
   text-align: center;
 }
 
-#hsdpovxmfn .gt_right {
+#mjgcyzfvni .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#hsdpovxmfn .gt_font_normal {
+#mjgcyzfvni .gt_font_normal {
   font-weight: normal;
 }
 
-#hsdpovxmfn .gt_font_bold {
+#mjgcyzfvni .gt_font_bold {
   font-weight: bold;
 }
 
-#hsdpovxmfn .gt_font_italic {
+#mjgcyzfvni .gt_font_italic {
   font-style: italic;
 }
 
-#hsdpovxmfn .gt_super {
+#mjgcyzfvni .gt_super {
   font-size: 65%;
 }
 
-#hsdpovxmfn .gt_footnote_marks {
+#mjgcyzfvni .gt_footnote_marks {
   font-size: 75%;
   vertical-align: 0.4em;
   position: initial;
 }
 
-#hsdpovxmfn .gt_asterisk {
+#mjgcyzfvni .gt_asterisk {
   font-size: 100%;
   vertical-align: 0;
 }
 
-#hsdpovxmfn .gt_indent_1 {
+#mjgcyzfvni .gt_indent_1 {
   text-indent: 5px;
 }
 
-#hsdpovxmfn .gt_indent_2 {
+#mjgcyzfvni .gt_indent_2 {
   text-indent: 10px;
 }
 
-#hsdpovxmfn .gt_indent_3 {
+#mjgcyzfvni .gt_indent_3 {
   text-indent: 15px;
 }
 
-#hsdpovxmfn .gt_indent_4 {
+#mjgcyzfvni .gt_indent_4 {
   text-indent: 20px;
 }
 
-#hsdpovxmfn .gt_indent_5 {
+#mjgcyzfvni .gt_indent_5 {
   text-indent: 25px;
 }
 
-#hsdpovxmfn .katex-display {
+#mjgcyzfvni .katex-display {
   display: inline-flex !important;
   margin-bottom: 0.75em !important;
 }
 
-#hsdpovxmfn div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
+#mjgcyzfvni div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
   height: 0px !important;
 }
 </style>
@@ -1197,12 +1213,12 @@ window.Quarto = {
 </div>
 </div>
 <p>なぜこのような取引価格のブレが生じるのでしょうか？ データの誤入力など潜在的な理由は複数ありますが、有力なのは<strong>このデータに含まれない重要な変数</strong> が存在することです。 例えば、最寄駅や公園の近くにあるか否かなど、より詳細な立地情報が考えられます。 あるいは売り手や買い手の”交渉力”を反映している可能性もあります。 このような多様な要因が、取引価格に影響を与え、結果として事例の下振れ/上振れが生じます。</p>
-<p>観察できない変数は不動産のみならず、労働者や家計、企業、あるいは国レベルの分析でも同様の問題を引き起こします。 観察できる変数 <span class="math inline">\(X\)</span> が一致した事例内でも、観察できない変数は事例間で大きく異なっている可能性が高く、結果 <span class="math inline">\(Y\)</span> の値に大きな差が生まれます。 そして現実の社会や市場の複雑さを考慮すると、どれだけ詳細な調査を行ったとしても、<span class="math inline">\(Y\)</span>に影響を与える全ての要因を観察することは困難です。</p>
+<p>観察できない変数は不動産のみならず、個人や家計、企業、あるいは国レベルの分析でも同様の問題を引き起こします。 観察できる変数 <span class="math inline">\(X\)</span> が一致した事例内でも、観察できない変数は事例間で大きく異なっている可能性が高く、結果 <span class="math inline">\(Y\)</span> の値に大きな差が生まれます。 そして現実の社会や市場の複雑さを考慮すると、どれだけ詳細な調査を行ったとしても、<span class="math inline">\(Y\)</span>に影響を与える全ての要因を観察することは困難です。</p>
 </section>
 <section id="コンセプト-集計" class="level2" data-number="1.2">
 <h2 data-number="1.2" class="anchored" data-anchor-id="コンセプト-集計"><span class="header-section-number">1.2</span> コンセプト: 集計</h2>
 <p>先の個別事例分析では、観察できない変数の偏りを確認する方法として、同じ<span class="math inline">\(X\)</span>を持つ事例との整合性を確認しました。 このようなアプローチの発展として、同じ<span class="math inline">\(X\)</span>を持つ事例集団について、<span class="math inline">\(Y\)</span>の特徴を要約する方法があります。 例えば、平均値や分散、中央値、あるいは研究者による”所見”や”印象”、代表的な事例を紹介するなどです。</p>
-<p>恣意的な分析を避けるためには、調査計画を立てる時点で、要約方法も決定し、分析を通じてコミットすることが望まれます。 代表的な値の候補としては、中央値や最頻値など多くの候補があります。 現状よく用いられるのは、平均値の活用です。</p>
+<p>恣意的な分析を避けるためには、調査計画を立てる時点で、要約方法も決定し、分析を通じてコミットすることが望まれます。 現状よく用いられるのは、平均値です。</p>
 <div class="callout callout-style-default callout-important callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -1229,25 +1245,31 @@ window.Quarto = {
 </div>
 <p>上記の散布図は、社会分析に用いるデータの持つ典型的な特徴を表しています。 極めて乱雑であり、同じ<span class="math inline">\(X\)</span> でも <span class="math inline">\(Y\)</span> が異なる事例が多くなっています。 これは、観察できない変数の偏りが深刻である可能性を示唆しています。 また <span class="math inline">\(X\)</span> の値に応じた事例数の偏りも顕著であり、特に100平米を超えるような物件の取引事例は少なくなっています。</p>
 <p>以下の各点は、各<span class="math inline">\(X\)</span>の組み合わせごとに計算されたデータ上の平均値を図示しています。</p>
-<div id="fig-ExampleComparison" class="quarto-float quarto-figure quarto-figure-center anchored">
-<figure class="quarto-float quarto-float-fig figure">
-<div aria-describedby="fig-ExampleComparison-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="Figure/ExampleRealAverage.png" class="img-fluid figure-img">
-</div>
-<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-ExampleComparison-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;1.1: 平均値
-</figcaption>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="model_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
+</div>
+</div>
 </div>
 <p>同図からは、<span class="math inline">\(Y\)</span> と <span class="math inline">\(X\)</span> のデータ上の関係性について、いくつか示唆を与えてます。 部屋が広くなると取引価格は高くなる傾向があります。</p>
 <p>しかしながら多くの応用では、このような<span class="math inline">\(X\)</span>ごとに集計するだけでは、不十分です。 本ノートでは、以下の少数事例の問題に注意が必要です。</p>
 </section>
 <section id="少数事例の集計" class="level2" data-number="1.3">
 <h2 data-number="1.3" class="anchored" data-anchor-id="少数事例の集計"><span class="header-section-number">1.3</span> 少数事例の集計</h2>
-<p>平均値は有力な要約方法ですが、算出に使用する事例の数に注意してください。 <a href="#fig-ExampleComparison" class="quarto-xref">Figure&nbsp;<span>1.1</span></a> では、特に100平米を超える物件について、事例が少なくなっています。 <a href="population.html" class="quarto-xref"><span>Chapter 2</span></a> では、仮に平均値を計算するとしても、事例数が少ないと、各事例の観察できない変数の偏りの影響を強く受ける可能性を指摘します。 <a href="OLS.html" class="quarto-xref"><span>Chapter 3</span></a> と <a href="LASSO.html" class="quarto-xref"><span>Chapter 5</span></a> では、このような小規模事例の集計問題を緩和するための手法として、OLSやLASSOを紹介します。</p>
-</section>
-<section id="reference" class="level2" data-number="1.4">
-<h2 data-number="1.4" class="anchored" data-anchor-id="reference"><span class="header-section-number">1.4</span> Reference</h2>
+<p>平均値は有力な要約方法ですが、算出に使用する事例の数に注意してください。 部屋の広さ (Size) ごとの事例数は、以下の通りです。</p>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="model_files/figure-html/unnamed-chunk-6-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>特に20平米を下回る/100平米を超える物件について、事例が少なくなっています。 <a href="population.html" class="quarto-xref"><span>Chapter 2</span></a> では、仮に平均値を計算するとしても、事例数が少ないと、各事例の観察できない変数の偏りの影響を強く受ける可能性を指摘します。 <a href="OLS.html" class="quarto-xref"><span>Chapter 3</span></a> と <a href="LASSO.html" class="quarto-xref"><span>Chapter 5</span></a> では、このような小規模事例の集計問題を緩和するための手法として、OLSやLASSOを紹介します。</p>
 
 
 </section>

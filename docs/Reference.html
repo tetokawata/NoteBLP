@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>3&nbsp; データ上でのOLS – 母平均の「補助線」の推定 (ver 0.1)</title>
+<title>Reference – 母平均の「補助線」の推定 (ver 0.1)</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -20,41 +20,26 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
-/* CSS for syntax highlighting */
-pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { line-height: 1.25; }
-pre > code.sourceCode > span:empty { height: 1.2em; }
-.sourceCode { overflow: visible; }
-code.sourceCode > span { color: inherit; text-decoration: inherit; }
-div.sourceCode { margin: 1em 0; }
-pre.sourceCode { margin: 0; }
-@media screen {
-div.sourceCode { overflow: auto; }
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
 }
-@media print {
-pre > code.sourceCode { white-space: pre-wrap; }
-pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
 }
-pre.numberSource code
-  { counter-reset: source-line 0; }
-pre.numberSource code > span
-  { position: relative; left: -4em; counter-increment: source-line; }
-pre.numberSource code > span > a:first-child::before
-  { content: counter(source-line);
-    position: relative; left: -1em; text-align: right; vertical-align: baseline;
-    border: none; display: inline-block;
-    -webkit-touch-callout: none; -webkit-user-select: none;
-    -khtml-user-select: none; -moz-user-select: none;
-    -ms-user-select: none; user-select: none;
-    padding: 0 4px; width: 4em;
-  }
-pre.numberSource { margin-left: 3em;  padding-left: 4px; }
-div.sourceCode
-  {   }
-@media screen {
-pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
 }
-</style>
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
 
 
 <script src="site_libs/quarto-nav/quarto-nav.js"></script>
@@ -64,8 +49,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="site_libs/quarto-search/fuse.min.js"></script>
 <script src="site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="./">
-<link href="./PopulationOLS.html" rel="next">
-<link href="./population.html" rel="prev">
+<link href="./prediction.html" rel="next">
+<link href="./LASSO.html" rel="prev">
 <script src="site_libs/quarto-html/quarto.js"></script>
 <script src="site_libs/quarto-html/popper.min.js"></script>
 <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
@@ -103,35 +88,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   }
 }</script>
 
-  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
-  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
-
-<script type="text/javascript">
-const typesetMath = (el) => {
-  if (window.MathJax) {
-    // MathJax Typeset
-    window.MathJax.typeset([el]);
-  } else if (window.katex) {
-    // KaTeX Render
-    var mathElements = el.getElementsByClassName("math");
-    var macros = [];
-    for (var i = 0; i < mathElements.length; i++) {
-      var texText = mathElements[i].firstChild;
-      if (mathElements[i].tagName == "SPAN") {
-        window.katex.render(texText.data, mathElements[i], {
-          displayMode: mathElements[i].classList.contains('display'),
-          throwOnError: false,
-          macros: macros,
-          fleqn: false
-        });
-      }
-    }
-  }
-}
-window.Quarto = {
-  typesetMath
-};
-</script>
 
 </head>
 
@@ -144,7 +100,7 @@ window.Quarto = {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./OLS.html"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">データ上でのOLS</span></a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./Reference.html">Reference</a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -189,7 +145,7 @@ window.Quarto = {
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./OLS.html" class="sidebar-item-text sidebar-link active">
+  <a href="./OLS.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">データ上でのOLS</span></span></a>
   </div>
 </li>
@@ -207,7 +163,7 @@ window.Quarto = {
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./Reference.html" class="sidebar-item-text sidebar-link">
+  <a href="./Reference.html" class="sidebar-item-text sidebar-link active">
  <span class="menu-text">Reference</span></a>
   </div>
 </li>
@@ -233,32 +189,15 @@ window.Quarto = {
 </nav>
 <div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        <nav id="TOC" role="doc-toc" class="toc-active">
-    <h2 id="toc-title">Table of contents</h2>
-   
-  <ul>
-  <li><a href="#線型モデル" id="toc-線型モデル" class="nav-link active" data-scroll-target="#線型モデル"><span class="header-section-number">3.1</span> 線型モデル</a></li>
-  <li><a href="#ols" id="toc-ols" class="nav-link" data-scroll-target="#ols"><span class="header-section-number">3.2</span> OLS</a></li>
-  <li><a href="#例" id="toc-例" class="nav-link" data-scroll-target="#例"><span class="header-section-number">3.3</span> 例</a>
-  <ul class="collapse">
-  <li><a href="#単回帰" id="toc-単回帰" class="nav-link" data-scroll-target="#単回帰"><span class="header-section-number">3.3.1</span> 単回帰</a></li>
-  <li><a href="#重回帰" id="toc-重回帰" class="nav-link" data-scroll-target="#重回帰"><span class="header-section-number">3.3.2</span> 重回帰</a></li>
-  <li><a href="#交差項と高次項の導入" id="toc-交差項と高次項の導入" class="nav-link" data-scroll-target="#交差項と高次項の導入"><span class="header-section-number">3.3.3</span> 交差項と高次項の導入</a></li>
-  </ul></li>
-  <li><a href="#rによる実践例" id="toc-rによる実践例" class="nav-link" data-scroll-target="#rによる実践例"><span class="header-section-number">3.4</span> Rによる実践例</a>
-  <ul class="collapse">
-  <li><a href="#準備" id="toc-準備" class="nav-link" data-scroll-target="#準備"><span class="header-section-number">3.4.1</span> 準備</a></li>
-  </ul></li>
-  </ul>
-</nav>
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
+        
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title"><span id="sec-OLS" class="quarto-section-identifier"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">データ上でのOLS</span></span></h1>
+<h1 class="title">Reference</h1>
 </div>
 
 
@@ -275,156 +214,62 @@ window.Quarto = {
 </header>
 
 
-<p>少数事例の要約を避けるためには、より”荒い”要約が必要となります。 荒い要約の代表例として、手元のデータから<span class="math inline">\(Y\)</span>の平均値が持つ性質を簡便に捉えるモデルである、線型モデルを紹介します。 また線型モデルを推定する方法として最小二乗法(OLS)を紹介します。</p>
-<p>本アプローチは、研究者が任意にモデルを単純化することが可能です。 適切な単純化がなされるのであれば、限られた事例数のもとでも、母平均の特徴を類推する有効な方法となり得ます <a href="PopulationOLS.html" class="quarto-xref"><span>Chapter 4</span></a>。</p>
-<section id="線型モデル" class="level2" data-number="3.1">
-<h2 data-number="3.1" class="anchored" data-anchor-id="線型モデル"><span class="header-section-number">3.1</span> 線型モデル</h2>
-<p><span class="math inline">\(Y\)</span> の平均値と <span class="math inline">\(X\)</span> の関係性を記述するモデルを導入します。</p>
-<div class="callout callout-style-default callout-important callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
+<div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list">
+<div id="ref-angelopoulos2023conformal" class="csl-entry" role="listitem">
+Angelopoulos, Anastasios N, Stephen Bates, et al. 2023. <span>“Conformal
+Prediction: A Gentle Introduction.”</span> <em>Foundations and
+Trends<span></span> in Machine Learning</em> 16 (4): 494–591.
 </div>
-<div class="callout-title-container flex-fill">
-線型モデル
+<div id="ref-angrist2009mostly" class="csl-entry" role="listitem">
+Angrist, Joshua D, and Jörn-Steffen Pischke. 2009. <em>Mostly Harmless
+Econometrics: An Empiricist’s Companion</em>. Princeton university
+press.
 </div>
+<div id="ref-aronow2019foundations" class="csl-entry" role="listitem">
+Aronow, Peter M, and Benjamin T Miller. 2019. <em>Foundations of
+Agnostic Statistics</em>. Cambridge University Press.
 </div>
-<div class="callout-body-container callout-body">
-<p><span class="math display">\[Yの平均値\simeq Yのモデル=\beta_0 + \beta_1X_1 + \beta_2X_2 +.. + \beta_LX_L\]</span></p>
-<ul>
-<li><span class="math inline">\(\beta_0,..,\beta_L\)</span> は<strong>パラメタ</strong>と呼ぶ</li>
-</ul>
+<div id="ref-belloni2014inference" class="csl-entry" role="listitem">
+Belloni, Alexandre, Victor Chernozhukov, and Christian Hansen. 2014.
+<span>“Inference on Treatment Effects After Selection Among
+High-Dimensional Controls.”</span> <em>Review of Economic Studies</em>
+81 (2): 608–50.
 </div>
+<div id="ref-chernozhukov2015valid" class="csl-entry" role="listitem">
+Chernozhukov, Victor, Christian Hansen, and Martin Spindler. 2015.
+<span>“Valid Post-Selection and Post-Regularization Inference: An
+Elementary, General Approach.”</span> <em>Annu. Rev. Econ.</em> 7 (1):
+649–88.
 </div>
-<p>以下では<span class="math inline">\(\beta_0,..,\beta_L\)</span>を決定する具体的な方法として、OLSを紹介します。</p>
-<p>線型モデルをどのように解釈すれば良いでしょうか？ 最も実践的な解釈は、平均値の”補助線”として捉えることです。</p>
-<p>以下の図では、Priceの平均値とSizeの関係性を捉えるための3つの”補助線”を描きこんいます。 すべて <span class="math inline">\(\beta_0 + \beta_1\times Size\)</span> を使用し、パラメタの値のみ変更しています。</p>
-<div class="cell">
-<div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="OLS_files/figure-html/unnamed-chunk-2-1.png" class="img-fluid figure-img" width="672"></p>
-</figure>
+<div id="ref-james2013introduction" class="csl-entry" role="listitem">
+James, Gareth, Daniela Witten, Trevor Hastie, Robert Tibshirani, et al.
+2021. <em>An Introduction to Statistical Learning</em>. Vol. 112.
+Springer.
 </div>
+<div id="ref-kuchibhotla2022post" class="csl-entry" role="listitem">
+Kuchibhotla, Arun K, John E Kolassa, and Todd A Kuffner. 2022.
+<span>“Post-Selection Inference.”</span> <em>Annual Review of Statistics
+and Its Application</em> 9 (1): 505–27.
 </div>
+<div id="ref-Lin2024To" class="csl-entry" role="listitem">
+Lin, Hanti. 2024. <span>“To <span>Be</span> a <span>Frequentist</span>
+or <span>Bayesian</span>? <span>Five</span> <span>Positions</span> in a
+<span>Spectrum</span>.”</span> <em>Harvard Data Science Review</em> 6
+(3).
 </div>
-<p>データ上の平均値は紫の点で示しています。 赤線は <span class="math inline">\(0.05 + 0.7\times Size\)</span>、 緑線は <span class="math inline">\(30 + 0.5\times Size\)</span>を示しています。</p>
-<p>水色線は <span class="math inline">\(80\)</span> 、すなわち<span class="math inline">\(\beta_0=80,\beta_1=0\)</span> とした補助線を示しています。</p>
-<p>赤線と緑線は、平均取引価格が持つ「Sizeとともに上昇する傾向がある」特徴をある程度とらえています。 対して水色線は、このような特徴を捉えられておらず、不適切であると考えれます。 モデルの大枠が同じでも、パラメタ <span class="math inline">\(\beta\)</span> の値によって、適切な要約か否かが決まってきます。</p>
-</section>
-<section id="ols" class="level2" data-number="3.2">
-<h2 data-number="3.2" class="anchored" data-anchor-id="ols"><span class="header-section-number">3.2</span> OLS</h2>
-<p>パラメタの値は、データに基づいて決定されることが通常です。 代表的な決定方法としては、最小二乗法 (OLS) が挙げられます。</p>
-<div class="callout callout-style-default callout-important callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
+<div id="ref-taddy2017one" class="csl-entry" role="listitem">
+Taddy, Matt. 2017. <span>“One-Step Estimator Paths for Concave
+Regularization.”</span> <em>Journal of Computational and Graphical
+Statistics</em> 26 (3): 525–36.
 </div>
-<div class="callout-title-container flex-fill">
-OLSの定義
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<ol type="1">
-<li><p>研究者が予測モデルの大枠を以下のように設定する <span class="math display">\[Yのモデル=\beta_0 + \beta_1X_1 + \beta_2X_2 +.. + \beta_LX_L\]</span></p></li>
-<li><p>以下を最小化するように <span class="math inline">\(\beta_0,..,\beta_L\)</span> を決定する <span class="math display">\[(Yの平均値-Yのモデル^2のデータ上の平均\]</span></p></li>
-</ol>
+<div id="ref-tibshirani1996regression" class="csl-entry" role="listitem">
+Tibshirani, Robert. 1996. <span>“Regression Shrinkage and Selection via
+the Lasso.”</span> <em>Journal of the Royal Statistical Society Series
+B: Statistical Methodology</em> 58 (1): 267–88.
 </div>
 </div>
-<p>OLSは、研究者が事前に大枠を設定したモデルを、データに最も合うように推定する手法であると解釈できます。</p>
-</section>
-<section id="例" class="level2" data-number="3.3">
-<h2 data-number="3.3" class="anchored" data-anchor-id="例"><span class="header-section-number">3.3</span> 例</h2>
-<section id="単回帰" class="level3" data-number="3.3.1">
-<h3 data-number="3.3.1" class="anchored" data-anchor-id="単回帰"><span class="header-section-number">3.3.1</span> 単回帰</h3>
-<p>Sizeと立地(中心6区か否か)に応じて、平均値を計算しました。</p>
-<div class="cell">
-<div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="OLS_files/figure-html/unnamed-chunk-3-1.png" class="img-fluid figure-img" width="672"></p>
-</figure>
-</div>
-</div>
-</div>
-<p>平均値の最もシンプルな線型モデルとして、以下を推定してみます。 <span class="math display">\[予測値 = \beta_0 + \beta_1\times Size\]</span> <span class="math inline">\(\beta_0,\beta_1\)</span> は、以下のデータ上の平均二乗誤差を最小化するように推定します。<span class="math display">\[(Y - 予測値)^2 のデータ上の平均\]</span> このような推定方法は、単回帰として教科書では紹介されてきました。</p>
-<p>推定結果を図示すると、以下となります。</p>
-<div class="cell">
-<div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="OLS_files/figure-html/unnamed-chunk-4-1.png" class="img-fluid figure-img" width="672"></p>
-</figure>
-</div>
-</div>
-</div>
-<p>広い物件は取引価格が高くなる傾向を捉えることができています。 しかしながら立地に関わらず同じモデルを当てはめており、中心６区の方が取引価格が高い傾向を捉えられていません。</p>
-</section>
-<section id="重回帰" class="level3" data-number="3.3.2">
-<h3 data-number="3.3.2" class="anchored" data-anchor-id="重回帰"><span class="header-section-number">3.3.2</span> 重回帰</h3>
-<p>Districtと平均取引価格の関係性を捉えるために、以下のモデルの推定を試みます。 <span class="math display">\[予測値 = \beta_0 + \beta_1\times Size + \beta_2\times District\]</span> <span class="math inline">\(District\)</span> は、中心６区に立地していれば1、それ以外では0を取ります。 <span class="math inline">\(\beta_0,..,\beta_2\)</span> は引き続き、データへの適合度を最大化するように推定できます。 このような推定方法は、重回帰として教科書では紹介されてきました。</p>
-<p>推定結果を図示すると、以下となります。</p>
-<div class="cell">
-<div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="OLS_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid figure-img" width="672"></p>
-</figure>
-</div>
-</div>
-</div>
-<p>中心6区の方が平均取引価格が高いという性質を上手く捉えています。 しかしながら、中心6区において広い物件の取引価格が一段上昇するという性質は捉えきれていません。</p>
-</section>
-<section id="交差項と高次項の導入" class="level3" data-number="3.3.3">
-<h3 data-number="3.3.3" class="anchored" data-anchor-id="交差項と高次項の導入"><span class="header-section-number">3.3.3</span> 交差項と高次項の導入</h3>
-<p>母平均が持つ複雑な性質を捉えるために、交差効果と高次項を導入し、さらに複雑なモデルを推定してみます。 <span class="math display">\[予測値 = \beta_0 + \beta_1 Size+\beta_7District + \underbrace{\beta_2Size^2 +..+\beta_6Size^6}_{高次項}\]</span> <span class="math display">\[+\underbrace{\beta_8 Size\times District +..+\beta_{14}Size^6\times District}_{交差効果}\]</span> このような複雑なモデルであったとしても、データへの適合度を最大化するように推定できます。</p>
-<div class="cell">
-<div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="OLS_files/figure-html/unnamed-chunk-6-1.png" class="img-fluid figure-img" width="672"></p>
-</figure>
-</div>
-</div>
-</div>
-<p>複雑なモデルを最小二乗法で推定すると、よりデータへの適合度を改善し、データ上の平均値に近づけることができます。 しかしながら次節で論じる通り、母集団の特徴を捉えることを目標とするのであれば、このことは必ずしも望ましいとはいえません。 なぜならば、限れたデータから算出した平均値は、一般に母平均から乖離するためです。</p>
-</section>
-</section>
-<section id="rによる実践例" class="level2" data-number="3.4">
-<h2 data-number="3.4" class="anchored" data-anchor-id="rによる実践例"><span class="header-section-number">3.4</span> Rによる実践例</h2>
-<ul>
-<li><p>以下のパッケージを使用</p>
-<ul>
-<li>readr (tidyverseに同梱): データの読み込み</li>
-</ul></li>
-</ul>
-<section id="準備" class="level3" data-number="3.4.1">
-<h3 data-number="3.4.1" class="anchored" data-anchor-id="準備"><span class="header-section-number">3.4.1</span> 準備</h3>
-<p>データを取得します。</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>Data <span class="ot">=</span> readr<span class="sc">::</span><span class="fu">read_csv</span>(<span class="st">"Public.csv"</span>) <span class="co"># データ読み込み</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-<p>lm関数を用いてOLSを推定します。</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>OLS <span class="ot">=</span> <span class="fu">lm</span>(Price <span class="sc">~</span> Size <span class="sc">+</span> Tenure <span class="sc">+</span> StationDistance,</span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>         Data) <span class="co"># OLS</span></span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>OLS</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>
-Call:
-lm(formula = Price ~ Size + Tenure + StationDistance, data = Data)
-
-Coefficients:
-    (Intercept)             Size           Tenure  StationDistance  
-        19.7206           1.0199          -0.6392          -1.3851  </code></pre>
-</div>
-</div>
-<p>Coefficientsが<span class="math inline">\(\beta\)</span>の推定値を示しています。 例えば、推定された線型モデルにおいて、Size(部屋の広さ)と平均取引価格は正の関係性がありますが、Tenure(築年数)とStationDistance(駅からの距離)は負の関係性が見られます。</p>
 
 
-</section>
-</section>
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
@@ -849,13 +694,13 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
-      <a href="./population.html" class="pagination-link" aria-label="母分布">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">母分布</span></span>
+      <a href="./LASSO.html" class="pagination-link" aria-label="LASSO">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">LASSO</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="./PopulationOLS.html" class="pagination-link" aria-label="母集団上でのOLS">
-        <span class="nav-page-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">母集団上でのOLS</span></span> <i class="bi bi-arrow-right-short"></i>
+      <a href="./prediction.html" class="pagination-link" aria-label="応用: 予測">
+        <span class="nav-page-text"><span class="chapter-number">A</span>&nbsp; <span class="chapter-title">応用: 予測</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>

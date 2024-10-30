@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>4&nbsp; 母集団上でのOLS – 母平均の「補助線」の推定</title>
+<title>4&nbsp; 母集団上でのOLS – 母平均の「補助線」の推定 (ver 0.1)</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -179,7 +179,7 @@ window.Quarto = {
   <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
     <div class="pt-lg-2 mt-2 text-left sidebar-header">
     <div class="sidebar-title mb-0 py-0">
-      <a href="./">母平均の「補助線」の推定</a> 
+      <a href="./">母平均の「補助線」の推定 (ver 0.1)</a> 
     </div>
       </div>
         <div class="mt-2 flex-shrink-0 align-items-center">
@@ -227,10 +227,27 @@ window.Quarto = {
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./prediction.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">応用: 予測</span></span></a>
+  <a href="./Reference.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Reference</span></a>
   </div>
 </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true">
+ <span class="menu-text">Appendices</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./prediction.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">A</span>&nbsp; <span class="chapter-title">応用: 予測</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
     </ul>
     </div>
 </nav>
@@ -248,7 +265,6 @@ window.Quarto = {
   <ul class="collapse">
   <li><a href="#準備" id="toc-準備" class="nav-link" data-scroll-target="#準備"><span class="header-section-number">4.4.1</span> 準備</a></li>
   </ul></li>
-  <li><a href="#reference" id="toc-reference" class="nav-link" data-scroll-target="#reference"><span class="header-section-number">4.5</span> Reference</a></li>
   </ul>
 </nav>
     </div>
@@ -274,8 +290,8 @@ window.Quarto = {
 </header>
 
 
-<p>データ上で実施したOLSは、母集団の特徴ついて、何らかの含意を持つでしょうか？ 伝統的な教科書では、研究者が設定した線型モデルが、妥当な母平均のモデルであれば、OLSにより推定された線型モデルは、母平均の優れた推定値であることが強調されます。 しかしながら社会科学のほぼ全ての応用において、研究者が設定するモデルは、誤定式化((misspecification)を犯しており、どのように推定しても母平均から乖離してしまいます。</p>
-<p>本章では、誤定式化を犯しているケースにおいても、OLSは母集団の特徴について明確な示唆を持つこと <span class="citation" data-cites="angrist2009mostly aronow2019foundations">(<a href="#ref-angrist2009mostly" role="doc-biblioref">Angrist and Pischke 2009</a>; <a href="#ref-aronow2019foundations" role="doc-biblioref">Aronow and Miller 2019</a>)</span> を紹介します。 また誤定式化を減らすためには、モデルを複雑化する必要がありますが、パラメタの推定精度との間にトレードオフが生じることも強調します。</p>
+<p>データ上で実施したOLSは、母集団の特徴ついて、何らかの含意を持つでしょうか？ 伝統的な教科書では、研究者が設定した線型モデルが、妥当な母平均のモデルであれば、OLSにより推定された線型モデルは、母平均の優れた推定値であることが強調されます。 しかしながら社会科学のほぼ全ての応用において、研究者が設定するモデルは、誤定式化 (misspecification) を犯しており、どのように推定しても母平均から乖離してしまいます。</p>
+<p>本章では、誤定式化を犯しているケースにおいても、OLSは母集団の特徴について明確な示唆を持つこと <span class="citation" data-cites="angrist2009mostly aronow2019foundations">(<a href="Reference.html#ref-angrist2009mostly" role="doc-biblioref">Angrist and Pischke 2009</a>; <a href="Reference.html#ref-aronow2019foundations" role="doc-biblioref">Aronow and Miller 2019</a>)</span> を紹介します。 また誤定式化を減らすためには、モデルを複雑化する必要がありますが、パラメタの推定精度との間にトレードオフが生じることも強調します。</p>
 <section id="population-ols" class="level2" data-number="4.1">
 <h2 data-number="4.1" class="anchored" data-anchor-id="population-ols"><span class="header-section-number">4.1</span> Population OLS</h2>
 <p>OLSの推定結果は、母集団上での<strong>仮想的な</strong>OLSの結果を推定していると解釈することができます。 少しわかりにくい考え方なので、<a href="population.html" class="quarto-xref"><span>Chapter 2</span></a> における数値例とともに確認します。</p>
@@ -415,7 +431,7 @@ window.Quarto = {
 </div>
 </div>
 <p>複雑なモデルの推定結果は、母平均をよりよく近似していることが確認できます。</p>
-<p>このようなモデルの複雑さをめぐる問題は、Bias-Variance トレードオフと呼ばれてきました。 大規模事例を用いることができるのであれば、複雑なモデルが、母平均を上手く近似できます。 事例数が少ない場合、複雑なモデルは、母平均から大きく乖離してしまう可能性が高く、「妥協的に」単純なモデルを推定することが現実的です。</p>
+<p>このようなモデルの複雑さをめぐる問題は、Bias-Variance トレードオフと呼ばれてきました。 大規模事例を用いることができるのであれば、複雑なモデルが母平均を上手く近似できます。 事例数が少ない場合、複雑なモデルは母平均から大きく乖離してしまう可能性が高く、「妥協的に」単純なモデルを推定することが現実的です。</p>
 <p>応用上の問題は、適切なモデルの複雑さについて、理論的な示唆が限られていることです<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a>。 次の章では、複雑なモデルであったとしても適切に推定できる手法である、LASSOを紹介します。</p>
 </section>
 <section id="rによる実践例" class="level2" data-number="4.4">
@@ -467,13 +483,9 @@ StationDistance -1.2540221 6374</code></pre>
 </div>
 </div>
 </div>
-</section>
-</section>
-<section id="reference" class="level2" data-number="4.5">
-<h2 data-number="4.5" class="anchored" data-anchor-id="reference"><span class="header-section-number">4.5</span> Reference</h2>
 
 
-<div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list">
+<div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list" style="display: none">
 <div id="ref-angrist2009mostly" class="csl-entry" role="listitem">
 Angrist, Joshua D, and Jörn-Steffen Pischke. 2009. <em>Mostly Harmless Econometrics: An Empiricist’s Companion</em>. Princeton university press.
 </div>
@@ -481,6 +493,7 @@ Angrist, Joshua D, and Jörn-Steffen Pischke. 2009. <em>Mostly Harmless Economet
 Aronow, Peter M, and Benjamin T Miller. 2019. <em>Foundations of Agnostic Statistics</em>. Cambridge University Press.
 </div>
 </div>
+</section>
 </section>
 <section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes">
 <hr>

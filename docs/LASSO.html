@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>5&nbsp; LASSO – 母平均の「補助線」の推定</title>
+<title>5&nbsp; LASSO – 母平均の「補助線」の推定 (ver 0.1)</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -84,7 +84,7 @@ div.csl-indent {
 <script src="site_libs/quarto-search/fuse.min.js"></script>
 <script src="site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="./">
-<link href="./prediction.html" rel="next">
+<link href="./Reference.html" rel="next">
 <link href="./PopulationOLS.html" rel="prev">
 <script src="site_libs/quarto-html/quarto.js"></script>
 <script src="site_libs/quarto-html/popper.min.js"></script>
@@ -179,7 +179,7 @@ window.Quarto = {
   <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
     <div class="pt-lg-2 mt-2 text-left sidebar-header">
     <div class="sidebar-title mb-0 py-0">
-      <a href="./">母平均の「補助線」の推定</a> 
+      <a href="./">母平均の「補助線」の推定 (ver 0.1)</a> 
     </div>
       </div>
         <div class="mt-2 flex-shrink-0 align-items-center">
@@ -227,10 +227,27 @@ window.Quarto = {
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./prediction.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">応用: 予測</span></span></a>
+  <a href="./Reference.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Reference</span></a>
   </div>
 </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true">
+ <span class="menu-text">Appendices</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./prediction.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">A</span>&nbsp; <span class="chapter-title">応用: 予測</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
     </ul>
     </div>
 </nav>
@@ -250,7 +267,6 @@ window.Quarto = {
   <ul class="collapse">
   <li><a href="#準備" id="toc-準備" class="nav-link" data-scroll-target="#準備"><span class="header-section-number">5.3.1</span> 準備</a></li>
   </ul></li>
-  <li><a href="#reference" id="toc-reference" class="nav-link" data-scroll-target="#reference"><span class="header-section-number">5.4</span> Reference</a></li>
   </ul>
 </nav>
     </div>
@@ -276,7 +292,7 @@ window.Quarto = {
 </header>
 
 
-<p>複雑なモデルを適切に推定する方法として、LASSO <span class="citation" data-cites="tibshirani1996regression">(<a href="#ref-tibshirani1996regression" role="doc-biblioref">Tibshirani 1996</a>)</span> を紹介します。 LASSOは、罰則付き回帰と呼ばれる枠組みの一つの手法です。 OLSと同様に線型予測モデルを推定しますが、データへの当てはまりだけでなく、モデルの複雑性も抑制することも目指します。</p>
+<p>複雑なモデルを適切に推定する方法として、LASSO <span class="citation" data-cites="tibshirani1996regression">(<a href="Reference.html#ref-tibshirani1996regression" role="doc-biblioref">Tibshirani 1996</a>)</span> を紹介します。 LASSOは、罰則付き回帰と呼ばれる枠組みの一つの手法です。 OLSと同様に線型予測モデルを推定しますが、データへの当てはまりだけでなく、モデルの複雑性も抑制することも目指します。</p>
 <section id="推定方法" class="level2" data-number="5.1">
 <h2 data-number="5.1" class="anchored" data-anchor-id="推定方法"><span class="header-section-number">5.1</span> 推定方法</h2>
 <p>例えば、以下のモデルの推定を目指します。<span class="math display">\[\beta_1 Size\times 板橋区ダミー+.. + \beta_6 Size^6\times 板橋区ダミー\]</span> <span class="math display">\[+..+\beta_{132} Size\times 中央区ダミー+.. +\beta_{138} Size\times 中央区ダミー\]</span></p>
@@ -292,12 +308,12 @@ window.Quarto = {
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p><span class="math display">\[(Y - 予測値)^2 のデータ上の平均\]</span> <span class="math display">\[+ \underbrace{\lambda}_{Tunning\ Parameter} (\beta_1の絶対値 +..)\]</span> <span class="math inline">\(\lambda\)</span>は、データへの当てはまりではなく、モデルの予測性能を高めるように決定する。 具体的には、交差検証を用いる方法、情報基準などの理論的な評価指標を用いる方法などがある <span class="citation" data-cites="belloni2014inference taddy2017one">(<a href="#ref-belloni2014inference" role="doc-biblioref">Belloni, Chernozhukov, and Hansen 2014</a>; <a href="#ref-taddy2017one" role="doc-biblioref">Taddy 2017</a>)</span> 。</p>
+<p><span class="math display">\[(Y - 予測値)^2 のデータ上の平均\]</span> <span class="math display">\[+ \underbrace{\lambda}_{Tunning\ Parameter} (\beta_1の絶対値 +..)\]</span> <span class="math inline">\(\lambda\)</span>は、データへの当てはまりではなく、モデルの予測性能を高めるように決定する。 具体的には、交差検証を用いる方法<span class="citation" data-cites="tibshirani1996regression">(<a href="Reference.html#ref-tibshirani1996regression" role="doc-biblioref">Tibshirani 1996</a>)</span>、情報基準などの理論的な評価指標を用いる方法などがある <span class="citation" data-cites="belloni2014inference taddy2017one">(<a href="Reference.html#ref-belloni2014inference" role="doc-biblioref">Belloni, Chernozhukov, and Hansen 2014</a>; <a href="Reference.html#ref-taddy2017one" role="doc-biblioref">Taddy 2017</a>)</span> 。</p>
 </div>
 </div>
-<p><span class="math inline">\(\lambda\)</span> に応じて、予測モデルがどのように変化するのか考えてみます。 <span class="math inline">\(\lambda\)</span> を変化させることで、予測モデルは、単純平均と複雑なモデルのOLSの間で変化することになります。 <span class="math inline">\(\lambda=0\)</span> であれば、OLSと全く同じモデルを推定します。 よって、複雑な線型モデルを推定した場合は丸暗記モデルに近いモデルとなります。 <span class="math inline">\(\lambda\)</span> を非常に大きい値を設定した場合、<span class="math inline">\(\beta_1=\beta_2=..= 0\)</span> となります。 この場合は<span class="math inline">\(\beta_0\)</span>をデータに当てはまるように推定することになり、単純平均と一致します。</p>
+<p><span class="math inline">\(\lambda\)</span> に応じて、予測モデルがどのように変化するのか考えてみます。 <span class="math inline">\(\lambda\)</span> を変化させることで、予測モデルは、単純平均と複雑なモデルのOLSの間で変化することになります。 <span class="math inline">\(\lambda=0\)</span> であれば、OLSと全く同じモデルを推定します。 よって複雑な線型モデルを推定した場合は、データ上の平均値に近いモデルとなります。 <span class="math inline">\(\lambda\)</span> を非常に大きい値を設定した場合、<span class="math inline">\(\beta_1=\beta_2=..= 0\)</span> となります。 この場合は<span class="math inline">\(\beta_0\)</span>をデータに当てはまるように推定することになり、単純平均と一致します。</p>
 <p>以下の数値例は、200事例からなるデータについて、LASSOにより以下のモデルを推定しました <span class="math display">\[\beta_0 + \beta_1Size+..+\beta_6Size^6\]</span></p>
-<p><span class="math inline">\(\lambda\)</span>については、0,0.005,0.05、および赤池情報基準により選ばれた値 <span class="citation" data-cites="taddy2017one">(<a href="#ref-taddy2017one" role="doc-biblioref">Taddy 2017</a>)</span> を使用した結果を図示しています。</p>
+<p><span class="math inline">\(\lambda\)</span>については、0,0.005,0.05、および赤池情報基準により選ばれた値 <span class="citation" data-cites="taddy2017one">(<a href="Reference.html#ref-taddy2017one" role="doc-biblioref">Taddy 2017</a>)</span> を使用した結果を図示しています。</p>
 <div class="cell">
 <div class="cell-output-display">
 <div>
@@ -307,7 +323,7 @@ window.Quarto = {
 </div>
 </div>
 </div>
-<p><span class="math inline">\(\lambda=0\)</span> に比べると、<span class="math inline">\(\lambda\)</span> の値が大きくなるにつれ、モデルが単純な曲線に近づいていることが確認できます。 また <span class="citation" data-cites="taddy2017one">Taddy (<a href="#ref-taddy2017one" role="doc-biblioref">2017</a>)</span> に基づいて設定された<span class="math inline">\(\lambda\)</span> のもとでは、かなり単純化されたモデルが推定されたことも確認できます。</p>
+<p><span class="math inline">\(\lambda=0\)</span> に比べると、<span class="math inline">\(\lambda\)</span> の値が大きくなるにつれ、モデルが単純な曲線に近づいていることが確認できます。 また <span class="citation" data-cites="taddy2017one">Taddy (<a href="Reference.html#ref-taddy2017one" role="doc-biblioref">2017</a>)</span> に基づいて設定された<span class="math inline">\(\lambda\)</span> のもとでは、かなり単純化されたモデルが推定されたことも確認できます。</p>
 <div class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -324,7 +340,7 @@ window.Quarto = {
 <section id="事例数の拡大" class="level3" data-number="5.1.1">
 <h3 data-number="5.1.1" class="anchored" data-anchor-id="事例数の拡大"><span class="header-section-number">5.1.1</span> 事例数の拡大</h3>
 <p>推定結果は、一般に事例数に強く影響を受けます。 特にLASSOなどの機械学習の方法においては、データの特徴により強く依存します。</p>
-<p>以下の数値例では、事例数を100事例から1000事例まで増やし、 <span class="math inline">\(Y\sim Size + .. + Size^10\)</span> をLASSOで推定しています (<span class="math inline">\(\lambda\)</span> は <span class="citation" data-cites="taddy2017one">Taddy (<a href="#ref-taddy2017one" role="doc-biblioref">2017</a>)</span> の方法で設定しています)。</p>
+<p>以下の数値例では、事例数を100事例から1000事例まで増やし、 <span class="math inline">\(Y\sim Size + .. + Size^10\)</span> をLASSOで推定しています (<span class="math inline">\(\lambda\)</span> は <span class="citation" data-cites="taddy2017one">Taddy (<a href="Reference.html#ref-taddy2017one" role="doc-biblioref">2017</a>)</span> の方法で設定しています)。</p>
 <div class="cell">
 <div class="cell-output-display">
 <div>
@@ -535,13 +551,9 @@ StationDistance:District墨田区    .          </code></pre>
 </div>
 </div>
 <p>“.”は、厳密に0であることを意味しています。</p>
-</section>
-</section>
-<section id="reference" class="level2" data-number="5.4">
-<h2 data-number="5.4" class="anchored" data-anchor-id="reference"><span class="header-section-number">5.4</span> Reference</h2>
 
 
-<div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list">
+<div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list" style="display: none">
 <div id="ref-belloni2014inference" class="csl-entry" role="listitem">
 Belloni, Alexandre, Victor Chernozhukov, and Christian Hansen. 2014. <span>“Inference on Treatment Effects After Selection Among High-Dimensional Controls.”</span> <em>Review of Economic Studies</em> 81 (2): 608–50.
 </div>
@@ -559,10 +571,11 @@ Tibshirani, Robert. 1996. <span>“Regression Shrinkage and Selection via the La
 </div>
 </div>
 </section>
+</section>
 <section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes">
 <hr>
 <ol>
-<li id="fn1"><p>具体的な議論については、<span class="citation" data-cites="chernozhukov2015valid">Chernozhukov, Hansen, and Spindler (<a href="#ref-chernozhukov2015valid" role="doc-biblioref">2015</a>)</span>; <span class="citation" data-cites="kuchibhotla2022post">Kuchibhotla, Kolassa, and Kuffner (<a href="#ref-kuchibhotla2022post" role="doc-biblioref">2022</a>)</span> 、などを参照<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn1"><p>具体的な議論については、<span class="citation" data-cites="chernozhukov2015valid">Chernozhukov, Hansen, and Spindler (<a href="Reference.html#ref-chernozhukov2015valid" role="doc-biblioref">2015</a>)</span>; <span class="citation" data-cites="kuchibhotla2022post">Kuchibhotla, Kolassa, and Kuffner (<a href="Reference.html#ref-kuchibhotla2022post" role="doc-biblioref">2022</a>)</span> 、などを参照<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 </ol>
 </section>
 
@@ -994,8 +1007,8 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="./prediction.html" class="pagination-link" aria-label="応用: 予測">
-        <span class="nav-page-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">応用: 予測</span></span> <i class="bi bi-arrow-right-short"></i>
+      <a href="./Reference.html" class="pagination-link" aria-label="Reference">
+        <span class="nav-page-text">Reference</span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>

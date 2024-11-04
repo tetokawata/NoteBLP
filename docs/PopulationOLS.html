@@ -2,12 +2,12 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.5.57">
+<meta name="generator" content="quarto-1.6.32">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>4&nbsp; 母集団上でのOLS – 母平均の「補助線」の推定 (ver 0.1)</title>
+<title>4&nbsp; 母集団上でのOLS – 母平均の「補助線」の推定 (ver 0.1.1)</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -91,10 +91,10 @@ div.csl-indent {
 <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="site_libs/quarto-html/anchor.min.js"></script>
 <link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-2486e1f0a3ee9ee1fc393803a1361cdb.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-ed6da6eef3892af8a4b5ed59bfb951f5.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -179,7 +179,7 @@ window.Quarto = {
   <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
     <div class="pt-lg-2 mt-2 text-left sidebar-header">
     <div class="sidebar-title mb-0 py-0">
-      <a href="./">母平均の「補助線」の推定 (ver 0.1)</a> 
+      <a href="./">母平均の「補助線」の推定 (ver 0.1.1)</a> 
     </div>
       </div>
         <div class="mt-2 flex-shrink-0 align-items-center">
@@ -261,10 +261,7 @@ window.Quarto = {
   <li><a href="#population-ols" id="toc-population-ols" class="nav-link active" data-scroll-target="#population-ols"><span class="header-section-number">4.1</span> Population OLS</a></li>
   <li><a href="#ols-population-olsの推定" id="toc-ols-population-olsの推定" class="nav-link" data-scroll-target="#ols-population-olsの推定"><span class="header-section-number">4.2</span> OLS <span class="math inline">\(=\)</span> Population OLSの推定</a></li>
   <li><a href="#モデルの複雑化" id="toc-モデルの複雑化" class="nav-link" data-scroll-target="#モデルの複雑化"><span class="header-section-number">4.3</span> モデルの複雑化</a></li>
-  <li><a href="#rによる実践例" id="toc-rによる実践例" class="nav-link" data-scroll-target="#rによる実践例"><span class="header-section-number">4.4</span> Rによる実践例</a>
-  <ul class="collapse">
-  <li><a href="#準備" id="toc-準備" class="nav-link" data-scroll-target="#準備"><span class="header-section-number">4.4.1</span> 準備</a></li>
-  </ul></li>
+  <li><a href="#rによる実践例" id="toc-rによる実践例" class="nav-link" data-scroll-target="#rによる実践例"><span class="header-section-number">4.4</span> Rによる実践例</a></li>
   </ul>
 </nav>
     </div>
@@ -290,11 +287,11 @@ window.Quarto = {
 </header>
 
 
-<p>データ上で実施したOLSは、母集団の特徴ついて、何らかの含意を持つでしょうか？ 伝統的な教科書では、研究者が設定した線型モデルが、妥当な母平均のモデルであれば、OLSにより推定された線型モデルは、母平均の優れた推定値であることが強調されます。 しかしながら社会科学のほぼ全ての応用において、研究者が設定するモデルは、誤定式化 (misspecification) を犯しており、どのように推定しても母平均から乖離してしまいます。</p>
-<p>本章では、誤定式化を犯しているケースにおいても、OLSは母集団の特徴について明確な示唆を持つこと <span class="citation" data-cites="angrist2009mostly aronow2019foundations">(<a href="Reference.html#ref-angrist2009mostly" role="doc-biblioref">Angrist and Pischke 2009</a>; <a href="Reference.html#ref-aronow2019foundations" role="doc-biblioref">Aronow and Miller 2019</a>)</span> を紹介します。 また誤定式化を減らすためには、モデルを複雑化する必要がありますが、パラメタの推定精度との間にトレードオフが生じることも強調します。</p>
+<p><a href="population.html" class="quarto-xref"><span>Chapter 2</span></a> では、データ上の平均値と母平均との関係性について論じました。 データ上で実施したOLSは、平均値と同様に、母集団の特徴ついて何らかの含意を持つでしょうか？ 伝統的な教科書では、研究者が設定した線型モデルが、母平均の妥当なモデルであれば、OLSにより推定された線型モデルは、母平均の優れた推定値であることが強調されます。 しかしながら社会科学のほぼ全ての応用において、研究者が設定するモデルは誤定式化 (misspecification) を犯しており、どのように推定しても母平均から乖離してしまいます。</p>
+<p>本章では、誤定式化を犯しているケースにおいても、OLSは母集団の特徴について明確な示唆を持つこと <span class="citation" data-cites="angrist2009mostly aronow2019foundations">(<a href="Reference.html#ref-angrist2009mostly" role="doc-biblioref">Angrist and Pischke 2009</a>; <a href="Reference.html#ref-aronow2019foundations" role="doc-biblioref">Aronow and Miller 2019</a>)</span> を紹介します。 また誤定式化を減らすためには、モデルを複雑化する必要がありますが、パラメタ推定の「精度」との間にトレードオフが生じることも強調します。</p>
 <section id="population-ols" class="level2" data-number="4.1">
 <h2 data-number="4.1" class="anchored" data-anchor-id="population-ols"><span class="header-section-number">4.1</span> Population OLS</h2>
-<p>OLSの推定結果は、母集団上での<strong>仮想的な</strong>OLSの結果を推定していると解釈することができます。 少しわかりにくい考え方なので、<a href="population.html" class="quarto-xref"><span>Chapter 2</span></a> における数値例とともに確認します。</p>
+<p>OLSの推定結果は、母集団上での<strong>仮想的な</strong>OLS (Population OLS) の結果を推定していると解釈することができます。 少しわかりにくい考え方なので、<a href="population.html" class="quarto-xref"><span>Chapter 2</span></a> における数値例とともに確認します。</p>
 <p>仮想的な4名の研究者が、同じ母集団の特徴を解明しようとしているとします。 母平均は、全研究者共通で、以下の通りとなります。</p>
 <div class="cell">
 <div class="cell-output-display">
@@ -305,7 +302,7 @@ window.Quarto = {
 </div>
 </div>
 </div>
-<p>もし母集団上で、モデル <span class="math inline">\(f(X)=\beta_0 + \beta_1X\)</span> をOLS推定すれば、以下の推定結果を得ることができます。</p>
+<p>もし母集団上で、モデル <span class="math inline">\(f(X)=\beta_0 + \beta_1X\)</span> をOLS推定できれば、以下の推定結果を得ることができます。</p>
 <div class="cell">
 <div class="cell-output-display">
 <div>
@@ -320,7 +317,7 @@ window.Quarto = {
 <li><p>Population OLSは、同じ”データ(母集団)“を用いて推定しているので、全ての研究者が同じ推定結果となります。</p></li>
 <li><p>母平均とは必ずしも一致しません。本例において、母平均は70~75平米にかけて、平均取引価格が急上昇しています。しかしながら、“一直線”のモデルを推定しているため、このような傾向はモデルに反映されません。</p></li>
 </ul>
-<p>二番目の要点は、誤定式化の問題と呼ばれ、近年大きな議論がなされてきました。</p>
+<p>二点目は誤定式化の問題と呼ばれ、近年大きな議論がなされてきました。</p>
 <div class="callout callout-style-default callout-important callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -331,7 +328,7 @@ window.Quarto = {
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>ある線型モデル <span class="math inline">\(f(X_1..X_L)=\beta_0+\beta_1X_1+..+\beta_LX_L\)</span> について、(<span class="math inline">\(X_1..X_L\)</span> における)<span class="math inline">\(Y\)</span>の母平均 と モデル<span class="math inline">\(f(X_1..X_L)\)</span> を一致させるような <span class="math inline">\(\beta_0..\beta_L\)</span> は存在しない</p>
+<p>ある線型モデル <span class="math inline">\(\beta_0+\beta_1X_1+..+\beta_LX_L\)</span> について、(<span class="math inline">\(X_1..X_L\)</span> における)<span class="math inline">\(Y\)</span>の母平均 と モデルを一致させるような <span class="math inline">\(\beta_0..\beta_L\)</span> は存在しない</p>
 </div>
 </div>
 </section>
@@ -347,7 +344,7 @@ window.Quarto = {
 </div>
 </div>
 </div>
-<p>母平均は青の実践、Population OLSは青の点線、データ上でのOLSの結果は赤の実線で示しています。</p>
+<p>母平均は青の実線、Population OLSは青の点線、データ上でのOLSの結果は赤の実線で示しています。</p>
 <p>データ上のOLS推定から得られるモデルは、母集団上でのOLSと一致はしていませんが、かなり近い性質を持っています。 事例数を増やすとさらに近くなることも確認できます。 以下では5000事例まで増やしています。</p>
 <div class="cell">
 <div class="cell-output-display">
@@ -372,15 +369,13 @@ window.Quarto = {
 </div>
 <div class="callout-body-container callout-body">
 <ul>
-<li><p>一致性: 事例数が無限大に大きくなると、データ上でのOLSはPopulation OLSの結果と一致する。</p>
-<ul>
-<li><strong>誤定式化がなければ</strong>、 Population OLSと母平均は一致するので、データ上でのOLSも母平均と一致する。</li>
-</ul></li>
-<li><p>信頼区間: 事例数が、パラメタの数に比べて十分多いと、Population OLSの結果についての信頼区間を近似計算できる。</p></li>
+<li><p>一致性: 事例数が無限大に大きくなると、データ上でのOLSはPopulation OLSの結果と一致する。</p></li>
+<li><p>信頼区間: 事例数がパラメタの数に比べて十分多いと、Population OLSの結果についての信頼区間を近似計算できる。</p></li>
 </ul>
 </div>
 </div>
-<p>大標本理論は、データ上でのOLSをPopulation OLSの推定値とみなすことを正当化します。 しかしながら、母平均の推定値とみなすためには、誤定式化がないことが前提となります。 誤定式化の確認は、社会データでは非常に困難です。 特に<span class="math inline">\(X\)</span> の数が多い場合、確立された確認方法は、筆者の知る限り存在しません。</p>
+<p>上記の性質はあくまで、データ上でのOLSとPopulation OLSとの関係性を論じていることに、改めて注意してください。 大標本理論は、データ上でのOLSをPopulation OLSの推定値とみなすことを正当化します。</p>
+<p>しかしながら、母平均の推定値とみなすためには、誤定式化がないことが前提となります。 なぜならば<strong>誤定式化が存在すると</strong>、Population OLSと母平均は一致しないので、データ上でのOLSも母平均と一致することはあり得ません。 誤定式化の確認は、社会データでは非常に困難です。 特に<span class="math inline">\(X\)</span> の数が多い場合、確立された確認方法は、筆者の知る限り存在しません。</p>
 </section>
 <section id="モデルの複雑化" class="level2" data-number="4.3">
 <h2 data-number="4.3" class="anchored" data-anchor-id="モデルの複雑化"><span class="header-section-number">4.3</span> モデルの複雑化</h2>
@@ -417,9 +412,9 @@ window.Quarto = {
 </div>
 </div>
 </div>
-<p>母平均は青の点線、データ上でのOLSの結果は、複雑なモデルについては赤の点線、シンプルなモデルについては赤の実線で示しています。</p>
-<p>複雑なモデルを推定した結果、単純なモデルよりも、母平均から大きく乖離した箇所が散見されました。 さらに複雑なモデルについての推定結果は、研究者間で大きなばらつきが見られます。</p>
-<p>これはモデルを複雑化した結果、データ上での平均値に近づくことに原因があります。 限られた事例数のもとでは、小規模な事例のみから計算された平均値が発生します。 このような小規模集計の弊害を減らす方法として、線型モデルを活用した集計を行なっていますが、モデルを複雑化するとこの集計が再び上手くいかなくなります。 このため小規模な事例の偶然の偏りを強く反映したモデルとなってしまい、結果母平均から大きく乖離してしまうリスクが高くなります。</p>
+<p>母平均は青の点線で示しています。 データ上でのOLSの結果は、複雑なモデルについては赤の点線、シンプルなモデルについては赤の実線で示しています。</p>
+<p>複雑なモデルを推定した結果、単純なモデルよりも、母平均から大きく乖離した箇所が散見されます。 さらに複雑なモデルについての推定結果は、研究者間で大きなばらつきが見られます。</p>
+<p>これはモデルを複雑化した結果、データ上の平均値に近づくことに原因があります (<a href="OLS.html#sec-OLS_Example" class="quarto-xref"><span>Section 3.3</span></a>)。 限られた事例数のもとでは、小規模な事例のみから計算された平均値が発生します。 このような小規模集計を避けるために、線型モデルを活用した集計を行います。 しかしながらモデルを複雑化すると、この集計が再び上手くいかなくなります。 複雑なモデルをOLSで推定すると、小規模な事例の偶然の偏りを強く反映してしまい、結果母平均から大きく乖離してしまうリスクが高くなります。</p>
 <p>この問題は、大規模事例が活用できる場合は、発生しにくくなります。 例えば20000事例について、OLS推定を行った結果は以下です。</p>
 <div class="cell">
 <div class="cell-output-display">
@@ -430,7 +425,8 @@ window.Quarto = {
 </div>
 </div>
 </div>
-<p>複雑なモデルの推定結果は、母平均をよりよく近似していることが確認できます。</p>
+<p>母平均は青の点線で示しています。 データ上でのOLSの結果は、複雑なモデルについては赤の点線、シンプルなモデルについては赤の実線で示しています。</p>
+<p>複雑なモデルの推定結果は、母平均をよりよく近似していることが確認できます。 対して単純なモデルは、依然として母平均から乖離しています。</p>
 <p>このようなモデルの複雑さをめぐる問題は、Bias-Variance トレードオフと呼ばれてきました。 大規模事例を用いることができるのであれば、複雑なモデルが母平均を上手く近似できます。 事例数が少ない場合、複雑なモデルは母平均から大きく乖離してしまう可能性が高く、「妥協的に」単純なモデルを推定することが現実的です。</p>
 <p>応用上の問題は、適切なモデルの複雑さについて、理論的な示唆が限られていることです<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a>。 次の章では、複雑なモデルであったとしても適切に推定できる手法である、LASSOを紹介します。</p>
 </section>
@@ -444,13 +440,11 @@ window.Quarto = {
 <li><p>dotwhisker: 信頼区間の可視化</p></li>
 </ul></li>
 </ul>
-<section id="準備" class="level3" data-number="4.4.1">
-<h3 data-number="4.4.1" class="anchored" data-anchor-id="準備"><span class="header-section-number">4.4.1</span> 準備</h3>
 <p>データを取得します。</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>Data <span class="ot">=</span> readr<span class="sc">::</span><span class="fu">read_csv</span>(<span class="st">"Public.csv"</span>) <span class="co"># データ読み込み</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>lm関数を用いてOLSを推定します。</p>
+<p>lm_robust関数を用いてOLSを推定します。</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>OLS <span class="ot">=</span> estimatr<span class="sc">::</span><span class="fu">lm_robust</span>(</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>  Price <span class="sc">~</span> Size <span class="sc">+</span> Tenure <span class="sc">+</span> StationDistance,</span>
@@ -483,6 +477,7 @@ StationDistance -1.2540221 6374</code></pre>
 </div>
 </div>
 </div>
+<p>各点が推定値、横棒が信頼区間を図示しています。</p>
 
 
 <div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list" style="display: none">
@@ -493,7 +488,6 @@ Angrist, Joshua D, and Jörn-Steffen Pischke. 2009. <em>Mostly Harmless Economet
 Aronow, Peter M, and Benjamin T Miller. 2019. <em>Foundations of Agnostic Statistics</em>. Cambridge University Press.
 </div>
 </div>
-</section>
 </section>
 <section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes">
 <hr>

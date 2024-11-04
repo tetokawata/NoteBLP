@@ -2,12 +2,12 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.5.57">
+<meta name="generator" content="quarto-1.6.32">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>5&nbsp; LASSO – 母平均の「補助線」の推定 (ver 0.1)</title>
+<title>5&nbsp; LASSO – 母平均の「補助線」の推定 (ver 0.1.1)</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -91,10 +91,10 @@ div.csl-indent {
 <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="site_libs/quarto-html/anchor.min.js"></script>
 <link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-2486e1f0a3ee9ee1fc393803a1361cdb.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-ed6da6eef3892af8a4b5ed59bfb951f5.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -179,7 +179,7 @@ window.Quarto = {
   <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
     <div class="pt-lg-2 mt-2 text-left sidebar-header">
     <div class="sidebar-title mb-0 py-0">
-      <a href="./">母平均の「補助線」の推定 (ver 0.1)</a> 
+      <a href="./">母平均の「補助線」の推定 (ver 0.1.1)</a> 
     </div>
       </div>
         <div class="mt-2 flex-shrink-0 align-items-center">
@@ -263,10 +263,7 @@ window.Quarto = {
   <li><a href="#事例数の拡大" id="toc-事例数の拡大" class="nav-link" data-scroll-target="#事例数の拡大"><span class="header-section-number">5.1.1</span> 事例数の拡大</a></li>
   </ul></li>
   <li><a href="#信頼区間" id="toc-信頼区間" class="nav-link" data-scroll-target="#信頼区間"><span class="header-section-number">5.2</span> 信頼区間</a></li>
-  <li><a href="#rによる実践例" id="toc-rによる実践例" class="nav-link" data-scroll-target="#rによる実践例"><span class="header-section-number">5.3</span> Rによる実践例</a>
-  <ul class="collapse">
-  <li><a href="#準備" id="toc-準備" class="nav-link" data-scroll-target="#準備"><span class="header-section-number">5.3.1</span> 準備</a></li>
-  </ul></li>
+  <li><a href="#rによる実践例" id="toc-rによる実践例" class="nav-link" data-scroll-target="#rによる実践例"><span class="header-section-number">5.3</span> Rによる実践例</a></li>
   </ul>
 </nav>
     </div>
@@ -292,11 +289,11 @@ window.Quarto = {
 </header>
 
 
-<p>複雑なモデルを適切に推定する方法として、LASSO <span class="citation" data-cites="tibshirani1996regression">(<a href="Reference.html#ref-tibshirani1996regression" role="doc-biblioref">Tibshirani 1996</a>)</span> を紹介します。 LASSOは、罰則付き回帰と呼ばれる枠組みの一つの手法です。 OLSと同様に線型予測モデルを推定しますが、データへの当てはまりだけでなく、モデルの複雑性も抑制することも目指します。</p>
+<p>複雑なモデルを適切に推定する方法として、LASSO <span class="citation" data-cites="tibshirani1996regression">(<a href="Reference.html#ref-tibshirani1996regression" role="doc-biblioref">Tibshirani 1996</a>)</span> を紹介します。 LASSOは、罰則付き回帰と呼ばれる枠組みの一つの手法です<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>。 OLSと同様に線型予測モデルを推定しますが、データへの当てはまりだけでなく、モデルの複雑性も抑制することも目指します。</p>
 <section id="推定方法" class="level2" data-number="5.1">
 <h2 data-number="5.1" class="anchored" data-anchor-id="推定方法"><span class="header-section-number">5.1</span> 推定方法</h2>
-<p>例えば、以下のモデルの推定を目指します。<span class="math display">\[\beta_1 Size\times 板橋区ダミー+.. + \beta_6 Size^6\times 板橋区ダミー\]</span> <span class="math display">\[+..+\beta_{132} Size\times 中央区ダミー+.. +\beta_{138} Size\times 中央区ダミー\]</span></p>
-<p>合計138個のパラメタがあり、事例数次第では、OLS推定は深刻な過剰適合に直面します。 これはOLS推定が、以下を最小化するように<span class="math inline">\(\beta\)</span>を推定しているためです。 <span class="math display">\[(Y - 予測値)^2 のデータ上の平均\]</span> <span class="math inline">\(\beta\)</span>の数が多いと、データへの不適合度 <span class="math inline">\((Y - 予測値)^2\)</span> をいくらでも低下させられるため、複雑なモデルを推定すると<strong>データへの</strong>過剰適合 (母平均からの乖離)を引き起こします。</p>
+<p>例えば、以下のモデルの推定を目指します。<span class="math display">\[\beta_1 Size\times 板橋区ダミー+.. + \beta_6 Size^6\times 板橋区ダミー\]</span> <span class="math display">\[+..+\beta_{132} Size\times 中央区ダミー+.. +\beta_{138} Size^6\times 中央区ダミー\]</span></p>
+<p>合計138個のパラメタがあり、事例数次第では、OLS推定は深刻な過剰適合に直面します。 これはOLS推定が、以下を最小化するように<span class="math inline">\(\beta\)</span>を推定しているためです。 <span class="math display">\[(Y - モデル)^2 のデータ上の平均\]</span> <span class="math inline">\(\beta\)</span>の数が多いと、データへの不適合度 <span class="math inline">\((Y - モデル)^2\)</span> をいくらでも低下させられるため、複雑なモデルを推定すると<strong>データへの</strong>過剰な適合 (母平均からの乖離)を引き起こします。</p>
 <p>LASSO推定では、<span class="math inline">\(\beta\)</span> の値を以下を最小化するように決定します。</p>
 <div class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center">
@@ -323,6 +320,7 @@ window.Quarto = {
 </div>
 </div>
 </div>
+<p>母平均を青線、LASSOによる推定結果を赤線で示しています。</p>
 <p><span class="math inline">\(\lambda=0\)</span> に比べると、<span class="math inline">\(\lambda\)</span> の値が大きくなるにつれ、モデルが単純な曲線に近づいていることが確認できます。 また <span class="citation" data-cites="taddy2017one">Taddy (<a href="Reference.html#ref-taddy2017one" role="doc-biblioref">2017</a>)</span> に基づいて設定された<span class="math inline">\(\lambda\)</span> のもとでは、かなり単純化されたモデルが推定されたことも確認できます。</p>
 <div class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center">
@@ -340,7 +338,7 @@ window.Quarto = {
 <section id="事例数の拡大" class="level3" data-number="5.1.1">
 <h3 data-number="5.1.1" class="anchored" data-anchor-id="事例数の拡大"><span class="header-section-number">5.1.1</span> 事例数の拡大</h3>
 <p>推定結果は、一般に事例数に強く影響を受けます。 特にLASSOなどの機械学習の方法においては、データの特徴により強く依存します。</p>
-<p>以下の数値例では、事例数を100事例から1000事例まで増やし、 <span class="math inline">\(Y\sim Size + .. + Size^10\)</span> をLASSOで推定しています (<span class="math inline">\(\lambda\)</span> は <span class="citation" data-cites="taddy2017one">Taddy (<a href="Reference.html#ref-taddy2017one" role="doc-biblioref">2017</a>)</span> の方法で設定しています)。</p>
+<p>以下の数値例では、事例数を100事例から1000事例まで増やし、 <span class="math inline">\(Y\sim Size + .. + Size^{10}\)</span> をLASSOで推定しています (<span class="math inline">\(\lambda\)</span> は <span class="citation" data-cites="taddy2017one">Taddy (<a href="Reference.html#ref-taddy2017one" role="doc-biblioref">2017</a>)</span> の方法で設定しています)。</p>
 <div class="cell">
 <div class="cell-output-display">
 <div>
@@ -355,7 +353,8 @@ window.Quarto = {
 </section>
 <section id="信頼区間" class="level2" data-number="5.2">
 <h2 data-number="5.2" class="anchored" data-anchor-id="信頼区間"><span class="header-section-number">5.2</span> 信頼区間</h2>
-<p>LASSOによる推定されたパラメタについて、信頼区間を計算する方法は盛んに議論されているものの、筆者の知る限り、現状確立された方法は存在しません<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>。</p>
+<p>LASSOによる推定されたパラメタについて、信頼区間を計算する方法は盛んに議論されているものの、筆者の知る限り、現状確立された方法は存在しません<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a>。</p>
+<p>これはLASSO以外の「機械学習」の手法についても同様です。 一般にデータと推定値との関係性は、伝統的な推定方法と比べて、機械学習の方が複雑になります。 このため、理論的な関係性を導くのが難しく、信頼区間の計算方法の確率が困難となっています。</p>
 </section>
 <section id="rによる実践例" class="level2" data-number="5.3">
 <h2 data-number="5.3" class="anchored" data-anchor-id="rによる実践例"><span class="header-section-number">5.3</span> Rによる実践例</h2>
@@ -366,9 +365,6 @@ window.Quarto = {
 <li><p>gamlr: LASSO</p></li>
 </ul></li>
 </ul>
-<section id="準備" class="level3" data-number="5.3.1">
-<h3 data-number="5.3.1" class="anchored" data-anchor-id="準備"><span class="header-section-number">5.3.1</span> 準備</h3>
-<p>データとその事例数を取得し、データをランダムに分割します。</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>Data <span class="ot">=</span> readr<span class="sc">::</span><span class="fu">read_csv</span>(<span class="st">"Public.csv"</span>) <span class="co"># データ読み込み</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
@@ -435,7 +431,7 @@ window.Quarto = {
 </div>
 </div>
 <p>合計101個のパラメタ推定を目指します。</p>
-<p>hdmパッケージ内のrlasso関数を用いてLASSO推定をします。 またLASSO推定は、複雑なモデルを推定に利点を持つため、交差項と二乗項までを導入したモデルも推定しています。</p>
+<p>gamlrパッケージ内のgamlr関数を用いてLASSO推定をします。</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>LASSO <span class="ot">=</span> gamlr<span class="sc">::</span><span class="fu">gamlr</span>(</span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">y =</span> Data<span class="sc">$</span>Price,</span>
@@ -560,6 +556,9 @@ Belloni, Alexandre, Victor Chernozhukov, and Christian Hansen. 2014. <span>“In
 <div id="ref-chernozhukov2015valid" class="csl-entry" role="listitem">
 Chernozhukov, Victor, Christian Hansen, and Martin Spindler. 2015. <span>“Valid Post-Selection and Post-Regularization Inference: An Elementary, General Approach.”</span> <em>Annu. Rev. Econ.</em> 7 (1): 649–88.
 </div>
+<div id="ref-james2013introduction" class="csl-entry" role="listitem">
+James, Gareth, Daniela Witten, Trevor Hastie, Robert Tibshirani, et al. 2021. <em>An Introduction to Statistical Learning</em>. Vol. 112. Springer.
+</div>
 <div id="ref-kuchibhotla2022post" class="csl-entry" role="listitem">
 Kuchibhotla, Arun K, John E Kolassa, and Todd A Kuffner. 2022. <span>“Post-Selection Inference.”</span> <em>Annual Review of Statistics and Its Application</em> 9 (1): 505–27.
 </div>
@@ -571,11 +570,11 @@ Tibshirani, Robert. 1996. <span>“Regression Shrinkage and Selection via the La
 </div>
 </div>
 </section>
-</section>
 <section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes">
 <hr>
 <ol>
-<li id="fn1"><p>具体的な議論については、<span class="citation" data-cites="chernozhukov2015valid">Chernozhukov, Hansen, and Spindler (<a href="Reference.html#ref-chernozhukov2015valid" role="doc-biblioref">2015</a>)</span>; <span class="citation" data-cites="kuchibhotla2022post">Kuchibhotla, Kolassa, and Kuffner (<a href="Reference.html#ref-kuchibhotla2022post" role="doc-biblioref">2022</a>)</span> 、などを参照<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn1"><p>他の手法として、RidgeやBest subset selectionなどがあります。詳細は、<span class="citation" data-cites="james2013introduction">James et al. (<a href="Reference.html#ref-james2013introduction" role="doc-biblioref">2021</a>)</span> などを参照ください。<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn2"><p>具体的な議論については、<span class="citation" data-cites="chernozhukov2015valid">Chernozhukov, Hansen, and Spindler (<a href="Reference.html#ref-chernozhukov2015valid" role="doc-biblioref">2015</a>)</span>; <span class="citation" data-cites="kuchibhotla2022post">Kuchibhotla, Kolassa, and Kuffner (<a href="Reference.html#ref-kuchibhotla2022post" role="doc-biblioref">2022</a>)</span> 、などを参照<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 </ol>
 </section>
 

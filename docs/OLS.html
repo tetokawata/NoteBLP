@@ -2,12 +2,12 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.5.57">
+<meta name="generator" content="quarto-1.6.32">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>3&nbsp; データ上でのOLS – 母平均の「補助線」の推定 (ver 0.1)</title>
+<title>3&nbsp; データ上でのOLS – 母平均の「補助線」の推定 (ver 0.1.1)</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -71,10 +71,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="site_libs/quarto-html/anchor.min.js"></script>
 <link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-2486e1f0a3ee9ee1fc393803a1361cdb.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-ed6da6eef3892af8a4b5ed59bfb951f5.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -159,7 +159,7 @@ window.Quarto = {
   <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
     <div class="pt-lg-2 mt-2 text-left sidebar-header">
     <div class="sidebar-title mb-0 py-0">
-      <a href="./">母平均の「補助線」の推定 (ver 0.1)</a> 
+      <a href="./">母平均の「補助線」の推定 (ver 0.1.1)</a> 
     </div>
       </div>
         <div class="mt-2 flex-shrink-0 align-items-center">
@@ -240,16 +240,13 @@ window.Quarto = {
   <ul>
   <li><a href="#線型モデル" id="toc-線型モデル" class="nav-link active" data-scroll-target="#線型モデル"><span class="header-section-number">3.1</span> 線型モデル</a></li>
   <li><a href="#ols" id="toc-ols" class="nav-link" data-scroll-target="#ols"><span class="header-section-number">3.2</span> OLS</a></li>
-  <li><a href="#例" id="toc-例" class="nav-link" data-scroll-target="#例"><span class="header-section-number">3.3</span> 例</a>
+  <li><a href="#sec-OLS_Example" id="toc-sec-OLS_Example" class="nav-link" data-scroll-target="#sec-OLS_Example"><span class="header-section-number">3.3</span> 実例</a>
   <ul class="collapse">
   <li><a href="#単回帰" id="toc-単回帰" class="nav-link" data-scroll-target="#単回帰"><span class="header-section-number">3.3.1</span> 単回帰</a></li>
   <li><a href="#重回帰" id="toc-重回帰" class="nav-link" data-scroll-target="#重回帰"><span class="header-section-number">3.3.2</span> 重回帰</a></li>
   <li><a href="#交差項と高次項の導入" id="toc-交差項と高次項の導入" class="nav-link" data-scroll-target="#交差項と高次項の導入"><span class="header-section-number">3.3.3</span> 交差項と高次項の導入</a></li>
   </ul></li>
-  <li><a href="#rによる実践例" id="toc-rによる実践例" class="nav-link" data-scroll-target="#rによる実践例"><span class="header-section-number">3.4</span> Rによる実践例</a>
-  <ul class="collapse">
-  <li><a href="#準備" id="toc-準備" class="nav-link" data-scroll-target="#準備"><span class="header-section-number">3.4.1</span> 準備</a></li>
-  </ul></li>
+  <li><a href="#rによる実践例" id="toc-rによる実践例" class="nav-link" data-scroll-target="#rによる実践例"><span class="header-section-number">3.4</span> Rによる実践例</a></li>
   </ul>
 </nav>
     </div>
@@ -275,11 +272,11 @@ window.Quarto = {
 </header>
 
 
-<p>少数事例の要約を避けるためには、より”荒い”要約が必要となります。 荒い要約の代表例として、手元のデータから<span class="math inline">\(Y\)</span>の平均値が持つ性質を簡便に捉えるモデルである、線型モデルを紹介します。 また線型モデルを推定する方法として最小二乗法(OLS)を紹介します。</p>
-<p>本アプローチは、研究者が任意にモデルを単純化することが可能です。 適切な単純化がなされるのであれば、限られた事例数のもとでも、母平均の特徴を類推する有効な方法となり得ます <a href="PopulationOLS.html" class="quarto-xref"><span>Chapter 4</span></a>。</p>
+<p>少数事例の要約を避けるためには、より”荒い”要約が必要となります。 荒い要約の代表例として、線型モデルを紹介します。 線型モデルは、手元のデータから<span class="math inline">\(Y\)</span>の平均値が持つ性質を簡便に捉えるモデルであり、現代のデータ分析でも頻繁に利用されます。 また線型モデルを推定する方法として最小二乗法(OLS)を紹介します。</p>
+<p>本アプローチは、研究者が任意にモデルを単純化することが可能です。 適切な単純化がなされるのであれば、限られた事例数のもとでも、母平均の特徴を類推する有効な方法となり得ます (<a href="PopulationOLS.html" class="quarto-xref"><span>Chapter 4</span></a>)。</p>
 <section id="線型モデル" class="level2" data-number="3.1">
 <h2 data-number="3.1" class="anchored" data-anchor-id="線型モデル"><span class="header-section-number">3.1</span> 線型モデル</h2>
-<p><span class="math inline">\(Y\)</span> の平均値と <span class="math inline">\(X\)</span> の関係性を記述するモデルを導入します。</p>
+<p><span class="math inline">\(Y\)</span> の平均値と <span class="math inline">\(X_1,..,X_L\)</span> の関係性を記述するモデルを導入します。</p>
 <div class="callout callout-style-default callout-important callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -298,7 +295,7 @@ window.Quarto = {
 </div>
 <p>以下では<span class="math inline">\(\beta_0,..,\beta_L\)</span>を決定する具体的な方法として、OLSを紹介します。</p>
 <p>線型モデルをどのように解釈すれば良いでしょうか？ 最も実践的な解釈は、平均値の”補助線”として捉えることです。</p>
-<p>以下の図では、Priceの平均値とSizeの関係性を捉えるための3つの”補助線”を描きこんいます。 すべて <span class="math inline">\(\beta_0 + \beta_1\times Size\)</span> を使用し、パラメタの値のみ変更しています。</p>
+<p>以下の図では、Priceの平均値とSizeの関係性を捉えるための3つの”補助線”を書き込みます。 <span class="math inline">\(\beta_0 + \beta_1\times Size\)</span>の、パラメタの値のみ変更しています。</p>
 <div class="cell">
 <div class="cell-output-display">
 <div>
@@ -309,8 +306,8 @@ window.Quarto = {
 </div>
 </div>
 <p>データ上の平均値は紫の点で示しています。 赤線は <span class="math inline">\(0.05 + 0.7\times Size\)</span>、 緑線は <span class="math inline">\(30 + 0.5\times Size\)</span>を示しています。</p>
-<p>水色線は <span class="math inline">\(80\)</span> 、すなわち<span class="math inline">\(\beta_0=80,\beta_1=0\)</span> とした補助線を示しています。</p>
-<p>赤線と緑線は、平均取引価格が持つ「Sizeとともに上昇する傾向がある」特徴をある程度とらえています。 対して水色線は、このような特徴を捉えられておらず、不適切であると考えれます。 モデルの大枠が同じでも、パラメタ <span class="math inline">\(\beta\)</span> の値によって、適切な要約か否かが決まってきます。</p>
+<p>水色線は<span class="math inline">\(\beta_0=80,\beta_1=0\)</span> とした水平な「補助線」を示しています。</p>
+<p>赤線と緑線は、平均取引価格が持つ「Sizeとともに上昇する傾向がある」特徴をある程度捉えています。 対して水色線は、このような特徴を捉えられておらず、不適切であると考えれます。 モデルの大枠が同じでも、パラメタ <span class="math inline">\(\beta\)</span> の値によって、適切な要約か否かが決まってきます。</p>
 </section>
 <section id="ols" class="level2" data-number="3.2">
 <h2 data-number="3.2" class="anchored" data-anchor-id="ols"><span class="header-section-number">3.2</span> OLS</h2>
@@ -327,17 +324,17 @@ OLSの定義
 <div class="callout-body-container callout-body">
 <ol type="1">
 <li><p>研究者が予測モデルの大枠を以下のように設定する <span class="math display">\[Yのモデル=\beta_0 + \beta_1X_1 + \beta_2X_2 +.. + \beta_LX_L\]</span></p></li>
-<li><p>以下を最小化するように <span class="math inline">\(\beta_0,..,\beta_L\)</span> を決定する <span class="math display">\[(Yの平均値-Yのモデル^2のデータ上の平均\]</span></p></li>
+<li><p>以下を最小化するように <span class="math inline">\(\beta_0,..,\beta_L\)</span> を決定する <span class="math display">\[(Y-Yのモデル)^2のデータ上の平均\]</span></p></li>
 </ol>
 </div>
 </div>
 <p>OLSは、研究者が事前に大枠を設定したモデルを、データに最も合うように推定する手法であると解釈できます。</p>
 </section>
-<section id="例" class="level2" data-number="3.3">
-<h2 data-number="3.3" class="anchored" data-anchor-id="例"><span class="header-section-number">3.3</span> 例</h2>
+<section id="sec-OLS_Example" class="level2" data-number="3.3">
+<h2 data-number="3.3" class="anchored" data-anchor-id="sec-OLS_Example"><span class="header-section-number">3.3</span> 実例</h2>
 <section id="単回帰" class="level3" data-number="3.3.1">
 <h3 data-number="3.3.1" class="anchored" data-anchor-id="単回帰"><span class="header-section-number">3.3.1</span> 単回帰</h3>
-<p>Sizeと立地(中心6区か否か)に応じて、平均値を計算しました。</p>
+<p>２種類の<span class="math inline">\(X\)</span> (Sizeと立地(中心6区か否か))について、取引価格の平均値を計算しました。</p>
 <div class="cell">
 <div class="cell-output-display">
 <div>
@@ -347,7 +344,8 @@ OLSの定義
 </div>
 </div>
 </div>
-<p>平均値の最もシンプルな線型モデルとして、以下を推定してみます。 <span class="math display">\[予測値 = \beta_0 + \beta_1\times Size\]</span> <span class="math inline">\(\beta_0,\beta_1\)</span> は、以下のデータ上の平均二乗誤差を最小化するように推定します。<span class="math display">\[(Y - 予測値)^2 のデータ上の平均\]</span> このような推定方法は、単回帰として教科書では紹介されてきました。</p>
+<p>左側のパネルは中心６区、右側は他の区について、各Sizeごとに平均取引価格を計算しています。</p>
+<p>平均値の最もシンプルな線型モデルとして、以下を推定してみます。 <span class="math display">\[モデル = \beta_0 + \beta_1\times Size\]</span> <span class="math inline">\(\beta_0,\beta_1\)</span> は、以下のデータ上の平均二乗誤差を最小化するように推定します。<span class="math display">\[(Y - モデル)^2 のデータ上の平均\]</span> このような推定方法は、単回帰として教科書では紹介されてきました。</p>
 <p>推定結果を図示すると、以下となります。</p>
 <div class="cell">
 <div class="cell-output-display">
@@ -362,7 +360,7 @@ OLSの定義
 </section>
 <section id="重回帰" class="level3" data-number="3.3.2">
 <h3 data-number="3.3.2" class="anchored" data-anchor-id="重回帰"><span class="header-section-number">3.3.2</span> 重回帰</h3>
-<p>Districtと平均取引価格の関係性を捉えるために、以下のモデルの推定を試みます。 <span class="math display">\[予測値 = \beta_0 + \beta_1\times Size + \beta_2\times District\]</span> <span class="math inline">\(District\)</span> は、中心６区に立地していれば1、それ以外では0を取ります。 <span class="math inline">\(\beta_0,..,\beta_2\)</span> は引き続き、データへの適合度を最大化するように推定できます。 このような推定方法は、重回帰として教科書では紹介されてきました。</p>
+<p>Districtと平均取引価格の関係性を捉えるために、以下のモデルの推定を試みます。 <span class="math display">\[モデル = \beta_0 + \beta_1\times Size + \beta_2\times District\]</span> <span class="math inline">\(District\)</span> は、中心６区に立地していれば1、それ以外では0を取ります。 <span class="math inline">\(\beta_0,..,\beta_2\)</span> は引き続き、データへの適合度を最大化するように推定できます。 このような推定方法は、重回帰として教科書では紹介されてきました。</p>
 <p>推定結果を図示すると、以下となります。</p>
 <div class="cell">
 <div class="cell-output-display">
@@ -373,11 +371,11 @@ OLSの定義
 </div>
 </div>
 </div>
-<p>中心6区の方が平均取引価格が高いという性質を上手く捉えています。 しかしながら、中心6区において広い物件の取引価格が一段上昇するという性質は捉えきれていません。</p>
+<p>中心6区の方が平均取引価格が高いという性質を上手く捉えています。 しかしながら、中心6区において広い物件の取引価格が一段と上昇するという性質は捉えきれていません。</p>
 </section>
 <section id="交差項と高次項の導入" class="level3" data-number="3.3.3">
 <h3 data-number="3.3.3" class="anchored" data-anchor-id="交差項と高次項の導入"><span class="header-section-number">3.3.3</span> 交差項と高次項の導入</h3>
-<p>母平均が持つ複雑な性質を捉えるために、交差効果と高次項を導入し、さらに複雑なモデルを推定してみます。 <span class="math display">\[予測値 = \beta_0 + \beta_1 Size+\beta_7District + \underbrace{\beta_2Size^2 +..+\beta_6Size^6}_{高次項}\]</span> <span class="math display">\[+\underbrace{\beta_8 Size\times District +..+\beta_{14}Size^6\times District}_{交差効果}\]</span> このような複雑なモデルであったとしても、データへの適合度を最大化するように推定できます。</p>
+<p>母平均が持つ複雑な性質を捉えるために、交差効果と高次項を導入し、さらに複雑なモデルを推定してみます。 <span class="math display">\[モデル = \beta_0 + \beta_1 Size+\beta_7District + \underbrace{\beta_2Size^2 +..+\beta_6Size^6}_{高次項}\]</span> <span class="math display">\[+\underbrace{\beta_8 Size\times District +..+\beta_{14}Size^6\times District}_{交差効果}\]</span> このような複雑なモデルであったとしても、データへの適合度を最大化するように推定できます。</p>
 <div class="cell">
 <div class="cell-output-display">
 <div>
@@ -387,7 +385,7 @@ OLSの定義
 </div>
 </div>
 </div>
-<p>複雑なモデルを最小二乗法で推定すると、よりデータへの適合度を改善し、データ上の平均値に近づけることができます。 しかしながら次節で論じる通り、母集団の特徴を捉えることを目標とするのであれば、このことは必ずしも望ましいとはいえません。 なぜならば、限れたデータから算出した平均値は、一般に母平均から乖離するためです。</p>
+<p>複雑なモデルを最小二乗法で推定すると、データへの適合度が改善し、モデルをデータ上の平均値に近づけることができます。 しかしながら次節で論じる通り、母集団の特徴を捉えることを目標とするのであれば、このことは必ずしも望ましいとはいえません。 なぜならば、限れたデータから算出した平均値は、一般に母平均から乖離するためです。</p>
 </section>
 </section>
 <section id="rによる実践例" class="level2" data-number="3.4">
@@ -398,18 +396,17 @@ OLSの定義
 <li>readr (tidyverseに同梱): データの読み込み</li>
 </ul></li>
 </ul>
-<section id="準備" class="level3" data-number="3.4.1">
-<h3 data-number="3.4.1" class="anchored" data-anchor-id="準備"><span class="header-section-number">3.4.1</span> 準備</h3>
 <p>データを取得します。</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>Data <span class="ot">=</span> readr<span class="sc">::</span><span class="fu">read_csv</span>(<span class="st">"Public.csv"</span>) <span class="co"># データ読み込み</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>lm関数を用いてOLSを推定します。</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>OLS <span class="ot">=</span> <span class="fu">lm</span>(Price <span class="sc">~</span> Size <span class="sc">+</span> Tenure <span class="sc">+</span> StationDistance,</span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>         Data) <span class="co"># OLS</span></span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>OLS</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>OLS <span class="ot">=</span> <span class="fu">lm</span>(Price <span class="sc">~</span> Size <span class="sc">+</span> Tenure <span class="sc">+</span> StationDistance, <span class="co"># Y ~ X</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>         Data <span class="co"># 使用するデータの指定</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>         ) <span class="co"># OLS</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>OLS</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 Call:
@@ -423,7 +420,6 @@ Coefficients:
 <p>Coefficientsが<span class="math inline">\(\beta\)</span>の推定値を示しています。 例えば、推定された線型モデルにおいて、Size(部屋の広さ)と平均取引価格は正の関係性がありますが、Tenure(築年数)とStationDistance(駅からの距離)は負の関係性が見られます。</p>
 
 
-</section>
 </section>
 
 </main> <!-- /main -->

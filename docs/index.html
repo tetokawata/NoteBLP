@@ -2,14 +2,14 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.5.57">
+<meta name="generator" content="quarto-1.6.32">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="川田恵介">
-<meta name="dcterms.date" content="2024-10-27">
+<meta name="dcterms.date" content="2024-11-04">
 
-<title>母平均の「補助線」の推定 (ver 0.1)</title>
+<title>母平均の「補助線」の推定 (ver 0.1.1)</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -58,10 +58,10 @@ div.csl-indent {
 <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="site_libs/quarto-html/anchor.min.js"></script>
 <link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-2486e1f0a3ee9ee1fc393803a1361cdb.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-ed6da6eef3892af8a4b5ed59bfb951f5.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -146,7 +146,7 @@ window.Quarto = {
   <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
     <div class="pt-lg-2 mt-2 text-left sidebar-header">
     <div class="sidebar-title mb-0 py-0">
-      <a href="./">母平均の「補助線」の推定 (ver 0.1)</a> 
+      <a href="./">母平均の「補助線」の推定 (ver 0.1.1)</a> 
     </div>
       </div>
         <div class="mt-2 flex-shrink-0 align-items-center">
@@ -234,7 +234,7 @@ window.Quarto = {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">母平均の「補助線」の推定 (ver 0.1)</h1>
+<h1 class="title">母平均の「補助線」の推定 (ver 0.1.1)</h1>
 </div>
 
 
@@ -251,7 +251,7 @@ window.Quarto = {
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">October 27, 2024</p>
+      <p class="date">November 4, 2024</p>
     </div>
   </div>
   
@@ -265,10 +265,11 @@ window.Quarto = {
 
 <section id="preface" class="level1 unnumbered">
 <h1 class="unnumbered">Preface</h1>
-<p><span class="math inline">\(X\)</span> 内での <span class="math inline">\(Y\)</span> の平均値 (“条件つき”母平均)を推定する方法を紹介します。 母平均の推定値は、さまざまな実務で活用されています。 中でも「<span class="math inline">\(Y\)</span>の値を予測」という課題においては、代表的な予測値となっています。</p>
-<p>伝統的には、OLSが母平均の推定方法として用いられてきました。 近年では、OLSは母平均の仮想的な線型モデル(“補助線”)を推定する手法として、解釈できることが強調されています <span class="citation" data-cites="angrist2009mostly aronow2019foundations">(<a href="Reference.html#ref-angrist2009mostly" role="doc-biblioref">Angrist and Pischke 2009</a>; <a href="Reference.html#ref-aronow2019foundations" role="doc-biblioref">Aronow and Miller 2019</a>)</span> 。 モデルの定式に誤りがあり、OLSの推定結果と母平均が一致することがあり得なかったとしても、推定結果は母平均の補助線として常に解釈できることがその理由です。</p>
-<p>また近年では、機械学習の手法も積極的に活用されています。 本ノートでは、OLSが”研究者が設定した母平均のシンプルなモデル”を推定する方法として優れていることを強調します。 もしより複雑なモデルを推定したい場合は、OLSはその有効性を失います。 このような”複雑なモデル”を推定する優れた方法として、LASSOを紹介します<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>。</p>
-<p>最後に母平均の特徴を捉えることに成功した予測モデルは、予測においても有効であることを論じます。</p>
+<p>ある属性 <span class="math inline">\(X\)</span> を持つ事例内での、変数 <span class="math inline">\(Y\)</span> の平均値 (“条件つき”平均)を推定する方法を紹介します。 Rの実例では、 中古マンションの取引データを用いて、物件の属性 <span class="math inline">\(X\)</span> (部屋の広さ、駅からの距離など)ごとに、平均取引価格 <span class="math inline">\(Y\)</span> を推定します。</p>
+<p>平均の推定値は、さまざまな実務で活用されています。 中でも「<span class="math inline">\(Y\)</span>の値を予測」という課題においては、代表的な予測値となっています。</p>
+<p>伝統的には、OLSが母平均の推定方法として用いられてきました。 近年では、OLSは母平均の仮想的な線型モデル(“補助線”)を推定する手法として、解釈できることが強調されています <span class="citation" data-cites="angrist2009mostly aronow2019foundations">(<a href="Reference.html#ref-angrist2009mostly" role="doc-biblioref">Angrist and Pischke 2009</a>; <a href="Reference.html#ref-aronow2019foundations" role="doc-biblioref">Aronow and Miller 2019</a>)</span> 。 モデルの定式に誤りがあったとしても、推定結果は常に”解釈”できることがその理由です。</p>
+<p>また近年では、機械学習の手法も積極的に活用されています。 本ノートでは、OLSが”研究者が設定した平均値のシンプルなモデル”を推定する方法として優れていることを強調します。 もしより複雑なモデルを推定したい場合は、OLSはその有効性を失います。 このような”複雑なモデル”を推定する優れた方法として、LASSOを紹介します<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>。</p>
+<p>最後に平均値の特徴を捉えることに成功した予測モデルは、予測においても有効であることを論じます。</p>
 
 
 <div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list" style="display: none">

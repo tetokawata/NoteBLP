@@ -2,12 +2,12 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.6.32">
+<meta name="generator" content="quarto-1.6.40">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>4&nbsp; 母集団上でのOLS – 母平均の「補助線」の推定 (ver 0.1.1)</title>
+<title>4&nbsp; 母集団上でのOLS – 母平均の「補助線」の推定 (ver 0.1.2)</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -91,10 +91,10 @@ div.csl-indent {
 <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="site_libs/quarto-html/anchor.min.js"></script>
 <link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-2486e1f0a3ee9ee1fc393803a1361cdb.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-549806ee2085284f45b00abea8c6df48.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-ed6da6eef3892af8a4b5ed59bfb951f5.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-626149efe8f5d16e1d391ba177679bf0.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -179,7 +179,7 @@ window.Quarto = {
   <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
     <div class="pt-lg-2 mt-2 text-left sidebar-header">
     <div class="sidebar-title mb-0 py-0">
-      <a href="./">母平均の「補助線」の推定 (ver 0.1.1)</a> 
+      <a href="./">母平均の「補助線」の推定 (ver 0.1.2)</a> 
     </div>
       </div>
         <div class="mt-2 flex-shrink-0 align-items-center">
@@ -204,7 +204,7 @@ window.Quarto = {
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./population.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">母分布</span></span></a>
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">母平均</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
@@ -287,8 +287,10 @@ window.Quarto = {
 </header>
 
 
-<p><a href="population.html" class="quarto-xref"><span>Chapter 2</span></a> では、データ上の平均値と母平均との関係性について論じました。 データ上で実施したOLSは、平均値と同様に、母集団の特徴ついて何らかの含意を持つでしょうか？ 伝統的な教科書では、研究者が設定した線型モデルが、母平均の妥当なモデルであれば、OLSにより推定された線型モデルは、母平均の優れた推定値であることが強調されます。 しかしながら社会科学のほぼ全ての応用において、研究者が設定するモデルは誤定式化 (misspecification) を犯しており、どのように推定しても母平均から乖離してしまいます。</p>
+<p><a href="population.html" class="quarto-xref"><span>Chapter 2</span></a> では、データ上の平均値と母平均との関係性について論じました。 データ上で実施したOLSは、平均値と同様に、母集団の特徴ついて何らかの含意を持つでしょうか？</p>
+<p>伝統的な教科書では、研究者が設定した線型モデルが、母平均の妥当なモデルであれば、OLSにより推定された線型モデルは、母平均の優れた推定値であることが強調されます。 しかしながら社会科学のほぼ全ての応用において、研究者が設定するモデルは誤定式化 (misspecification) を犯しており、どのように推定しても母平均から乖離していると想定すべきです。</p>
 <p>本章では、誤定式化を犯しているケースにおいても、OLSは母集団の特徴について明確な示唆を持つこと <span class="citation" data-cites="angrist2009mostly aronow2019foundations">(<a href="Reference.html#ref-angrist2009mostly" role="doc-biblioref">Angrist and Pischke 2009</a>; <a href="Reference.html#ref-aronow2019foundations" role="doc-biblioref">Aronow and Miller 2019</a>)</span> を紹介します。 また誤定式化を減らすためには、モデルを複雑化する必要がありますが、パラメタ推定の「精度」との間にトレードオフが生じることも強調します。</p>
+<p>このことが持つ示唆は重要です。 経済学などの社会科学における実証研究は、しばしば推定するモデルが単純すぎるという批判を受けてきました。 これは的を射た批判であり、現実社会の複雑さに比べると、如何なるモデルも単純すぎると想定すべきです。 しかしながら、モデルの推定に用いることができる事例数に限りがあることも、同時に考慮する必要があります。 現実に合わした極めて複雑なモデルを推定しようとすると、そのパラメタの推定精度が大幅に低下してしまいます。 限られたデータと現実の複雑性の間で、適切な落とし所を見つけることが重要となります。</p>
 <section id="population-ols" class="level2" data-number="4.1">
 <h2 data-number="4.1" class="anchored" data-anchor-id="population-ols"><span class="header-section-number">4.1</span> Population OLS</h2>
 <p>OLSの推定結果は、母集団上での<strong>仮想的な</strong>OLS (Population OLS) の結果を推定していると解釈することができます。 少しわかりにくい考え方なので、<a href="population.html" class="quarto-xref"><span>Chapter 2</span></a> における数値例とともに確認します。</p>
@@ -312,9 +314,9 @@ window.Quarto = {
 </div>
 </div>
 </div>
-<p>Population OLSの結果は実践、母平均は点線で表しています。 以下の要点に特に注意してください。</p>
+<p>Population OLSの結果は実線、母平均は点線で表しています。 以下の要点に特に注意してください。</p>
 <ul>
-<li><p>Population OLSは、同じ”データ(母集団)“を用いて推定しているので、全ての研究者が同じ推定結果となります。</p></li>
+<li><p>Population OLSは、同じ”データ”(母集団)を用いて推定しているので、全ての研究者が同じ推定結果となります。</p></li>
 <li><p>母平均とは必ずしも一致しません。本例において、母平均は70~75平米にかけて、平均取引価格が急上昇しています。しかしながら、“一直線”のモデルを推定しているため、このような傾向はモデルに反映されません。</p></li>
 </ul>
 <p>二点目は誤定式化の問題と呼ばれ、近年大きな議論がなされてきました。</p>
@@ -356,7 +358,6 @@ window.Quarto = {
 </div>
 </div>
 <p>全ての研究者について、Population OLSとデータ上でのOLSの乖離(赤と青の実践の乖離)は、“目視”できないほど小さくなっています。</p>
-<p>注意が必要なのは、母平均とデータ上でのOLSは引き続き乖離していることです。 Population OLSと母平均が乖離している (誤定式化)、データ上でのOLSは、どれだけ事例数が増えても母平均と一致しません。 あくまでもPopulation OLSの結果に近づくだけです。</p>
 <p>Population OLSとデータ上でのOLSは、母平均とデータ上での平均値と類似した理論的関係性を持ちます。</p>
 <div class="callout callout-style-default callout-important callout-titled">
 <div class="callout-header d-flex align-content-center">
@@ -375,11 +376,11 @@ window.Quarto = {
 </div>
 </div>
 <p>上記の性質はあくまで、データ上でのOLSとPopulation OLSとの関係性を論じていることに、改めて注意してください。 大標本理論は、データ上でのOLSをPopulation OLSの推定値とみなすことを正当化します。</p>
-<p>しかしながら、母平均の推定値とみなすためには、誤定式化がないことが前提となります。 なぜならば<strong>誤定式化が存在すると</strong>、Population OLSと母平均は一致しないので、データ上でのOLSも母平均と一致することはあり得ません。 誤定式化の確認は、社会データでは非常に困難です。 特に<span class="math inline">\(X\)</span> の数が多い場合、確立された確認方法は、筆者の知る限り存在しません。</p>
+<p>しかしながら、母平均の推定値とみなすためには、誤定式化がないことが前提となります。 なぜならば<strong>誤定式化が存在すると</strong>、Population OLSと母平均は一致しないので、データ上でのOLSも母平均と一致することはあり得ません。</p>
 </section>
 <section id="モデルの複雑化" class="level2" data-number="4.3">
 <h2 data-number="4.3" class="anchored" data-anchor-id="モデルの複雑化"><span class="header-section-number">4.3</span> モデルの複雑化</h2>
-<p>実際の応用では、あらゆるモデルは誤定式化を犯している、少なくともその可能性を排除できない、と想定すべきです。 特に社会現象や個人行動の大部分はBlack Boxであり、信頼できるモデルを想定することは、事実上不可能です。 ただし誤定式化による母平均とPopulation OLSの乖離を削減することは容易です。</p>
+<p>実際の応用では、あらゆるモデルは誤定式化を犯している、少なくともその可能性を排除できない、と想定すべきです。 特に社会現象や個人行動の大部分はBlack Boxであり、信頼できるモデルを想定することは、事実上不可能です。 ただし誤定式化による母平均とPopulation OLSの乖離を削減することは容易です。 しかしながら、その代償として、Population OLSとデータ上でのOLSの乖離が大きくなる可能性があります。</p>
 <p>モデル <span class="math inline">\(f(X)=\beta_0 + \beta_1X\)</span> に変わって、 <span class="math inline">\(f(X)=\beta_0 + \beta_1X + \beta_2X^2\)</span> を推定してみます。 仮想的なPopulation OLSの結果は以下です。</p>
 <div class="cell">
 <div class="cell-output-display">
@@ -428,7 +429,7 @@ window.Quarto = {
 <p>母平均は青の点線で示しています。 データ上でのOLSの結果は、複雑なモデルについては赤の点線、シンプルなモデルについては赤の実線で示しています。</p>
 <p>複雑なモデルの推定結果は、母平均をよりよく近似していることが確認できます。 対して単純なモデルは、依然として母平均から乖離しています。</p>
 <p>このようなモデルの複雑さをめぐる問題は、Bias-Variance トレードオフと呼ばれてきました。 大規模事例を用いることができるのであれば、複雑なモデルが母平均を上手く近似できます。 事例数が少ない場合、複雑なモデルは母平均から大きく乖離してしまう可能性が高く、「妥協的に」単純なモデルを推定することが現実的です。</p>
-<p>応用上の問題は、適切なモデルの複雑さについて、理論的な示唆が限られていることです<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a>。 次の章では、複雑なモデルであったとしても適切に推定できる手法である、LASSOを紹介します。</p>
+<p>応用上の問題は、適切なモデルの複雑さについて、理論的な示唆が限られていることです。 次の章では、複雑なモデルであったとしても適切に推定できる手法である、LASSOを紹介します。</p>
 </section>
 <section id="rによる実践例" class="level2" data-number="4.4">
 <h2 data-number="4.4" class="anchored" data-anchor-id="rによる実践例"><span class="header-section-number">4.4</span> Rによる実践例</h2>
@@ -493,7 +494,6 @@ Aronow, Peter M, and Benjamin T Miller. 2019. <em>Foundations of Agnostic Statis
 <hr>
 <ol>
 <li id="fn1"><p>多重共線性の発生など、例外的なケースは存在します。<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn2"><p>赤池/ベイズ情報量を用いるなどが有力です。<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 </ol>
 </section>
 
@@ -580,8 +580,6 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   });
   clipboard.on('success', onCopySuccess);
   if (window.document.getElementById('quarto-embedded-source-code-modal')) {
-    // For code content inside modals, clipBoardJS needs to be initialized with a container option
-    // TODO: Check when it could be a function (https://github.com/zenorocha/clipboard.js/issues/860)
     const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
       text: getTextToCopy,
       container: window.document.getElementById('quarto-embedded-source-code-modal')
@@ -692,7 +690,6 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       if (window.Quarto?.typesetMath) {
         window.Quarto.typesetMath(note);
       }
-      // TODO in 1.5, we should make sure this works without a callout special case
       if (note.classList.contains("callout")) {
         return note.outerHTML;
       } else {

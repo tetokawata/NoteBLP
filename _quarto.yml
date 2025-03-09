@@ -1,18 +1,31 @@
 project:
   type: book
-
+  output-dir: docs
+  
 book:
-  title: "test"
-  author: "Norah Jones"
-  date: "10/16/2024"
+  title: "母平均の「補助線」の推定 (ver 0.1.2)"
+  author: "川田恵介"
+  date: now
   chapters:
     - index.qmd
+    - model.qmd
+    - population.qmd
+    - OLS.qmd
+    - PopulationOLS.qmd
+    - LASSO.qmd
+    - Reference.qmd
+  appendices:
     - prediction.qmd
+
 
 bibliography: references.bib
 
 format:
-  html
+  html:
+    theme: cosmo
+  pdf:
+    pdf-engine: lualatex
+    documentclass: ltjsbook
 
 execute:
   freeze: auto

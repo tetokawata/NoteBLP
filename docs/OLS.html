@@ -2,12 +2,12 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.6.32">
+<meta name="generator" content="quarto-1.6.40">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>3&nbsp; データ上でのOLS – 母平均の「補助線」の推定 (ver 0.1.1)</title>
+<title>3&nbsp; データ上でのOLS – 母平均の「補助線」の推定 (ver 0.1.2)</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -71,10 +71,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="site_libs/quarto-html/anchor.min.js"></script>
 <link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-2486e1f0a3ee9ee1fc393803a1361cdb.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-549806ee2085284f45b00abea8c6df48.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-ed6da6eef3892af8a4b5ed59bfb951f5.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-626149efe8f5d16e1d391ba177679bf0.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -159,7 +159,7 @@ window.Quarto = {
   <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
     <div class="pt-lg-2 mt-2 text-left sidebar-header">
     <div class="sidebar-title mb-0 py-0">
-      <a href="./">母平均の「補助線」の推定 (ver 0.1.1)</a> 
+      <a href="./">母平均の「補助線」の推定 (ver 0.1.2)</a> 
     </div>
       </div>
         <div class="mt-2 flex-shrink-0 align-items-center">
@@ -184,7 +184,7 @@ window.Quarto = {
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./population.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">母分布</span></span></a>
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">母平均</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
@@ -245,6 +245,7 @@ window.Quarto = {
   <li><a href="#単回帰" id="toc-単回帰" class="nav-link" data-scroll-target="#単回帰"><span class="header-section-number">3.3.1</span> 単回帰</a></li>
   <li><a href="#重回帰" id="toc-重回帰" class="nav-link" data-scroll-target="#重回帰"><span class="header-section-number">3.3.2</span> 重回帰</a></li>
   <li><a href="#交差項と高次項の導入" id="toc-交差項と高次項の導入" class="nav-link" data-scroll-target="#交差項と高次項の導入"><span class="header-section-number">3.3.3</span> 交差項と高次項の導入</a></li>
+  <li><a href="#複雑なモデルの弊害" id="toc-複雑なモデルの弊害" class="nav-link" data-scroll-target="#複雑なモデルの弊害"><span class="header-section-number">3.3.4</span> 複雑なモデルの弊害</a></li>
   </ul></li>
   <li><a href="#rによる実践例" id="toc-rによる実践例" class="nav-link" data-scroll-target="#rによる実践例"><span class="header-section-number">3.4</span> Rによる実践例</a></li>
   </ul>
@@ -272,8 +273,10 @@ window.Quarto = {
 </header>
 
 
-<p>少数事例の要約を避けるためには、より”荒い”要約が必要となります。 荒い要約の代表例として、線型モデルを紹介します。 線型モデルは、手元のデータから<span class="math inline">\(Y\)</span>の平均値が持つ性質を簡便に捉えるモデルであり、現代のデータ分析でも頻繁に利用されます。 また線型モデルを推定する方法として最小二乗法(OLS)を紹介します。</p>
-<p>本アプローチは、研究者が任意にモデルを単純化することが可能です。 適切な単純化がなされるのであれば、限られた事例数のもとでも、母平均の特徴を類推する有効な方法となり得ます (<a href="PopulationOLS.html" class="quarto-xref"><span>Chapter 4</span></a>)。</p>
+<p>少数事例の要約を避けるためには、より”大雑把な”要約が必要となります。 大雑把な要約の代表例として、線型モデルを紹介します。</p>
+<p>線型モデルは、手元のデータから<span class="math inline">\(Y\)</span>の平均値が持つ性質を簡便に捉えるモデルであり、現代のデータ分析でも頻繁に利用されます。</p>
+<p>線型モデルを推定する方法としては、本章で最小二乗法(OLS)および@sec-LASSO でLASSOを紹介します。</p>
+<p>OLSによる推定は、研究者によるモデルの単純化が求められます。 適切な単純化がなされるのであれば、限られた事例数のもとでも、母平均の特徴を類推する有効な方法となり得ます (<a href="PopulationOLS.html" class="quarto-xref"><span>Chapter 4</span></a>)。</p>
 <section id="線型モデル" class="level2" data-number="3.1">
 <h2 data-number="3.1" class="anchored" data-anchor-id="線型モデル"><span class="header-section-number">3.1</span> 線型モデル</h2>
 <p><span class="math inline">\(Y\)</span> の平均値と <span class="math inline">\(X_1,..,X_L\)</span> の関係性を記述するモデルを導入します。</p>
@@ -328,7 +331,7 @@ OLSの定義
 </ol>
 </div>
 </div>
-<p>OLSは、研究者が事前に大枠を設定したモデルを、データに最も合うように推定する手法であると解釈できます。</p>
+<p>OLSは、研究者が事前に大枠を設定したモデルを、データに最も適合するように推定する手法であると解釈できます。</p>
 </section>
 <section id="sec-OLS_Example" class="level2" data-number="3.3">
 <h2 data-number="3.3" class="anchored" data-anchor-id="sec-OLS_Example"><span class="header-section-number">3.3</span> 実例</h2>
@@ -360,7 +363,7 @@ OLSの定義
 </section>
 <section id="重回帰" class="level3" data-number="3.3.2">
 <h3 data-number="3.3.2" class="anchored" data-anchor-id="重回帰"><span class="header-section-number">3.3.2</span> 重回帰</h3>
-<p>Districtと平均取引価格の関係性を捉えるために、以下のモデルの推定を試みます。 <span class="math display">\[モデル = \beta_0 + \beta_1\times Size + \beta_2\times District\]</span> <span class="math inline">\(District\)</span> は、中心６区に立地していれば1、それ以外では0を取ります。 <span class="math inline">\(\beta_0,..,\beta_2\)</span> は引き続き、データへの適合度を最大化するように推定できます。 このような推定方法は、重回帰として教科書では紹介されてきました。</p>
+<p>立地と平均取引価格の関係性を捉えるために、以下のモデルの推定を試みます。 <span class="math display">\[モデル = \beta_0 + \beta_1\times Size + \beta_2\times District\]</span> <span class="math inline">\(District\)</span> は、中心６区に立地していれば1、それ以外では0を取ります。 <span class="math inline">\(\beta_0,..,\beta_2\)</span> は引き続き、データへの適合度を最大化するように推定できます。 このような推定方法は、重回帰として教科書では紹介されてきました。</p>
 <p>推定結果を図示すると、以下となります。</p>
 <div class="cell">
 <div class="cell-output-display">
@@ -385,7 +388,21 @@ OLSの定義
 </div>
 </div>
 </div>
-<p>複雑なモデルを最小二乗法で推定すると、データへの適合度が改善し、モデルをデータ上の平均値に近づけることができます。 しかしながら次節で論じる通り、母集団の特徴を捉えることを目標とするのであれば、このことは必ずしも望ましいとはいえません。 なぜならば、限れたデータから算出した平均値は、一般に母平均から乖離するためです。</p>
+</section>
+<section id="複雑なモデルの弊害" class="level3" data-number="3.3.4">
+<h3 data-number="3.3.4" class="anchored" data-anchor-id="複雑なモデルの弊害"><span class="header-section-number">3.3.4</span> 複雑なモデルの弊害</h3>
+<p>より複雑なモデルを最小二乗法で推定すると、データへの適合度が改善し、モデルをデータ上の平均値により近づけることができます。 例えば、以下の図ではSizeの10乗まで加えた推定を行なっています。</p>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="OLS_files/figure-html/unnamed-chunk-7-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>このモデルでは、特に中心６区外に立地する物件について、ほぼほぼデータ上の平均値を近似するモデルが推定されています。 さらにモデルを複雑化すると、データ上の平均値を”なぞる”モデルが推定されます。</p>
+<p>しかしながら、母集団の特徴を捉えることを目標とするのであれば、このことは必ずしも望ましいとはいえません。 いうまでもなく、平均値をなぞるモデルは、単なる平均値とよく似た性質を持ちます。 このため、<a href="model.html" class="quarto-xref"><span>Chapter 1</span></a> で議論した少数事例の集計の問題を引き起こしてしまいます。</p>
 </section>
 </section>
 <section id="rによる実践例" class="level2" data-number="3.4">
@@ -505,8 +522,6 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   });
   clipboard.on('success', onCopySuccess);
   if (window.document.getElementById('quarto-embedded-source-code-modal')) {
-    // For code content inside modals, clipBoardJS needs to be initialized with a container option
-    // TODO: Check when it could be a function (https://github.com/zenorocha/clipboard.js/issues/860)
     const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
       text: getTextToCopy,
       container: window.document.getElementById('quarto-embedded-source-code-modal')
@@ -617,7 +632,6 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       if (window.Quarto?.typesetMath) {
         window.Quarto.typesetMath(note);
       }
-      // TODO in 1.5, we should make sure this works without a callout special case
       if (note.classList.contains("callout")) {
         return note.outerHTML;
       } else {
@@ -845,8 +859,8 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
-      <a href="./population.html" class="pagination-link" aria-label="母分布">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">母分布</span></span>
+      <a href="./population.html" class="pagination-link" aria-label="母平均">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">母平均</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">

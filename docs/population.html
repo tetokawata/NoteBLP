@@ -193,27 +193,22 @@ window.Quarto = {
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
+  <a href="./prediction.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">予測分析への応用</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./tree.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">回帰木モデル</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
   <a href="./Reference.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Reference</span></a>
   </div>
 </li>
-        <li class="sidebar-item sidebar-item-section">
-      <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true">
- <span class="menu-text">Appendices</span></a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true" aria-label="Toggle section">
-            <i class="bi bi-chevron-right ms-2"></i>
-          </a> 
-      </div>
-      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="./prediction.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">A</span>&nbsp; <span class="chapter-title">応用: 予測</span></span></a>
-  </div>
-</li>
-      </ul>
-  </li>
     </ul>
     </div>
 </nav>
@@ -263,7 +258,7 @@ window.Quarto = {
 <h2 data-number="2.1" class="anchored" data-anchor-id="頻度論"><span class="header-section-number">2.1</span> 頻度論</h2>
 <p>少数事例の集計が引き起こす問題を正確に理解するために、頻度論と呼ばれる概念的枠組みを導入します<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>。</p>
 <p>まず、「自分と同じ課題に取り組む他の研究者達」を想像してください。 この研究者達は、あなたと同じ社会を対象に同じ手法を用いて分析しています。 ただし共通のデータではなく、独立して収集した異なるデータを用いるとします。 このような独立した研究者達は、あなたと同じ分析結果に到達するでしょうか？</p>
-<p>簡単な理科の実験であれば、到達することは可能です。 例えば水は、「水に不純物を入れない」、「大気圧が通常」などの実験の手続きを守れば、「誰がやっても」おおよそ100度で沸騰します。 このため誰がやっても同じ得られる結果を、“科学的事実”として合意するができます。</p>
+<p>簡単な理科の実験であれば、到達することは可能です。 例えば水は、「水に不純物を入れない」、「大気圧が通常」などの実験の手続きを守れば、「誰がやっても」おおよそ100度で沸騰します。 このため誰がやっても同じ得られる結果を、“科学的事実”として合意することができます。</p>
 <p>対して現実社会における多くの現象について、独立した研究者が同じ結論に到達することは困難です。 なぜならば、分析に用いる事例が異なるためです。 ほとんどの応用で、独立して収集したデータが、研究者間で完全一致する可能性はほぼゼロです。</p>
 <p>データに含まれる事例の偏りは、結論の不一致をもたらします。 ある研究者には、公園に近い物件の取引事例ばかりが、“偶然”集まってくるかもしれません。 このような研究者のデータで計算された取引価格の平均値は、他の研究者と比べて、上振れる可能性が高くなります。 このため要約した値であったとしても、研究者間で同じ値に合意できません。</p>
 <p>人々が同じ結果を観察できない、という問題は深刻です。 「独立した個人や組織が同じ結果を観察できるので推定結果を事実として認定する」、という強力な枠組みが活用できないからです。 さらに言えば、他者の結果と乖離することが予想されるのであれば、自身が分析した結果を”信じる”合理的な理由も無くなります。</p>
@@ -297,7 +292,7 @@ window.Quarto = {
 <div class="callout-body-container callout-body">
 <p>以下を想定する</p>
 <ul>
-<li><p>私たちが手にしているデータは、<strong>母集団</strong>という無数の事例の集団から、選ばれた(<strong>サンプリングされた</strong>)限られた構成されている</p>
+<li><p>私たちが手にしているデータは、<strong>母集団</strong>という無数の事例の集団から、選ばれた(<strong>サンプリングされた</strong>)事例から構成されている</p>
 <ul>
 <li><p>母集団の全ての事例を用いて算出された値を<strong>推定対象</strong>と呼ぶ</p></li>
 <li><p>サンプリングされたデータから算出された値を<strong>推定値</strong>と呼ぶ</p></li>

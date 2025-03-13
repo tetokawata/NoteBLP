@@ -6,10 +6,8 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="author" content="川田恵介">
-<meta name="dcterms.date" content="2025-03-13">
 
-<title>母平均の「補助線」の推定 (ver 0.1.2)</title>
+<title>7&nbsp; 回帰木モデル – 母平均の「補助線」の推定 (ver 0.1.2)</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -21,6 +19,40 @@ ul.task-list li input[type="checkbox"] {
   width: 0.8em;
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
 /* CSS for citations */
 div.csl-bib-body { }
@@ -52,7 +84,8 @@ div.csl-indent {
 <script src="site_libs/quarto-search/fuse.min.js"></script>
 <script src="site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="./">
-<link href="./model.html" rel="next">
+<link href="./Reference.html" rel="next">
+<link href="./prediction.html" rel="prev">
 <script src="site_libs/quarto-html/quarto.js"></script>
 <script src="site_libs/quarto-html/popper.min.js"></script>
 <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
@@ -131,7 +164,7 @@ window.Quarto = {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./index.html">Preface</a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./tree.html"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">回帰木モデル</span></a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -158,7 +191,7 @@ window.Quarto = {
     <ul class="list-unstyled mt-1">
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./index.html" class="sidebar-item-text sidebar-link active">
+  <a href="./index.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Preface</span></a>
   </div>
 </li>
@@ -200,7 +233,7 @@ window.Quarto = {
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./tree.html" class="sidebar-item-text sidebar-link">
+  <a href="./tree.html" class="sidebar-item-text sidebar-link active">
  <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">回帰木モデル</span></span></a>
   </div>
 </li>
@@ -220,7 +253,10 @@ window.Quarto = {
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#preface" id="toc-preface" class="nav-link active" data-scroll-target="#preface">Preface</a></li>
+  <li><a href="#伝統的な方法" id="toc-伝統的な方法" class="nav-link active" data-scroll-target="#伝統的な方法"><span class="header-section-number">7.1</span> 伝統的な方法</a></li>
+  <li><a href="#データ主導の方法" id="toc-データ主導の方法" class="nav-link" data-scroll-target="#データ主導の方法"><span class="header-section-number">7.2</span> データ主導の方法</a></li>
+  <li><a href="#過剰適合への対処" id="toc-過剰適合への対処" class="nav-link" data-scroll-target="#過剰適合への対処"><span class="header-section-number">7.3</span> 過剰適合への対処</a></li>
+  <li><a href="#rによる実践例" id="toc-rによる実践例" class="nav-link" data-scroll-target="#rによる実践例"><span class="header-section-number">7.4</span> Rによる実践例</a></li>
   </ul>
 </nav>
     </div>
@@ -229,26 +265,14 @@ window.Quarto = {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">母平均の「補助線」の推定 (ver 0.1.2)</h1>
+<h1 class="title"><span id="sec-Tree" class="quarto-section-identifier"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">回帰木モデル</span></span></h1>
 </div>
 
 
 
 <div class="quarto-title-meta">
 
-    <div>
-    <div class="quarto-title-meta-heading">Author</div>
-    <div class="quarto-title-meta-contents">
-             <p>川田恵介 </p>
-          </div>
-  </div>
     
-    <div>
-    <div class="quarto-title-meta-heading">Published</div>
-    <div class="quarto-title-meta-contents">
-      <p class="date">March 13, 2025</p>
-    </div>
-  </div>
   
     
   </div>
@@ -258,35 +282,155 @@ window.Quarto = {
 </header>
 
 
-<section id="preface" class="level1 unnumbered">
-<h1 class="unnumbered">Preface</h1>
-<p>ある属性 <span class="math inline">\(X\)</span> を持つ事例内での、変数 <span class="math inline">\(Y\)</span> の平均値 (“条件つき”平均)を推定する方法を紹介する、入門的なノートです<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>。 Rの実例では、 中古マンションの取引データを用いて、物件の属性 <span class="math inline">\(X\)</span> (部屋の広さ、駅からの距離など)ごとに、平均取引価格 <span class="math inline">\(Y\)</span> を推定します。</p>
-<p>平均の推定値は、さまざまな実務で活用されています。 中でも「<span class="math inline">\(Y\)</span>の値を予測する」という課題において、中心的な役割を果たします。</p>
-<p>伝統的には、OLSが母平均の推定方法として用いられてきました。 近年では、OLSは母平均の仮想的な線型モデル(“補助線”)を推定する手法として、解釈できることが強調されています <span class="citation" data-cites="angrist2009mostly aronow2019foundations">(<a href="Reference.html#ref-angrist2009mostly" role="doc-biblioref">Angrist and Pischke 2009</a>; <a href="Reference.html#ref-aronow2019foundations" role="doc-biblioref">Aronow and Miller 2019</a>)</span> 。 モデルの定式に誤りがあったとしても、推定結果は常に”解釈”できることがその理由です。</p>
-<p>また近年では、機械学習の手法も積極的に活用されています。 本ノートでは、機械学習の手法を導入する動機として、OLSが”研究者が設定した平均値のシンプルなモデル”を推定する方法であることを強調します。 シンプルなモデルを推定する限りは優れた方法ですが、より複雑なモデルを推定したい場合はその有効性を失います。 このような”複雑なモデル”を推定する方法として、LASSOを紹介します<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a>。</p>
+<p>本章では線型モデルの有力な代替案である、回帰木モデルを紹介します。 標準的な回帰木は、”サブグループ平均値”を母平均の推定値とします。</p>
+<p>回帰木モデルにおける最大の論点は、サブグループをどのように定義するのか、にあります。 伝統的には、研究者が背景知識などを用いて定式化してきました。 近年では、サブグループの定義もデータ主導で行う方法が注目されています。 特に<strong>モデル集計</strong>と呼ばれる手法も用いることで、母平均の近似精度を大きく改善することが期待されます。</p>
+<section id="伝統的な方法" class="level2" data-number="7.1">
+<h2 data-number="7.1" class="anchored" data-anchor-id="伝統的な方法"><span class="header-section-number">7.1</span> 伝統的な方法</h2>
+<p>例えば、<span class="math inline">\(X=\)</span> [部屋の広さ]、 <span class="math inline">\(Y=\)</span> 取引価格、について、母平均 <span class="math inline">\(E[Y\mid X]\)</span> を推定する際に、サブグループ <span class="math inline">\(\{\)</span> 部屋の広さが60以上, 部屋の広さが60以下 <span class="math inline">\(\}\)</span> に分け、各サブグループごとに平均取引価格を計算し推定とすることができます。</p>
+<p>このようなモデルは、以下のように樹形図として表現できます。</p>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="tree_files/figure-html/unnamed-chunk-2-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>一番上のボックスには、データ全体の平均取引価格 (43) とデータ全体に占める事例数の割合 (100 <span class="math inline">\(\%\)</span>)を示しています。 下のボックスは、各サブグループの平均取引価格と事例数の割合を示しています。 部屋の広さが60以下であれば”yes”、以上であれば”no”です。 例えば、60以下のサブグループにおけう平均取引価格は31、事例数の割合は68 <span class="math inline">\(\%\)</span> となります。</p>
+<p>また散布図に示すと以下のように、“階段状”のモデルとなります。 赤線が回帰モデル、青線は比較対象としてOLS (<span class="math inline">\(Price\sim\beta_0 + \beta_1\times Size\)</span>) を示しています。</p>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="tree_files/figure-html/unnamed-chunk-3-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="データ主導の方法" class="level2" data-number="7.2">
+<h2 data-number="7.2" class="anchored" data-anchor-id="データ主導の方法"><span class="header-section-number">7.2</span> データ主導の方法</h2>
+<p>伝統的な方法の応用上の問題は、サブグループの定義を研究者が行う必要があることです。 研究課題によっては、このような研究者主導のサブグループ分けは困難です。</p>
+<p>この問題について、データ主導のサブグループ分けが提案されています。 最も代表的な方法は、データへの当てはまりの良さ を最大にするようにサブグループを定義する方法です。 この場合は、最大分割回数や各サブグループの事例数の下限値を設定した後、二乗誤差の平均値を最小化するようにサブグループを定義する方法が一般的です。</p>
+<p>以下ではrpart関数を用いて、最大２分割、最小事例数を50として、回帰木を推定しました。 <span class="math inline">\(Y\)</span> は取引価格、 <span class="math inline">\(X=[Size]\)</span> です。</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>Model <span class="ot">=</span> rpart<span class="sc">::</span><span class="fu">rpart</span>(</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>    Price <span class="sc">~</span> Size, </span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">data =</span> Data,</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">control =</span> rpart<span class="sc">::</span><span class="fu">rpart.control</span>(</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>      <span class="at">maxdepth =</span> <span class="dv">2</span>,</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>      <span class="at">minbucket =</span> <span class="dv">50</span>,</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>      <span class="at">minsplit =</span> <span class="dv">1</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>      )</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>    ) <span class="co"># 回帰木の推定</span></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>rpart.plot<span class="sc">::</span><span class="fu">rpart.plot</span>(Model) <span class="co"># 可視化</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="tree_files/figure-html/unnamed-chunk-4-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>rpart関数は、「貪欲なアルゴリズム」を用いて、2グループへの分割を繰り返します。 一番最初の分割では、Sizeが48以上か否かでサブグループが定義されました。 これは48以上か否かで分割しサブグループ平均を計算するモデルが、最もデータへの当てはまりが良いためです。</p>
+<p>48以下の物件については、33以上か否かで2回目の分割が行われました。 この理由は、1回目の分割と同様に、33以上か否かで分割したモデルのデータへの当てはまりが良いためです。 同様に48以上については、78以上か否かで分割されます。</p>
+<p>回帰木は、複数の<span class="math inline">\(X\)</span>を用いたモデルも生成できます。 以下では、Sizeに加え、築年数 (Tenure) および物件の立地 (LargeDistrict = [中心6区、その他]) も加えたモデルを推定しています。 すなわち <span class="math inline">\(X=[Size,Tenure,LargeDistrict]\)</span> となります。</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>Model <span class="ot">=</span> rpart<span class="sc">::</span><span class="fu">rpart</span>(</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>    Price <span class="sc">~</span> Size <span class="sc">+</span> Tenure <span class="sc">+</span> LargeDistrict, </span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">data =</span> Data,</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">control =</span> rpart<span class="sc">::</span><span class="fu">rpart.control</span>(</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>      <span class="at">maxdepth =</span> <span class="dv">2</span>,</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>      <span class="at">minbucket =</span> <span class="dv">50</span>,</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>      <span class="at">minsplit =</span> <span class="dv">1</span></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>      )</span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>    ) <span class="co"># 回帰木の推定</span></span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>rpart.plot<span class="sc">::</span><span class="fu">rpart.plot</span>(Model) <span class="co"># 可視化</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="tree_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>結果、Sizeが48以上の物件については、立地が中心6区か否かで２回目の分割が行われました。</p>
+</section>
+<section id="過剰適合への対処" class="level2" data-number="7.3">
+<h2 data-number="7.3" class="anchored" data-anchor-id="過剰適合への対処"><span class="header-section-number">7.3</span> 過剰適合への対処</h2>
+<p>回帰木における複雑性は、最大分割回数や各サブグループの事例数の下限値などに操作できます。 最大分割回数を増やし、事例数の下限を減らせば、モデルはより複雑化します。 複雑なモデルは、事例数が十分にあれば、母平均の特徴をよりよく捉えることができます。 一方でOLSと同様に、複雑な回帰木モデルを推定すると、データへの適合度は高まる一方で、母平均からは乖離する傾向が生じます。</p>
+<p>このような問題に対しては、LASSO同様に、モデルを適切に単純化する方法が考えられます。 代表的な方法としては、「剪定 (Pruning)」などが挙げられます。 詳細は、<span class="citation" data-cites="james2013introduction">James et al. (<a href="Reference.html#ref-james2013introduction" role="doc-biblioref">2021</a>)</span> などを参照ください。</p>
+<p>次節では、母平均の近似を目指す場合により有力な方法である、モデル集計を紹介します。</p>
+</section>
+<section id="rによる実践例" class="level2" data-number="7.4">
+<h2 data-number="7.4" class="anchored" data-anchor-id="rによる実践例"><span class="header-section-number">7.4</span> Rによる実践例</h2>
+<ul>
+<li><p>以下のパッケージを使用</p>
+<ul>
+<li><p>readr (tidyverseに同梱): データの読み込み</p></li>
+<li><p>rpart (Rに同梱): 回帰木の推定</p></li>
+<li><p>rpart.plot : 回帰木の可視化</p></li>
+</ul></li>
+</ul>
+<p>データを取得します。</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>Data <span class="ot">=</span> readr<span class="sc">::</span><span class="fu">read_csv</span>(<span class="st">"Public.csv"</span>) <span class="co"># データ読み込み</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>rpart関数を用いてOLSを推定します。</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>Tree <span class="ot">=</span> rpart<span class="sc">::</span><span class="fu">rpart</span>(</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  Price <span class="sc">~</span> Size <span class="sc">+</span> Tenure <span class="sc">+</span> StationDistance <span class="sc">+</span> LargeDistrict, <span class="co"># Y ~ X</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>  Data, <span class="co"># 使用するデータの指定</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">control =</span> rpart<span class="sc">::</span><span class="fu">rpart.control</span>(</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">maxdepth =</span> <span class="dv">3</span>, <span class="co"># 最大分割回数 = 2</span></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">minsplit =</span> <span class="dv">50</span>, <span class="co"># 50以下になったら分割を停止</span></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">minbucket =</span> <span class="dv">50</span> <span class="co"># 50以下のサブグループを作らない</span></span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>Tree</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>n= 6378 
+
+node), split, n, deviance, yval
+      * denotes terminal node
+
+ 1) root 6378 5935190.00  42.70522  
+   2) Size&lt; 47.5 3359  503187.50  26.41390  
+     4) Size&lt; 32.5 2458  147489.90  22.38031 *
+     5) Size&gt;=32.5 901  206606.60  37.41787  
+      10) Tenure&gt;=25.5 386   43399.57  27.53238 *
+      11) Tenure&lt; 25.5 515   97213.62  44.82718 *
+   3) Size&gt;=47.5 3019 3548597.00  60.83127  
+     6) LargeDistrict=その他 2430 1257966.00  52.28255  
+      12) Tenure&gt;=24.5 837  218600.20  38.45950 *
+      13) Tenure&lt; 24.5 1593  795403.00  59.54551 *
+     7) LargeDistrict=中心6区 589 1380391.00  96.10017  
+      14) Size&lt; 72.5 446  412038.60  81.80269 *
+      15) Size&gt;=72.5 143  592832.50 140.69230 *</code></pre>
+</div>
+</div>
+<p>rpart.plot関数を用いて可視化します。</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>rpart.plot<span class="sc">::</span><span class="fu">rpart.plot</span>(Tree)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="tree_files/figure-html/unnamed-chunk-8-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
 
 
 <div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list" style="display: none">
-<div id="ref-angrist2009mostly" class="csl-entry" role="listitem">
-Angrist, Joshua D, and Jörn-Steffen Pischke. 2009. <em>Mostly Harmless Econometrics: An Empiricist’s Companion</em>. Princeton university press.
-</div>
-<div id="ref-aronow2019foundations" class="csl-entry" role="listitem">
-Aronow, Peter M, and Benjamin T Miller. 2019. <em>Foundations of Agnostic Statistics</em>. Cambridge University Press.
-</div>
-<div id="ref-ding2024linear" class="csl-entry" role="listitem">
-Ding, Peng. 2024. <span>“Linear Model and Extensions.”</span> <em>arXiv Preprint arXiv:2401.00649</em>.
-</div>
 <div id="ref-james2013introduction" class="csl-entry" role="listitem">
 James, Gareth, Daniela Witten, Trevor Hastie, Robert Tibshirani, et al. 2021. <em>An Introduction to Statistical Learning</em>. Vol. 112. Springer.
 </div>
 </div>
-</section>
-<section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes">
-<hr>
-<ol>
-<li id="fn1"><p>より専門的な入門としては、<span class="citation" data-cites="ding2024linear">Ding (<a href="Reference.html#ref-ding2024linear" role="doc-biblioref">2024</a>)</span> などを参照してください。<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn2"><p>他の予測モデルの推定方法については、<a href="https://www.statlearning.com/"><span class="citation" data-cites="james2013introduction">James et al. (<span>2021</span>)</span></a> 参照<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-</ol>
 </section>
 
 </main> <!-- /main -->
@@ -709,10 +853,13 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
+      <a href="./prediction.html" class="pagination-link" aria-label="予測分析への応用">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">予測分析への応用</span></span>
+      </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="./model.html" class="pagination-link" aria-label="要約の基本コンセプト">
-        <span class="nav-page-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">要約の基本コンセプト</span></span> <i class="bi bi-arrow-right-short"></i>
+      <a href="./Reference.html" class="pagination-link" aria-label="Reference">
+        <span class="nav-page-text">Reference</span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>

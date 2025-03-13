@@ -207,27 +207,22 @@ window.Quarto = {
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
+  <a href="./prediction.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">予測分析への応用</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./tree.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">回帰木モデル</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
   <a href="./Reference.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Reference</span></a>
   </div>
 </li>
-        <li class="sidebar-item sidebar-item-section">
-      <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true">
- <span class="menu-text">Appendices</span></a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true" aria-label="Toggle section">
-            <i class="bi bi-chevron-right ms-2"></i>
-          </a> 
-      </div>
-      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="./prediction.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">A</span>&nbsp; <span class="chapter-title">応用: 予測</span></span></a>
-  </div>
-</li>
-      </ul>
-  </li>
     </ul>
     </div>
 </nav>
@@ -403,6 +398,20 @@ OLSの定義
 </div>
 <p>このモデルでは、特に中心６区外に立地する物件について、ほぼほぼデータ上の平均値を近似するモデルが推定されています。 さらにモデルを複雑化すると、データ上の平均値を”なぞる”モデルが推定されます。</p>
 <p>しかしながら、母集団の特徴を捉えることを目標とするのであれば、このことは必ずしも望ましいとはいえません。 いうまでもなく、平均値をなぞるモデルは、単なる平均値とよく似た性質を持ちます。 このため、<a href="model.html" class="quarto-xref"><span>Chapter 1</span></a> で議論した少数事例の集計の問題を引き起こしてしまいます。</p>
+<p>以上の問題は、過剰適合/過学習の問題と呼ばれています。</p>
+<div class="callout callout-style-default callout-important callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+過剰適合/過学習
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>複雑なモデルを、少ない事例数で推定した結果、データへの当てはまりは高くなるが、母平均からは乖離する現象</p>
+</div>
+</div>
 </section>
 </section>
 <section id="rによる実践例" class="level2" data-number="3.4">
